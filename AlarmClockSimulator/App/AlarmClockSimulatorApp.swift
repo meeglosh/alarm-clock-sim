@@ -9,6 +9,7 @@ struct AlarmClockSimulatorApp: App {
     @State private var gameCenter: GameCenterManager
     @State private var notifications: AlarmNotificationScheduler
     @State private var notificationDelegate: NotificationDelegate
+    @State private var music = MusicPlayer()
 
     init() {
         let store = StoreManager()
@@ -50,6 +51,7 @@ struct AlarmClockSimulatorApp: App {
                 .environment(game)
                 .environment(gameCenter)
                 .environment(notifications)
+                .environment(music)
                 .task {
                     gameCenter.authenticate()
                     await store.start()

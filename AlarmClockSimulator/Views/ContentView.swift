@@ -12,4 +12,5 @@ struct ContentView: View {
         .environment(StoreManager())
         .environment(GameCenterManager())
         .environment(AlarmNotificationScheduler())
+        .environment(MusicPlayer())
 }

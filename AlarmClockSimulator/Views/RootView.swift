@@ -9,12 +9,13 @@ enum GameSheet: String, Identifiable {
 /// Top-level flow: loader tap-through, one-time wellness disclaimer, then
 /// the phase-driven game screens with the smash cinematic overlaid on top.
 struct RootView: View {
-    private enum Flow {
+    private enum Flow: Equatable {
         case loader, disclaimer, main
     }
 
     @Environment(GameViewModel.self) private var game
     @Environment(AlarmNotificationScheduler.self) private var notifications
+    @Environment(MusicPlayer.self) private var music
     @Environment(\.scenePhase) private var scenePhase
     @State private var flow: Flow = .loader
     @State private var activeSheet: GameSheet?
@@ -59,14 +60,23 @@ struct RootView: View {
             #if DEBUG
             applyLaunchOverrides()
             #endif
+            updateMusic()
         }
         .onChange(of: scenePhase) { _, newValue in
             if newValue == .active {
                 game.reconcile()
                 game.startTicking()
+                updateMusic()
             } else {
                 game.stopTicking()
+                music.fadeOut(duration: 0.3)
             }
+        }
+        .onChange(of: flow) { _, _ in
+            updateMusic()
+        }
+        .onChange(of: game.phase) { oldValue, newValue in
+            updateMusic(previousPhase: oldValue)
         }
         .sheet(item: $activeSheet) { sheet in
             sheetContent(sheet)
@@ -123,6 +133,26 @@ struct RootView: View {
         Task { await notifications.requestAuthorizationIfNeeded() }
     }
 
+    /// Music plays on the loader, disclaimer, menu, and streak-ended
+    /// screens; it bows out while a run is live. The return after a run
+    /// ends uses a long swell so it rises as the smash dust settles.
+    private func updateMusic(previousPhase: GamePhase? = nil) {
+        guard scenePhase != .background else { return }
+        let shouldPlay: Bool
+        switch flow {
+        case .loader, .disclaimer:
+            shouldPlay = true
+        case .main:
+            shouldPlay = game.phase == .idle || game.phase.isGameOver
+        }
+        if shouldPlay {
+            let runJustEnded = game.phase.isGameOver && previousPhase?.isRunActive == true
+            music.fadeIn(duration: runJustEnded ? 2.4 : 1.0)
+        } else {
+            music.fadeOut(duration: 0.9)
+        }
+    }
+
     #if DEBUG
     /// Screenshot/dev harness: jump straight to a screen via launch args
     /// (e.g. `simctl launch <device> <bundle> -uiRinging`).
@@ -152,4 +182,5 @@ struct RootView: View {
         .environment(StoreManager())
         .environment(GameCenterManager())
         .environment(AlarmNotificationScheduler())
+        .environment(MusicPlayer())
 }
