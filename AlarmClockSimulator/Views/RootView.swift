@@ -131,7 +131,9 @@ struct RootView: View {
         guard args.contains(where: { $0.hasPrefix("-ui") }) else { return }
         flow = .main
         game.debugResetToIdle()
-        if args.contains("-uiPlay") {
+        if args.contains("-uiDisclaimer") {
+            flow = .disclaimer
+        } else if args.contains("-uiPlay") {
             game.startRun()
         } else if args.contains("-uiRinging") {
             game.startRun(now: Date().addingTimeInterval(-game.configuration.alarmInterval))

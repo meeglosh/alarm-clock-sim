@@ -7,10 +7,14 @@ struct LoaderView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            Image("bgMain")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
+            GeometryReader { geo in
+                Image("bgMain")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: geo.size.width, height: geo.size.height, alignment: .top)
+                    .clipped()
+            }
+            .ignoresSafeArea()
 
             LinearGradient(
                 stops: [

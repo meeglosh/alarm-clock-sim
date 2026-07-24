@@ -118,16 +118,13 @@ struct StreakEndedView: View {
                 .buttonStyle(ChunkyButtonStyle(style: .purple, height: 46))
             }
             .padding(16)
+            .contentColumn()
         }
         .background(Palette.background)
     }
 
     private var heroWithSmoke: some View {
-        Image("heroWrecked")
-            .resizable()
-            .scaledToFill()
-            .frame(height: 200)
-            .clipShape(RoundedRectangle(cornerRadius: 20))
+        HeroImage(name: "heroWrecked", height: 200)
             .overlay(
                 // Smoke keeps rising from the wreckage (clock sits left of
                 // center in the crop).
@@ -139,10 +136,6 @@ struct StreakEndedView: View {
                     .allowsHitTesting(false)
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 20))
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 20)
-                    .strokeBorder(Palette.panelBorder, lineWidth: 1)
             )
     }
 }

@@ -9,15 +9,7 @@ struct DisclaimerView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 18) {
-                Image("heroDisclaimer")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(height: 230)
-                    .clipShape(RoundedRectangle(cornerRadius: 22))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 22)
-                            .strokeBorder(Palette.panelBorder, lineWidth: 1)
-                    )
+                HeroImage(name: "heroDisclaimer", height: 230)
 
                 VStack(spacing: 10) {
                     HeadlineGradientText(text: "REAL LIFE", size: 40)
@@ -53,6 +45,7 @@ struct DisclaimerView: View {
                     .foregroundStyle(.white.opacity(0.6))
             }
             .padding(20)
+            .contentColumn()
         }
         .background(Palette.background)
         .preferredColorScheme(.dark)

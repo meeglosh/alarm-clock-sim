@@ -30,12 +30,7 @@ struct ShopView: View {
                             .foregroundStyle(.white.opacity(0.85))
                     }
 
-                    Image("heroFreeze")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(height: 210)
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                        .overlay(RoundedRectangle(cornerRadius: 20).strokeBorder(Palette.panelBorder, lineWidth: 1))
+                    HeroImage(name: "heroFreeze", height: 210)
 
                     freezeStatusBanner
 
@@ -108,6 +103,7 @@ struct ShopView: View {
                     .foregroundStyle(Palette.cyan)
                 }
                 .padding(16)
+                .contentColumn()
             }
             .background(Palette.background)
             .toolbar {
@@ -236,12 +232,7 @@ struct UnlimitedFreezeView: View {
                     AccentPill(text: "UNLIMITED STREAK PROTECTION")
                 }
 
-                Image("heroUnlimited")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(height: 230)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .overlay(RoundedRectangle(cornerRadius: 20).strokeBorder(Palette.panelBorder, lineWidth: 1))
+                HeroImage(name: "heroUnlimited", height: 230)
 
                 if store.isUnlimitedFreezeActive {
                     Label("Unlimited Streak Freezes active", systemImage: "checkmark.seal.fill")
@@ -272,6 +263,7 @@ struct UnlimitedFreezeView: View {
                     .foregroundStyle(.white.opacity(0.55))
             }
             .padding(16)
+            .contentColumn()
         }
         .background(Palette.background)
         .toolbarBackground(Palette.background, for: .navigationBar)

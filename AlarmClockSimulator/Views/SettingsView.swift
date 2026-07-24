@@ -57,6 +57,7 @@ struct SettingsView: View {
                     .foregroundStyle(.white.opacity(0.45))
             }
             .padding(16)
+            .contentColumn()
         }
         .background(Palette.background)
         .preferredColorScheme(.dark)

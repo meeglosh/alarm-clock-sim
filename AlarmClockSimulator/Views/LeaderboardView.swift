@@ -67,6 +67,7 @@ struct LeaderboardView: View {
                 }
             }
             .padding(16)
+            .contentColumn()
         }
         .background(Palette.background)
         .preferredColorScheme(.dark)

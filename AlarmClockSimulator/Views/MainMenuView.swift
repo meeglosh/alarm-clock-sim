@@ -52,13 +52,20 @@ struct MainMenuView: View {
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
+            .contentColumn()
         }
         .background {
             ZStack {
                 Palette.background
-                Image("bgMain")
-                    .resizable()
-                    .scaledToFill()
+                // Top-anchored fill: when tall screens (iPad) crop the art,
+                // sacrifice the table edge, never the title.
+                GeometryReader { geo in
+                    Image("bgMain")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: geo.size.width, height: geo.size.height, alignment: .top)
+                        .clipped()
+                }
                 LinearGradient(
                     stops: [
                         .init(color: .clear, location: 0.58),

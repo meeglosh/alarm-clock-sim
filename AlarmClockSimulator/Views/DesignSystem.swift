@@ -105,6 +105,40 @@ extension View {
     }
 }
 
+// MARK: - Layout
+
+extension View {
+    /// Caps content width on large screens (iPad, landscape) while staying
+    /// full-width on phones, keeping buttons and panels readable.
+    func contentColumn(maxWidth: CGFloat = 560) -> some View {
+        frame(maxWidth: maxWidth)
+            .frame(maxWidth: .infinity)
+    }
+}
+
+/// A full-width hero band that never expands its container: the image fills
+/// via overlay so its natural width can't blow out ScrollView layouts.
+struct HeroImage: View {
+    let name: String
+    var height: CGFloat = 210
+
+    var body: some View {
+        Color.clear
+            .frame(height: height)
+            .frame(maxWidth: .infinity)
+            .overlay(
+                Image(name)
+                    .resizable()
+                    .scaledToFill()
+            )
+            .clipShape(RoundedRectangle(cornerRadius: 20))
+            .overlay(
+                RoundedRectangle(cornerRadius: 20)
+                    .strokeBorder(Palette.panelBorder, lineWidth: 1)
+            )
+    }
+}
+
 // MARK: - Text styles
 
 struct HeadlineGradientText: View {
@@ -118,6 +152,8 @@ struct HeadlineGradientText: View {
             .foregroundStyle(LinearGradient(colors: colors, startPoint: .top, endPoint: .bottom))
             .shadow(color: .black.opacity(0.85), radius: 2, y: 3)
             .multilineTextAlignment(.center)
+            .lineLimit(1)
+            .minimumScaleFactor(0.55)
     }
 }
 

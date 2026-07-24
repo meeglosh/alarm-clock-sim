@@ -61,6 +61,7 @@ struct PlayView: View {
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
+            .contentColumn()
         }
         .onChange(of: isRinging) { _, ringing in
             if ringing { startRingingEffects() }
