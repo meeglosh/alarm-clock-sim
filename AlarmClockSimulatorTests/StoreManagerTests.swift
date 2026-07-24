@@ -26,25 +26,22 @@ final class StoreManagerTests: XCTestCase {
         let store = StoreManager()
         await store.loadProducts()
 
-        if let error = store.lastError {
-            XCTFail("loadProducts threw: \(error)")
-        }
+        XCTAssertNil(store.loadErrorMessage)
         XCTAssertEqual(store.products.count, 2)
         XCTAssertTrue(store.products.contains { $0.id == IAPProductID.streakFreeze12h.rawValue })
         XCTAssertTrue(store.products.contains { $0.id == IAPProductID.unlimitedFreezesMonthly.rawValue })
     }
 
-    func testConsumablePurchaseReturnsUnfinishedTransaction() async throws {
+    func testConsumablePurchaseGrantsThroughHandler() async throws {
         let store = StoreManager()
+        var granted: [IAPProductID] = []
+        store.onConsumableGranted = { granted.append($0) }
         await store.loadProducts()
         let product = try XCTUnwrap(store.products.first { $0.id == IAPProductID.streakFreeze12h.rawValue })
 
-        let transaction = try await store.purchase(product)
+        try await store.purchase(product)
 
-        XCTAssertNotNil(transaction)
-        if let transaction {
-            await store.finishTransaction(transaction)
-        }
+        XCTAssertEqual(granted, [.streakFreeze12h])
     }
 
     func testSubscriptionPurchaseActivatesEntitlement() async throws {
@@ -52,7 +49,7 @@ final class StoreManagerTests: XCTestCase {
         await store.loadProducts()
         let product = try XCTUnwrap(store.products.first { $0.id == IAPProductID.unlimitedFreezesMonthly.rawValue })
 
-        _ = try await store.purchase(product)
+        try await store.purchase(product)
 
         XCTAssertTrue(store.isUnlimitedFreezeActive)
     }

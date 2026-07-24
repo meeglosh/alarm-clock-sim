@@ -8,12 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		16F36FC5651D078BEC37BCB4 /* AlarmClockSimulatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F966B352B1CD9709CB60DE /* AlarmClockSimulatorApp.swift */; };
+		4BBFAF6D4A0A7BA582882E3E /* GameSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B617BEA299C009CACDEAD76 /* GameSceneView.swift */; };
+		51B1E1DF781688E65427CA18 /* GameViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F4BE25BEC3BF340C5B445A /* GameViewModelTests.swift */; };
 		82B7567258E7197B908C13BB /* Configuration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 1ADEF8FE2F9B9A6B03AC92DA /* Configuration.storekit */; };
 		854075B60FCE7EB9CFCA2ED3 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF56BFB4FB5049860F3DE321 /* StoreManager.swift */; };
+		9B04007DAB790C0CA6884071 /* AlarmFeedbackPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671126B0EF73E0FA2E9BB4B2 /* AlarmFeedbackPlayer.swift */; };
+		A12D7768C7A04D263EEEDD9D /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62E3B4A7155D24F6BF2F9DD /* GameViewModel.swift */; };
 		B127841E902ABB81C3CE9411 /* StoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EC2A7BB62D7FB9694232A5 /* StoreView.swift */; };
 		B7A341E6CAE9EABF0020B089 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD902450DD0B1988707F45A /* ContentView.swift */; };
 		CD88DA24F4E2D3A8ACA37E6D /* StoreManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D06D586AB36FFDFD77C5FFD /* StoreManagerTests.swift */; };
-		E24A2CFA2F298E3DB20C4F48 /* AlarmClockSimulatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07BEAF55C47B16F210C0421 /* AlarmClockSimulatorTests.swift */; };
+		D5F18F8E1F13FCD5D8EFDD11 /* BedsideSceneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD1959E551F1D440C7054FA /* BedsideSceneController.swift */; };
+		D7D41F59E3F815A0AF501620 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1BAD1EAC0F3329E0467015C /* GameView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,15 +34,20 @@
 /* Begin PBXFileReference section */
 		041A1679445689B8F8931D3E /* AlarmClockSimulator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AlarmClockSimulator.entitlements; sourceTree = "<group>"; };
 		0A31ADC6FD6454C5A88D68CC /* AlarmClockSimulatorTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AlarmClockSimulatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B617BEA299C009CACDEAD76 /* GameSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneView.swift; sourceTree = "<group>"; };
 		1ADEF8FE2F9B9A6B03AC92DA /* Configuration.storekit */ = {isa = PBXFileReference; path = Configuration.storekit; sourceTree = "<group>"; };
 		35A638DB20E44347FAF1125A /* AlarmClockSimulator.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AlarmClockSimulator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38F966B352B1CD9709CB60DE /* AlarmClockSimulatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmClockSimulatorApp.swift; sourceTree = "<group>"; };
 		3D06D586AB36FFDFD77C5FFD /* StoreManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManagerTests.swift; sourceTree = "<group>"; };
 		55F7202098D477D209DE0624 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		671126B0EF73E0FA2E9BB4B2 /* AlarmFeedbackPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmFeedbackPlayer.swift; sourceTree = "<group>"; };
 		80EC2A7BB62D7FB9694232A5 /* StoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreView.swift; sourceTree = "<group>"; };
-		A07BEAF55C47B16F210C0421 /* AlarmClockSimulatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmClockSimulatorTests.swift; sourceTree = "<group>"; };
 		AAD902450DD0B1988707F45A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B5F4BE25BEC3BF340C5B445A /* GameViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModelTests.swift; sourceTree = "<group>"; };
+		C1BAD1EAC0F3329E0467015C /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		CF56BFB4FB5049860F3DE321 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
+		EBD1959E551F1D440C7054FA /* BedsideSceneController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BedsideSceneController.swift; sourceTree = "<group>"; };
+		F62E3B4A7155D24F6BF2F9DD /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -56,7 +66,9 @@
 				041A1679445689B8F8931D3E /* AlarmClockSimulator.entitlements */,
 				55F7202098D477D209DE0624 /* Info.plist */,
 				6A581A56807CD15AFA157B5D /* App */,
+				9BA0B72436268EA69F36EE95 /* Scene */,
 				6A626BB9DB0670747D9A7BFE /* Store */,
+				B2F786572B484CB36DCFAA05 /* ViewModels */,
 				EE8F53E6935786D22FF30BAB /* Views */,
 			);
 			path = AlarmClockSimulator;
@@ -91,16 +103,35 @@
 		6E5AE2CADE7832E5C6A15021 /* AlarmClockSimulatorTests */ = {
 			isa = PBXGroup;
 			children = (
-				A07BEAF55C47B16F210C0421 /* AlarmClockSimulatorTests.swift */,
+				B5F4BE25BEC3BF340C5B445A /* GameViewModelTests.swift */,
 				3D06D586AB36FFDFD77C5FFD /* StoreManagerTests.swift */,
 			);
 			path = AlarmClockSimulatorTests;
+			sourceTree = "<group>";
+		};
+		9BA0B72436268EA69F36EE95 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				EBD1959E551F1D440C7054FA /* BedsideSceneController.swift */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		B2F786572B484CB36DCFAA05 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				671126B0EF73E0FA2E9BB4B2 /* AlarmFeedbackPlayer.swift */,
+				F62E3B4A7155D24F6BF2F9DD /* GameViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		EE8F53E6935786D22FF30BAB /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				AAD902450DD0B1988707F45A /* ContentView.swift */,
+				0B617BEA299C009CACDEAD76 /* GameSceneView.swift */,
+				C1BAD1EAC0F3329E0467015C /* GameView.swift */,
 				80EC2A7BB62D7FB9694232A5 /* StoreView.swift */,
 			);
 			path = Views;
@@ -201,7 +232,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				16F36FC5651D078BEC37BCB4 /* AlarmClockSimulatorApp.swift in Sources */,
+				9B04007DAB790C0CA6884071 /* AlarmFeedbackPlayer.swift in Sources */,
+				D5F18F8E1F13FCD5D8EFDD11 /* BedsideSceneController.swift in Sources */,
 				B7A341E6CAE9EABF0020B089 /* ContentView.swift in Sources */,
+				4BBFAF6D4A0A7BA582882E3E /* GameSceneView.swift in Sources */,
+				D7D41F59E3F815A0AF501620 /* GameView.swift in Sources */,
+				A12D7768C7A04D263EEEDD9D /* GameViewModel.swift in Sources */,
 				854075B60FCE7EB9CFCA2ED3 /* StoreManager.swift in Sources */,
 				B127841E902ABB81C3CE9411 /* StoreView.swift in Sources */,
 			);
@@ -211,7 +247,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E24A2CFA2F298E3DB20C4F48 /* AlarmClockSimulatorTests.swift in Sources */,
+				51B1E1DF781688E65427CA18 /* GameViewModelTests.swift in Sources */,
 				CD88DA24F4E2D3A8ACA37E6D /* StoreManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

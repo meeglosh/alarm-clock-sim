@@ -2,19 +2,34 @@ import StoreKit
 import SwiftUI
 
 struct StoreView: View {
-    @State private var store = StoreManager()
+    @Environment(StoreManager.self) private var store
+    @Environment(\.dismiss) private var dismiss
     @State private var isPurchasing = false
     @State private var errorMessage: String?
 
     var body: some View {
         List {
             Section("Streak Freezes") {
-                if store.products.isEmpty {
-                    Text("Loading products…")
-                        .foregroundStyle(.secondary)
-                }
-                ForEach(store.products) { product in
-                    productRow(product)
+                if let message = store.loadErrorMessage {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Couldn't load products.")
+                        Text(message)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Button("Try Again") {
+                            Task { await store.loadProducts() }
+                        }
+                    }
+                } else if store.products.isEmpty {
+                    HStack(spacing: 12) {
+                        ProgressView()
+                        Text("Loading products…")
+                            .foregroundStyle(.secondary)
+                    }
+                } else {
+                    ForEach(store.products) { product in
+                        productRow(product)
+                    }
                 }
             }
 
@@ -32,9 +47,23 @@ struct StoreView: View {
             }
         }
         .navigationTitle("Streak Freezes")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Done") { dismiss() }
+            }
+        }
         .disabled(isPurchasing)
-        .alert("Purchase Failed", isPresented: .constant(errorMessage != nil)) {
-            Button("OK") { errorMessage = nil }
+        .overlay {
+            if isPurchasing {
+                ProgressView()
+            }
+        }
+        .alert("Purchase Failed", isPresented: Binding(
+            get: { errorMessage != nil },
+            set: { if !$0 { errorMessage = nil } }
+        )) {
+            Button("OK", role: .cancel) {}
         } message: {
             Text(errorMessage ?? "")
         }
@@ -64,11 +93,7 @@ struct StoreView: View {
         isPurchasing = true
         defer { isPurchasing = false }
         do {
-            // Standalone screen, no game layer to apply the freeze effect yet —
-            // finish consumables immediately here instead of deferring to it.
-            if let transaction = try await store.purchase(product), transaction.productType == .consumable {
-                await store.finishTransaction(transaction)
-            }
+            try await store.purchase(product)
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -87,4 +112,5 @@ struct StoreView: View {
     NavigationStack {
         StoreView()
     }
+    .environment(StoreManager())
 }

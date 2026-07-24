@@ -18,6 +18,14 @@ Streaks post to a **global leaderboard**. Monetization via streak freezes (see I
 3. Player instead taps/swipes the hammer onto the clock → game over screen, final streak recorded
 4. If a streak freeze is active, a triggered alarm during the freeze window auto-snoozes without requiring player input
 
+### Implementation decisions (made during the initial build; revisit deliberately, not silently)
+- **Wall-clock rules.** The game runs on real dates, not accumulated timer ticks. Closing or backgrounding the app does not pause the game; `GameViewModel.reconcile(now:)` replays everything that should have happened since the last observation. This is what gives the freeze products their value (sleep = needing coverage).
+- **Miss window: 60 seconds.** An alarm left ringing longer than `Configuration.missWindow` ends the run ("You overslept"). Without this, ignoring the alarm would carry no cost and freezes would be pointless.
+- **Auto-snooze counts.** Each alarm covered by a freeze credits streak +1, including catch-up crediting for alarms that fired while the app was closed. 12 hours of freeze = 72 auto-snoozes.
+- **Consumable freezes stack.** Buying another 12-hour freeze extends the current expiry rather than replacing it. Buying one while the alarm is ringing snoozes it immediately.
+- **Hammer stays enabled during freezes** (including the unlimited subscription). It is the only way to cash out a streak, so disabling it would trap subscribers in an unendable run. Accidental smashes are prevented by the gesture instead: the hammer must be dragged and released onto the clock, never a single tap.
+- Timing knobs live in `GameViewModel.Configuration` (alarm interval, miss window, freeze duration) and are injected in tests.
+
 ## Leaderboard
 - Use **GameKit / Game Center** for the global leaderboard (simplest native option, no backend to stand up). Submit streak score via `GKLeaderboard` on game-over.
 - If Game Center feels too limiting later (custom leaderboard UI, cross-platform), that's a decision to revisit explicitly, not something to switch to unprompted.
@@ -31,8 +39,17 @@ Streaks post to a **global leaderboard**. Monetization via streak freezes (see I
 
 ## Architecture
 - Pattern: MVVM — `@Observable` view models for game state (timer, streak, freeze status), SwiftUI views for UI, SceneKit nodes for the 3D scene
-- Game state (`GameState`: idle / ringing / snoozed / gameOver) drives both the SwiftUI overlay and the SceneKit animations — single source of truth, not duplicated state
-- Persist current streak + best streak locally (UserDefaults or SwiftData is fine for this scale)
+- `GamePhase` (idle / counting / ringing / gameOver) is the single source of truth; the SwiftUI overlay and SceneKit animations both derive from it via `onChange`
+- Streak, best streak, freeze expiry, and active-run state persist in UserDefaults (keys in `GameViewModel`)
+
+### File map
+- `ViewModels/GameViewModel.swift`: all game rules and persistence; wall-clock based, fully unit-tested. `AlarmFeedback` protocol for sound/haptics lives here too.
+- `ViewModels/AlarmFeedbackPlayer.swift`: system-sound + haptic implementation of `AlarmFeedback` (custom audio asset is a future swap-in)
+- `Store/StoreManager.swift`: StoreKit 2 wrapper; one instance app-wide, injected via environment. Consumable grants flow through `onConsumableGranted`, wired to `GameViewModel.applyConsumableFreeze` in `App/AlarmClockSimulatorApp.swift`.
+- `Scene/BedsideSceneController.swift`: programmatic low-poly scene (table, clock, hammer) and its animations; node names are the hit-test contract
+- `Views/GameSceneView.swift`: SCNView wrapper with tap-to-snooze and drag-hammer-to-smash gestures
+- `Views/GameView.swift`: overlay UI for every phase, scene-phase reconciliation, store sheet
+- `Views/StoreView.swift`: purchase UI (products, restore, error/retry)
 
 ## Project Setup
 The Xcode project is generated via **XcodeGen** from `project.yml` rather than hand-edited in Xcode. This solves the "new Swift files don't auto-add to the target" problem: any file placed under `AlarmClockSimulator/` is picked up automatically the next time the project is regenerated.
@@ -57,9 +74,12 @@ xcodebuild build \
   -destination 'platform=iOS Simulator,name=iPhone 17' \
   -quiet
 
+# CLI-runnable tests (game logic). StoreManagerTests needs Xcode's Cmd+U,
+# see Testing section.
 xcodebuild test \
   -scheme AlarmClockSimulator \
   -destination 'platform=iOS Simulator,name=iPhone 17' \
+  -only-testing:AlarmClockSimulatorTests/GameViewModelTests \
   -quiet 2>&1 | tail -30
 
 xcrun simctl list devices available
