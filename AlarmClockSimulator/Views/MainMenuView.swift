@@ -62,7 +62,11 @@ struct MainMenuView: View {
             ZStack {
                 Palette.background
                 GeometryReader { geo in
-                    SceneArt(layout: SceneImageLayout(container: geo.size))
+                    let layout = SceneImageLayout(container: geo.size)
+                    ZStack {
+                        SceneArt(layout: layout)
+                        currentTimeOverlay(layout)
+                    }
                 }
                 LinearGradient(
                     stops: [
@@ -76,5 +80,50 @@ struct MainMenuView: View {
             }
             .ignoresSafeArea()
         }
+    }
+
+    /// The menu clock shows the player's actual time, replacing the
+    /// artwork's baked "06:30" via the same LCD treatment (and perspective)
+    /// the play screen uses for its countdown.
+    private func currentTimeOverlay(_ layout: SceneImageLayout) -> some View {
+        let rect = layout.rect(x: 0.325, y: 0.495, width: 0.485, height: 0.115)
+        return TimelineView(.everyMinute) { context in
+            let (digits, meridiem) = clockText(for: context.date)
+            RoundedRectangle(cornerRadius: rect.height * 0.16)
+                .fill(Color(red: 0.03, green: 0.015, blue: 0.015))
+                .overlay(
+                    VStack(spacing: rect.height * 0.07) {
+                        HStack(alignment: .lastTextBaseline, spacing: rect.width * 0.03) {
+                            Text(digits)
+                                .font(LCDFont.digits(rect.height * 0.52))
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.4)
+                            Text(meridiem)
+                                .font(.system(size: rect.height * 0.16, weight: .heavy, design: .monospaced))
+                        }
+                        .foregroundStyle(Palette.lcdRed)
+                        .shadow(color: Palette.lcdRed.opacity(0.9), radius: 8)
+                        Text("RISE AND REGRET")
+                            .font(.system(size: rect.height * 0.12, weight: .bold, design: .monospaced))
+                            .tracking(2)
+                            .lineLimit(1)
+                            .foregroundStyle(Palette.lcdRed.opacity(0.8))
+                            .shadow(color: Palette.lcdRed.opacity(0.7), radius: 4)
+                    }
+                    .padding(.horizontal, rect.width * 0.05)
+                )
+                .frame(width: rect.width, height: rect.height)
+                .rotation3DEffect(.degrees(-9), axis: (x: 0, y: 1, z: 0), perspective: 0.4)
+                .rotationEffect(.degrees(-1.2))
+                .position(x: rect.midX, y: rect.midY)
+        }
+    }
+
+    private func clockText(for date: Date) -> (String, String) {
+        let components = Calendar.current.dateComponents([.hour, .minute], from: date)
+        let hour24 = components.hour ?? 0
+        let hour12 = hour24 % 12 == 0 ? 12 : hour24 % 12
+        let digits = String(format: "%d:%02d", hour12, components.minute ?? 0)
+        return (digits, hour24 < 12 ? "AM" : "PM")
     }
 }
