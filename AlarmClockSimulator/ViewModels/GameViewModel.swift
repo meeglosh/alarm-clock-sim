@@ -57,6 +57,11 @@ final class GameViewModel {
 
     let configuration: Configuration
 
+    /// Fired once per run, with the final streak, whenever a run ends for
+    /// any reason (smash or oversleep, including offline reconciliation).
+    /// Wired to Game Center submission in the app; nil in tests by default.
+    @ObservationIgnored var onRunEnded: ((Int, GameOverReason) -> Void)?
+
     @ObservationIgnored private let defaults: UserDefaults
     @ObservationIgnored private let isUnlimitedFreezeActive: () -> Bool
     @ObservationIgnored private let feedback: (any AlarmFeedback)?
@@ -201,6 +206,7 @@ final class GameViewModel {
         ringingSince = nil
         phase = .gameOver(reason)
         persist()
+        onRunEnded?(streak, reason)
     }
 
     // MARK: - Persistence

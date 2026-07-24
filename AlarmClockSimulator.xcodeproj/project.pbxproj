@@ -8,7 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		16F36FC5651D078BEC37BCB4 /* AlarmClockSimulatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F966B352B1CD9709CB60DE /* AlarmClockSimulatorApp.swift */; };
+		41A3CAAAA3F8D7C871883BF1 /* GameCenterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCE06FF18369F5088718A3C /* GameCenterManager.swift */; };
 		4BBFAF6D4A0A7BA582882E3E /* GameSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B617BEA299C009CACDEAD76 /* GameSceneView.swift */; };
+		4D1A31BF25B918121C82D1D6 /* GameCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D77A59BEBFBB689F5139C4 /* GameCenterView.swift */; };
 		51B1E1DF781688E65427CA18 /* GameViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F4BE25BEC3BF340C5B445A /* GameViewModelTests.swift */; };
 		82B7567258E7197B908C13BB /* Configuration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 1ADEF8FE2F9B9A6B03AC92DA /* Configuration.storekit */; };
 		854075B60FCE7EB9CFCA2ED3 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF56BFB4FB5049860F3DE321 /* StoreManager.swift */; };
@@ -40,6 +42,7 @@
 		38F966B352B1CD9709CB60DE /* AlarmClockSimulatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmClockSimulatorApp.swift; sourceTree = "<group>"; };
 		3D06D586AB36FFDFD77C5FFD /* StoreManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManagerTests.swift; sourceTree = "<group>"; };
 		55F7202098D477D209DE0624 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		66D77A59BEBFBB689F5139C4 /* GameCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterView.swift; sourceTree = "<group>"; };
 		671126B0EF73E0FA2E9BB4B2 /* AlarmFeedbackPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmFeedbackPlayer.swift; sourceTree = "<group>"; };
 		80EC2A7BB62D7FB9694232A5 /* StoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreView.swift; sourceTree = "<group>"; };
 		AAD902450DD0B1988707F45A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -48,6 +51,7 @@
 		CF56BFB4FB5049860F3DE321 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
 		EBD1959E551F1D440C7054FA /* BedsideSceneController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BedsideSceneController.swift; sourceTree = "<group>"; };
 		F62E3B4A7155D24F6BF2F9DD /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
+		FDCE06FF18369F5088718A3C /* GameCenterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -60,12 +64,21 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		4C9D0D88B43559E6765D0C68 /* GameCenter */ = {
+			isa = PBXGroup;
+			children = (
+				FDCE06FF18369F5088718A3C /* GameCenterManager.swift */,
+			);
+			path = GameCenter;
+			sourceTree = "<group>";
+		};
 		4D8BA6D8D010BB2CE03F3DBD /* AlarmClockSimulator */ = {
 			isa = PBXGroup;
 			children = (
 				041A1679445689B8F8931D3E /* AlarmClockSimulator.entitlements */,
 				55F7202098D477D209DE0624 /* Info.plist */,
 				6A581A56807CD15AFA157B5D /* App */,
+				4C9D0D88B43559E6765D0C68 /* GameCenter */,
 				9BA0B72436268EA69F36EE95 /* Scene */,
 				6A626BB9DB0670747D9A7BFE /* Store */,
 				B2F786572B484CB36DCFAA05 /* ViewModels */,
@@ -130,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				AAD902450DD0B1988707F45A /* ContentView.swift */,
+				66D77A59BEBFBB689F5139C4 /* GameCenterView.swift */,
 				0B617BEA299C009CACDEAD76 /* GameSceneView.swift */,
 				C1BAD1EAC0F3329E0467015C /* GameView.swift */,
 				80EC2A7BB62D7FB9694232A5 /* StoreView.swift */,
@@ -235,6 +249,8 @@
 				9B04007DAB790C0CA6884071 /* AlarmFeedbackPlayer.swift in Sources */,
 				D5F18F8E1F13FCD5D8EFDD11 /* BedsideSceneController.swift in Sources */,
 				B7A341E6CAE9EABF0020B089 /* ContentView.swift in Sources */,
+				41A3CAAAA3F8D7C871883BF1 /* GameCenterManager.swift in Sources */,
+				4D1A31BF25B918121C82D1D6 /* GameCenterView.swift in Sources */,
 				4BBFAF6D4A0A7BA582882E3E /* GameSceneView.swift in Sources */,
 				D7D41F59E3F815A0AF501620 /* GameView.swift in Sources */,
 				A12D7768C7A04D263EEEDD9D /* GameViewModel.swift in Sources */,

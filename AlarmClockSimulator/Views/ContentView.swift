@@ -10,4 +10,5 @@ struct ContentView: View {
     ContentView()
         .environment(GameViewModel())
         .environment(StoreManager())
+        .environment(GameCenterManager())
 }

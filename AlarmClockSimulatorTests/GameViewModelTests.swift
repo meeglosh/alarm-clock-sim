@@ -161,6 +161,36 @@ final class GameViewModelTests: XCTestCase {
         XCTAssertEqual(vm.nextAlarmDate, purchaseTime.addingTimeInterval(600))
     }
 
+    // MARK: - Run-end hook
+
+    func testOnRunEndedFiresWithFinalStreakOnSmash() {
+        let vm = makeViewModel()
+        var ended: [(Int, GameOverReason)] = []
+        vm.onRunEnded = { ended.append(($0, $1)) }
+
+        vm.startRun(now: t0)
+        vm.reconcile(now: t0.addingTimeInterval(600))
+        vm.snooze(now: t0.addingTimeInterval(605))
+        vm.smash(now: t0.addingTimeInterval(700))
+
+        XCTAssertEqual(ended.count, 1)
+        XCTAssertEqual(ended.first?.0, 1)
+        XCTAssertEqual(ended.first?.1, .smashed)
+    }
+
+    func testOnRunEndedFiresOnOversleep() {
+        let vm = makeViewModel()
+        var ended: [(Int, GameOverReason)] = []
+        vm.onRunEnded = { ended.append(($0, $1)) }
+
+        vm.startRun(now: t0)
+        vm.reconcile(now: t0.addingTimeInterval(600 + 61))
+
+        XCTAssertEqual(ended.count, 1)
+        XCTAssertEqual(ended.first?.0, 0)
+        XCTAssertEqual(ended.first?.1, .overslept)
+    }
+
     // MARK: - Persistence
 
     func testPersistenceRestoresActiveRun() {

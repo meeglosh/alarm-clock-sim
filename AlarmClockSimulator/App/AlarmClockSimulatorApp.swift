@@ -4,9 +4,11 @@ import SwiftUI
 struct AlarmClockSimulatorApp: App {
     @State private var store: StoreManager
     @State private var game: GameViewModel
+    @State private var gameCenter: GameCenterManager
 
     init() {
         let store = StoreManager()
+        let gameCenter = GameCenterManager()
         let game = GameViewModel(
             isUnlimitedFreezeActive: { [weak store] in store?.isUnlimitedFreezeActive ?? false },
             feedback: AlarmFeedbackPlayer()
@@ -15,8 +17,12 @@ struct AlarmClockSimulatorApp: App {
             guard productID == .streakFreeze12h else { return }
             game?.applyConsumableFreeze()
         }
+        game.onRunEnded = { streak, _ in
+            Task { await gameCenter.submit(streak: streak) }
+        }
         _store = State(initialValue: store)
         _game = State(initialValue: game)
+        _gameCenter = State(initialValue: gameCenter)
     }
 
     var body: some Scene {
@@ -24,7 +30,11 @@ struct AlarmClockSimulatorApp: App {
             ContentView()
                 .environment(store)
                 .environment(game)
-                .task { await store.start() }
+                .environment(gameCenter)
+                .task {
+                    gameCenter.authenticate()
+                    await store.start()
+                }
         }
     }
 }

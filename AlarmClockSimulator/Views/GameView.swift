@@ -3,9 +3,11 @@ import SwiftUI
 struct GameView: View {
     @Environment(GameViewModel.self) private var game
     @Environment(StoreManager.self) private var store
+    @Environment(GameCenterManager.self) private var gameCenter
     @Environment(\.scenePhase) private var scenePhase
     @State private var sceneController = BedsideSceneController()
     @State private var showStore = false
+    @State private var showLeaderboard = false
 
     var body: some View {
         ZStack {
@@ -59,6 +61,10 @@ struct GameView: View {
             NavigationStack {
                 StoreView()
             }
+        }
+        .sheet(isPresented: $showLeaderboard) {
+            GameCenterView()
+                .ignoresSafeArea()
         }
     }
 
@@ -184,10 +190,23 @@ struct GameView: View {
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
+            leaderboardButton
         }
         .padding(24)
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 24))
         .padding(.horizontal, 32)
+    }
+
+    @ViewBuilder
+    private var leaderboardButton: some View {
+        if gameCenter.isAuthenticated {
+            Button {
+                showLeaderboard = true
+            } label: {
+                Label("Leaderboard", systemImage: "trophy")
+            }
+            .buttonStyle(.bordered)
+        }
     }
 
     private func gameOverCard(_ reason: GameOverReason) -> some View {
@@ -207,6 +226,7 @@ struct GameView: View {
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
+            leaderboardButton
         }
         .padding(24)
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 24))
@@ -264,4 +284,5 @@ struct GameView: View {
     GameView()
         .environment(GameViewModel())
         .environment(StoreManager())
+        .environment(GameCenterManager())
 }

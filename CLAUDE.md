@@ -30,6 +30,14 @@ Streaks post to a **global leaderboard**. Monetization via streak freezes (see I
 - Use **GameKit / Game Center** for the global leaderboard (simplest native option, no backend to stand up). Submit streak score via `GKLeaderboard` on game-over.
 - If Game Center feels too limiting later (custom leaderboard UI, cross-platform), that's a decision to revisit explicitly, not something to switch to unprompted.
 
+### Implementation (built)
+- `GameCenter/GameCenterManager.swift`: authentication (kicked off from the App's `.task`) and score submission. Failed or unauthenticated submissions persist as a pending high score in UserDefaults and retry after the next successful auth, so game-overs are never dropped. Re-submitting an old best is safe because Game Center keeps each player's highest score.
+- Submission is driven by `GameViewModel.onRunEnded` (fires once per run with the final streak, for both smash and oversleep), wired in `App/AlarmClockSimulatorApp.swift`. It is not tied to view lifecycle.
+- `Views/GameCenterView.swift` presents `GKGameCenterViewController`; the Leaderboard button appears on the idle and game-over cards only when authenticated.
+- Leaderboard ID: `com.meeglosh.AlarmClockSimulator.longestStreak` (constant in `GameCenterManager`).
+- **Still needed, App Store Connect (human only):** create a leaderboard with exactly that ID. Classic (not recurring), score format Integer, sort order High to Low, one submission-relevant localization minimum.
+- Game Center sign-in and score submission are unreliable in the Simulator; verify on a real device or TestFlight build.
+
 ## In-App Purchases (StoreKit 2)
 - **Consumable**: "12 Hours of Peace" streak freeze — $1.99. Suspends alarm triggers for 12 hours; streak stays alive without snooze taps during that window.
 - **Auto-renewable subscription**: Unlimited streak freezes — $4.99/month. While active, alarms never end the game even if the hammer is used accidentally (or disable the hammer interaction entirely during freeze — decide and note here once chosen).
