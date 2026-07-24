@@ -66,6 +66,13 @@ struct PlayView: View {
         .onAppear {
             if isRinging { startRingingEffects() }
         }
+        .overlay(alignment: .top) {
+            HUDCornerButtons(isExpanded: $hudExpanded)
+                .padding(.horizontal, 16)
+                .contentColumn()
+                .padding(.top, 6)
+                .ignoresSafeArea(edges: .top)
+        }
     }
 
     // MARK: - LCD

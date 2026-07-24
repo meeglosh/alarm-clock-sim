@@ -16,7 +16,6 @@ struct MainMenuView: View {
             VStack(spacing: 10) {
                 CollapsibleHUD(
                     isExpanded: $hudExpanded,
-                    showsMusicToggle: true,
                     onRankTap: { onSheet(.leaderboard) }
                 )
                 Spacer()
@@ -83,6 +82,13 @@ struct MainMenuView: View {
                 )
             }
             .ignoresSafeArea()
+        }
+        .overlay(alignment: .top) {
+            HUDCornerButtons(isExpanded: $hudExpanded, showsMusicToggle: true)
+                .padding(.horizontal, 16)
+                .contentColumn()
+                .padding(.top, 6)
+                .ignoresSafeArea(edges: .top)
         }
     }
 

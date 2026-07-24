@@ -483,13 +483,14 @@ struct MusicToggleButton: View {
     }
 }
 
-/// The streak/rank HUD collapsed into a trophy corner button so the title
-/// art stays unobstructed; tapping it expands the full pills, with a
-/// chevron chip or an upward swipe to tuck them away again. Screens with
-/// music show the mute toggle in the opposite corner.
+/// The streak/rank HUD, expanded state only. Collapsed, this reserves the
+/// same footprint invisibly so the rest of the screen's layout doesn't
+/// shift — the visible collapsed buttons live in `HUDCornerButtons`,
+/// floated separately up near the notch/Dynamic Island. Expanding slides
+/// the pills in at this same in-flow position (unchanged from before), with
+/// a chevron chip or an upward swipe to tuck them away again.
 struct CollapsibleHUD: View {
     @Binding var isExpanded: Bool
-    var showsMusicToggle = false
     var onRankTap: () -> Void
 
     var body: some View {
@@ -520,17 +521,33 @@ struct CollapsibleHUD: View {
                 )
                 .transition(.move(edge: .top).combined(with: .opacity))
             } else {
-                HStack {
-                    if showsMusicToggle {
-                        MusicToggleButton()
-                    }
-                    Spacer()
-                    HUDCornerButton(emoji: "🏆") {
-                        withAnimation(.spring(duration: 0.35)) { isExpanded = true }
-                    }
-                }
-                .transition(.opacity)
+                Color.clear.frame(height: 48)
             }
         }
+    }
+}
+
+/// The collapsed trophy (and, on music screens, mute) buttons, floated up
+/// beside the Dynamic Island/notch rather than below the safe area like the
+/// rest of the screen. Meant to be placed via `.overlay(alignment: .top)`
+/// with `.ignoresSafeArea(edges: .top)` on the whole screen; fades out
+/// (and stops accepting taps) once the HUD is expanded.
+struct HUDCornerButtons: View {
+    @Binding var isExpanded: Bool
+    var showsMusicToggle = false
+
+    var body: some View {
+        HStack {
+            if showsMusicToggle {
+                MusicToggleButton()
+            }
+            Spacer()
+            HUDCornerButton(emoji: "🏆") {
+                withAnimation(.spring(duration: 0.35)) { isExpanded = true }
+            }
+        }
+        .opacity(isExpanded ? 0 : 1)
+        .allowsHitTesting(!isExpanded)
+        .animation(.easeInOut(duration: 0.2), value: isExpanded)
     }
 }
