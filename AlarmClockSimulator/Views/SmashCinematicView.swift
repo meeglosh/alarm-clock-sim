@@ -74,8 +74,9 @@ struct SmashCinematicView: View {
 
     private func run() {
         Task { @MainActor in
-            // Wind-up beat, then impact.
-            try? await Task.sleep(for: .milliseconds(120))
+            // Flash almost immediately: it masks the cut from the play
+            // screen's fitted art to the cinematic's full-bleed frame.
+            try? await Task.sleep(for: .milliseconds(30))
             withAnimation(.easeIn(duration: 0.05)) { flashOpacity = 1 }
             try? await Task.sleep(for: .milliseconds(60))
             onImpact()

@@ -98,45 +98,17 @@ struct MainMenuView: View {
         .background {
             ZStack {
                 Palette.background
-                // The hero band of the art (title top through the clock's
-                // base, 7.2%-63.5% of its height) must fit between the
-                // measured HUD bottom and PLAY top. When the band is too
-                // short for a full-width fill, the art scales down and
-                // letterboxes with soft-faded edges; otherwise it fills the
-                // screen width as usual.
+                // The art's hero band (title through clock base) fits
+                // between the measured HUD bottom and PLAY top, scaling
+                // down with faded edges when the band is tight.
                 GeometryReader { geo in
-                    let titleTopFrac: CGFloat = 0.072
-                    let clockBottomFrac: CGFloat = 0.635
-                    let widthScale = max(geo.size.width / 852, geo.size.height / 1847)
-                    let bandTop = hudBottom + 8
-                    let bandBottom = playTop - 8
-                    let bandHeight = bandBottom - bandTop
-                    let hasMeasurements = hudBottom > 0 && playTop > 0 && bandHeight > 100
-                    let fitScale = hasMeasurements
-                        ? bandHeight / ((clockBottomFrac - titleTopFrac) * 1847)
-                        : widthScale
-                    let scale = min(widthScale, fitScale)
-                    let width = 852 * scale
-                    let height = 1847 * scale
-                    let yOffset = hasMeasurements
-                        ? bandTop - titleTopFrac * height
-                        : 0
-                    Image("bgMain")
-                        .resizable()
-                        .frame(width: width, height: height)
-                        .mask(
-                            LinearGradient(
-                                stops: [
-                                    .init(color: .clear, location: 0),
-                                    .init(color: .black, location: 0.05),
-                                    .init(color: .black, location: 0.95),
-                                    .init(color: .clear, location: 1),
-                                ],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
+                    FittedSceneArt(
+                        layout: SceneImageLayout(
+                            container: geo.size,
+                            bandTop: hudBottom + 8,
+                            bandBottom: playTop - 8
                         )
-                        .position(x: geo.size.width / 2, y: yOffset + height / 2)
+                    )
                 }
                 LinearGradient(
                     stops: [
