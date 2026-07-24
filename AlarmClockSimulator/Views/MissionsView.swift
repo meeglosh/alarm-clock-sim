@@ -4,6 +4,7 @@ import SwiftUI
 /// countdown to the next one at midnight and a mystery card for tomorrow.
 struct MissionsView: View {
     @Environment(GameViewModel.self) private var game
+    var onPlay: () -> Void
 
     var body: some View {
         TimelineView(.everyMinute) { context in
@@ -71,6 +72,18 @@ struct MissionsView: View {
                         RoundedRectangle(cornerRadius: 22)
                             .strokeBorder(complete ? Color.green.opacity(0.5) : Palette.cyan.opacity(0.3), lineWidth: 1.5)
                     )
+
+                    if !game.phase.isRunActive {
+                        Button {
+                            onPlay()
+                        } label: {
+                            HStack(spacing: 10) {
+                                Text("PLAY")
+                                Image(systemName: "play.circle.fill")
+                            }
+                        }
+                        .buttonStyle(ChunkyButtonStyle(style: .gold, height: 54))
+                    }
 
                     Label(countdownText(from: context.date), systemImage: "clock.fill")
                         .font(.system(size: 13, weight: .semibold))

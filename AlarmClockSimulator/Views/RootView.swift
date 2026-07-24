@@ -122,7 +122,10 @@ struct RootView: View {
         case .stats:
             StatsView()
         case .missions:
-            MissionsView()
+            MissionsView(onPlay: {
+                startRun()
+                activeSheet = nil
+            })
         case .collection:
             CollectionView()
         case .disclaimer:
