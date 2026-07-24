@@ -7,8 +7,8 @@ import UserNotifications
 @MainActor
 @Observable
 final class AlarmNotificationScheduler {
-    static let alarmCategoryID = "ALARM_CATEGORY"
-    static let snoozeActionID = "SNOOZE_ACTION"
+    nonisolated static let alarmCategoryID = "ALARM_CATEGORY"
+    nonisolated static let snoozeActionID = "SNOOZE_ACTION"
 
     private(set) var isAuthorized = false
 

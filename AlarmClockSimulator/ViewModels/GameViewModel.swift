@@ -24,7 +24,7 @@ enum GameOverReason: Equatable {
 
 @MainActor
 protocol AlarmFeedback: AnyObject {
-    func alarmPulse()
+    func alarmRingingChanged(_ isRinging: Bool)
     func snoozed()
     func smashed()
 }
@@ -45,6 +45,8 @@ final class GameViewModel {
         var freezeDuration: TimeInterval = 12 * 60 * 60
     }
 
+    static let dailyChallengeTarget = 5
+
     private(set) var phase: GamePhase = .idle
     private(set) var streak = 0
     private(set) var bestStreak = 0
@@ -54,6 +56,15 @@ final class GameViewModel {
     /// Advanced by the tick loop while a run is active; views derive
     /// countdowns from this instead of re-rendering on their own timers.
     private(set) var displayNow = Date()
+
+    // Lifetime stats, shown on the Stats screen.
+    private(set) var totalRuns = 0
+    private(set) var totalSnoozes = 0
+    private(set) var totalSmashes = 0
+    private(set) var totalOversleeps = 0
+    private(set) var freezesApplied = 0
+    /// Best streak achieved today (any run); drives the daily challenge.
+    private(set) var dailyBestStreak = 0
 
     let configuration: Configuration
 
@@ -66,7 +77,7 @@ final class GameViewModel {
     @ObservationIgnored private let isUnlimitedFreezeActive: () -> Bool
     @ObservationIgnored private let feedback: (any AlarmFeedback)?
     @ObservationIgnored private nonisolated(unsafe) var tickTask: Task<Void, Never>?
-    @ObservationIgnored private var lastPulseAt: Date?
+    @ObservationIgnored private var feedbackRinging = false
 
     private enum Key {
         static let streak = "game.streak"
@@ -75,6 +86,13 @@ final class GameViewModel {
         static let nextAlarm = "game.nextAlarmDate"
         static let ringingSince = "game.ringingSince"
         static let freezeExpiry = "game.freezeExpiry"
+        static let totalRuns = "game.totalRuns"
+        static let totalSnoozes = "game.totalSnoozes"
+        static let totalSmashes = "game.totalSmashes"
+        static let totalOversleeps = "game.totalOversleeps"
+        static let freezesApplied = "game.freezesApplied"
+        static let dailyBestStreak = "game.dailyBestStreak"
+        static let dailyStamp = "game.dailyStamp"
     }
 
     init(configuration: Configuration = Configuration(),
@@ -100,6 +118,7 @@ final class GameViewModel {
         ringingSince = nil
         nextAlarmDate = now.addingTimeInterval(configuration.alarmInterval)
         phase = .counting
+        totalRuns += 1
         persist()
     }
 
@@ -107,12 +126,22 @@ final class GameViewModel {
         guard phase == .ringing else { return }
         completeSnooze(now: now)
         feedback?.snoozed()
+        syncRingingFeedback()
     }
 
     func smash(now: Date = Date()) {
         guard phase.isRunActive else { return }
+        totalSmashes += 1
         endRun(.smashed)
         feedback?.smashed()
+        syncRingingFeedback()
+    }
+
+    /// Leave the game-over screen without starting a new run.
+    func returnToMenu() {
+        guard phase.isGameOver else { return }
+        phase = .idle
+        persist()
     }
 
     // MARK: - Freezes
@@ -120,10 +149,12 @@ final class GameViewModel {
     func applyConsumableFreeze(now: Date = Date()) {
         let base = max(now, freezeExpiry ?? now)
         freezeExpiry = base.addingTimeInterval(configuration.freezeDuration)
+        freezesApplied += 1
         if phase == .ringing {
             completeSnooze(now: now)
         }
         persist()
+        syncRingingFeedback()
     }
 
     func isFreezeActive(at date: Date) -> Bool {
@@ -147,6 +178,13 @@ final class GameViewModel {
         return candidate
     }
 
+    // MARK: - Daily challenge
+
+    func dailyChallengeProgress(now: Date = Date()) -> Int {
+        guard isSameChallengeDay(now) else { return 0 }
+        return min(dailyBestStreak, Self.dailyChallengeTarget)
+    }
+
     // MARK: - Time
 
     func reconcile(now: Date = Date()) {
@@ -154,17 +192,16 @@ final class GameViewModel {
             if isFreezeActive(at: now) {
                 completeSnooze(now: now)
             } else if now.timeIntervalSince(since) > configuration.missWindow {
-                endRun(.overslept)
+                endRun(.overslept, overslept: true)
             }
         }
         while phase == .counting, let next = nextAlarmDate, next <= now {
             if isFreezeActive(at: next) {
-                streak += 1
-                bestStreak = max(bestStreak, streak)
+                creditSnooze(now: next)
                 nextAlarmDate = next.addingTimeInterval(configuration.alarmInterval)
                 persist()
             } else if now.timeIntervalSince(next) > configuration.missWindow {
-                endRun(.overslept)
+                endRun(.overslept, overslept: true)
             } else {
                 ringingSince = next
                 phase = .ringing
@@ -174,6 +211,7 @@ final class GameViewModel {
         if phase.isRunActive {
             displayNow = now
         }
+        syncRingingFeedback()
     }
 
     func startTicking() {
@@ -182,7 +220,7 @@ final class GameViewModel {
             while !Task.isCancelled {
                 try? await Task.sleep(for: .milliseconds(250))
                 guard let self else { return }
-                self.tick(now: Date())
+                self.reconcile(now: Date())
             }
         }
     }
@@ -194,28 +232,29 @@ final class GameViewModel {
 
     // MARK: - Private
 
-    private func tick(now: Date) {
-        reconcile(now: now)
-        guard phase == .ringing else {
-            lastPulseAt = nil
-            return
-        }
-        if lastPulseAt.map({ now.timeIntervalSince($0) >= 1 }) ?? true {
-            lastPulseAt = now
-            feedback?.alarmPulse()
-        }
-    }
-
     private func completeSnooze(now: Date) {
-        streak += 1
-        bestStreak = max(bestStreak, streak)
+        creditSnooze(now: now)
         ringingSince = nil
         nextAlarmDate = now.addingTimeInterval(configuration.alarmInterval)
         phase = .counting
         persist()
     }
 
-    private func endRun(_ reason: GameOverReason) {
+    private func creditSnooze(now: Date) {
+        streak += 1
+        bestStreak = max(bestStreak, streak)
+        totalSnoozes += 1
+        if !isSameChallengeDay(now) {
+            dailyBestStreak = 0
+            defaults.set(challengeDayStamp(now), forKey: Key.dailyStamp)
+        }
+        dailyBestStreak = max(dailyBestStreak, streak)
+    }
+
+    private func endRun(_ reason: GameOverReason, overslept: Bool = false) {
+        if overslept {
+            totalOversleeps += 1
+        }
         bestStreak = max(bestStreak, streak)
         nextAlarmDate = nil
         ringingSince = nil
@@ -224,12 +263,46 @@ final class GameViewModel {
         onRunEnded?(streak, reason)
     }
 
+    private func syncRingingFeedback() {
+        let ringing = phase == .ringing
+        guard ringing != feedbackRinging else { return }
+        feedbackRinging = ringing
+        feedback?.alarmRingingChanged(ringing)
+    }
+
+    private func challengeDayStamp(_ now: Date) -> Double {
+        Calendar.current.startOfDay(for: now).timeIntervalSince1970
+    }
+
+    private func isSameChallengeDay(_ now: Date) -> Bool {
+        defaults.double(forKey: Key.dailyStamp) == challengeDayStamp(now)
+    }
+
+    #if DEBUG
+    /// Screenshot/dev harness support: wipe any persisted run so launch
+    /// arguments can force a specific screen deterministically.
+    func debugResetToIdle() {
+        phase = .idle
+        streak = 0
+        nextAlarmDate = nil
+        ringingSince = nil
+        freezeExpiry = nil
+        persist()
+    }
+    #endif
+
     // MARK: - Persistence
 
     private func persist() {
         defaults.set(streak, forKey: Key.streak)
         defaults.set(bestStreak, forKey: Key.bestStreak)
         defaults.set(phase.isRunActive, forKey: Key.runActive)
+        defaults.set(totalRuns, forKey: Key.totalRuns)
+        defaults.set(totalSnoozes, forKey: Key.totalSnoozes)
+        defaults.set(totalSmashes, forKey: Key.totalSmashes)
+        defaults.set(totalOversleeps, forKey: Key.totalOversleeps)
+        defaults.set(freezesApplied, forKey: Key.freezesApplied)
+        defaults.set(dailyBestStreak, forKey: Key.dailyBestStreak)
         setDate(nextAlarmDate, forKey: Key.nextAlarm)
         setDate(ringingSince, forKey: Key.ringingSince)
         setDate(freezeExpiry, forKey: Key.freezeExpiry)
@@ -238,6 +311,12 @@ final class GameViewModel {
     private func restore() {
         bestStreak = defaults.integer(forKey: Key.bestStreak)
         freezeExpiry = date(forKey: Key.freezeExpiry)
+        totalRuns = defaults.integer(forKey: Key.totalRuns)
+        totalSnoozes = defaults.integer(forKey: Key.totalSnoozes)
+        totalSmashes = defaults.integer(forKey: Key.totalSmashes)
+        totalOversleeps = defaults.integer(forKey: Key.totalOversleeps)
+        freezesApplied = defaults.integer(forKey: Key.freezesApplied)
+        dailyBestStreak = defaults.integer(forKey: Key.dailyBestStreak)
         guard defaults.bool(forKey: Key.runActive) else { return }
         streak = defaults.integer(forKey: Key.streak)
         nextAlarmDate = date(forKey: Key.nextAlarm)

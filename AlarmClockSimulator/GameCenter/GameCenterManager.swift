@@ -11,7 +11,27 @@ final class GameCenterManager {
     /// Must match the leaderboard ID configured in App Store Connect.
     static let leaderboardID = "com.meeglosh.AlarmClockSimulator.longestStreak"
 
+    struct LeaderboardEntry: Identifiable {
+        let rank: Int
+        let displayName: String
+        let score: Int
+        let isLocalPlayer: Bool
+
+        var id: Int { rank }
+    }
+
     private(set) var isAuthenticated = false
+    private(set) var globalRank: Int?
+    private(set) var totalPlayers: Int?
+    private(set) var topEntries: [LeaderboardEntry] = []
+    private(set) var localEntry: LeaderboardEntry?
+
+    /// "TOP 5%" style summary for the HUD rank pill; nil until loaded.
+    var percentileText: String? {
+        guard let globalRank, let totalPlayers, totalPlayers > 0 else { return nil }
+        let percent = max(1, Int((Double(globalRank) / Double(totalPlayers) * 100).rounded(.up)))
+        return "TOP \(percent)% OF PLAYERS"
+    }
 
     @ObservationIgnored private let defaults: UserDefaults
 
@@ -35,6 +55,7 @@ final class GameCenterManager {
                 self.isAuthenticated = GKLocalPlayer.local.isAuthenticated
                 if self.isAuthenticated {
                     await self.submitPendingScore()
+                    await self.refreshLeaderboard()
                 }
             }
         }
@@ -56,8 +77,45 @@ final class GameCenterManager {
                 leaderboardIDs: [Self.leaderboardID]
             )
             defaults.removeObject(forKey: Key.pendingScore)
+            await refreshLeaderboard()
         } catch {
             // Score stays pending; retried on next auth or game-over.
+        }
+    }
+
+    /// Loads the top of the global leaderboard plus the local player's
+    /// entry, for the custom leaderboard UI and the HUD rank pill.
+    func refreshLeaderboard() async {
+        guard isAuthenticated else { return }
+        do {
+            let boards = try await GKLeaderboard.loadLeaderboards(IDs: [Self.leaderboardID])
+            guard let board = boards.first else { return }
+            let (local, entries, total) = try await board.loadEntries(
+                for: .global,
+                timeScope: .allTime,
+                range: NSRange(location: 1, length: 25)
+            )
+            let localRank = local?.rank
+            topEntries = entries.map {
+                LeaderboardEntry(
+                    rank: $0.rank,
+                    displayName: $0.player.displayName,
+                    score: $0.score,
+                    isLocalPlayer: $0.rank == localRank
+                )
+            }
+            localEntry = local.map {
+                LeaderboardEntry(
+                    rank: $0.rank,
+                    displayName: "You",
+                    score: $0.score,
+                    isLocalPlayer: true
+                )
+            }
+            globalRank = localRank
+            totalPlayers = total
+        } catch {
+            // Leave whatever was loaded before; UI shows placeholders.
         }
     }
 

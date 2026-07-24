@@ -7,21 +7,36 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03513E60848E38CDA1167E73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F02B11F19AAAA0185B836EEF /* Assets.xcassets */; };
+		04C5EF25DF3CF34365B98E22 /* DSEG7Classic-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 05BB4E91BFDC75F34A48AF04 /* DSEG7Classic-Bold.ttf */; };
 		16F36FC5651D078BEC37BCB4 /* AlarmClockSimulatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F966B352B1CD9709CB60DE /* AlarmClockSimulatorApp.swift */; };
+		1AF9F63C20DA22E56635B232 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB3EFA03EDD80A26FF1B3D /* LeaderboardView.swift */; };
 		41A3CAAAA3F8D7C871883BF1 /* GameCenterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCE06FF18369F5088718A3C /* GameCenterManager.swift */; };
-		4BBFAF6D4A0A7BA582882E3E /* GameSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B617BEA299C009CACDEAD76 /* GameSceneView.swift */; };
 		4D1A31BF25B918121C82D1D6 /* GameCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D77A59BEBFBB689F5139C4 /* GameCenterView.swift */; };
 		51B1E1DF781688E65427CA18 /* GameViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F4BE25BEC3BF340C5B445A /* GameViewModelTests.swift */; };
+		539A999B4E118C1CE1683097 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69429C8611201765860A110 /* DesignSystem.swift */; };
+		59E5B7FE60358638A696C177 /* snooze.wav in Resources */ = {isa = PBXBuildFile; fileRef = ED0423123CEF024F08DD99D0 /* snooze.wav */; };
+		5FF5AA521DC528F3825869D0 /* StreakEndedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38CB63AC2BEBFC17BEBC86E1 /* StreakEndedView.swift */; };
+		6579D1B321FBBB454DADAC42 /* LoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2BE88CFB019FD62CF757F6 /* LoaderView.swift */; };
+		66EE6948BBFB10935CB5529A /* DisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93862A43BC2B5DC4AB35B9E /* DisclaimerView.swift */; };
+		6705D2F3B56754F557BCFD17 /* PlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19B052BA5EBF2C08DF99E1D0 /* PlayView.swift */; };
+		6C1C2335771F86C5CAF85DB1 /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48BE6ECDF7E169D3F39B92D /* MainMenuView.swift */; };
+		726D6C5216510630DAD85801 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15742B3C0C429C7789236B1 /* RootView.swift */; };
 		82B7567258E7197B908C13BB /* Configuration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 1ADEF8FE2F9B9A6B03AC92DA /* Configuration.storekit */; };
 		854075B60FCE7EB9CFCA2ED3 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF56BFB4FB5049860F3DE321 /* StoreManager.swift */; };
+		8E191CF2C19E31480BF607D4 /* SmashCinematicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08640ED16F0AA84681427D7D /* SmashCinematicView.swift */; };
+		8EF272AA78C061A617E3B4BB /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6B3C3E6CC95061FFF1146 /* StatsView.swift */; };
 		8FB648385EF91FB5F57AA8AC /* AlarmNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39CF93F95CE2FD509EE9C92 /* AlarmNotificationScheduler.swift */; };
+		938EDF0918FE27FAA874D58E /* alarm.wav in Resources */ = {isa = PBXBuildFile; fileRef = 6BCBBCA5225B04EDC26EB10E /* alarm.wav */; };
 		9B04007DAB790C0CA6884071 /* AlarmFeedbackPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671126B0EF73E0FA2E9BB4B2 /* AlarmFeedbackPlayer.swift */; };
 		A12D7768C7A04D263EEEDD9D /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62E3B4A7155D24F6BF2F9DD /* GameViewModel.swift */; };
-		B127841E902ABB81C3CE9411 /* StoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EC2A7BB62D7FB9694232A5 /* StoreView.swift */; };
 		B7A341E6CAE9EABF0020B089 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD902450DD0B1988707F45A /* ContentView.swift */; };
+		C2B0BFF9C473CB983F402DA7 /* DSEG-LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 893BD1C093A5B97983A666ED /* DSEG-LICENSE.txt */; };
 		CD88DA24F4E2D3A8ACA37E6D /* StoreManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D06D586AB36FFDFD77C5FFD /* StoreManagerTests.swift */; };
-		D5F18F8E1F13FCD5D8EFDD11 /* BedsideSceneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD1959E551F1D440C7054FA /* BedsideSceneController.swift */; };
-		D7D41F59E3F815A0AF501620 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1BAD1EAC0F3329E0467015C /* GameView.swift */; };
+		D579D83A16E5D68FF8CA7E50 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1424F069C8F0A725B4AE0AC3 /* SettingsView.swift */; };
+		F0A5007776CE716EBFC02976 /* smash.wav in Resources */ = {isa = PBXBuildFile; fileRef = 3F11593CDA34D0C56FE97AE4 /* smash.wav */; };
+		F8F6DB736E9DE2F0C0CF1713 /* ParticleEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668FB8BEE66643352D23B6AE /* ParticleEffects.swift */; };
+		F91376FAA4E909DA66FD369F /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6178DB096D464EFFA8F7A50B /* ShopView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,22 +51,37 @@
 
 /* Begin PBXFileReference section */
 		041A1679445689B8F8931D3E /* AlarmClockSimulator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AlarmClockSimulator.entitlements; sourceTree = "<group>"; };
+		05BB4E91BFDC75F34A48AF04 /* DSEG7Classic-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DSEG7Classic-Bold.ttf"; sourceTree = "<group>"; };
+		08640ED16F0AA84681427D7D /* SmashCinematicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmashCinematicView.swift; sourceTree = "<group>"; };
 		0A31ADC6FD6454C5A88D68CC /* AlarmClockSimulatorTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AlarmClockSimulatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0B617BEA299C009CACDEAD76 /* GameSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneView.swift; sourceTree = "<group>"; };
+		1424F069C8F0A725B4AE0AC3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		19B052BA5EBF2C08DF99E1D0 /* PlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayView.swift; sourceTree = "<group>"; };
 		1ADEF8FE2F9B9A6B03AC92DA /* Configuration.storekit */ = {isa = PBXFileReference; path = Configuration.storekit; sourceTree = "<group>"; };
+		1AFB3EFA03EDD80A26FF1B3D /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		35A638DB20E44347FAF1125A /* AlarmClockSimulator.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AlarmClockSimulator.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		38CB63AC2BEBFC17BEBC86E1 /* StreakEndedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakEndedView.swift; sourceTree = "<group>"; };
 		38F966B352B1CD9709CB60DE /* AlarmClockSimulatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmClockSimulatorApp.swift; sourceTree = "<group>"; };
 		3D06D586AB36FFDFD77C5FFD /* StoreManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManagerTests.swift; sourceTree = "<group>"; };
+		3F11593CDA34D0C56FE97AE4 /* smash.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = smash.wav; sourceTree = "<group>"; };
 		55F7202098D477D209DE0624 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		6178DB096D464EFFA8F7A50B /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
+		668FB8BEE66643352D23B6AE /* ParticleEffects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticleEffects.swift; sourceTree = "<group>"; };
 		66D77A59BEBFBB689F5139C4 /* GameCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterView.swift; sourceTree = "<group>"; };
 		671126B0EF73E0FA2E9BB4B2 /* AlarmFeedbackPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmFeedbackPlayer.swift; sourceTree = "<group>"; };
-		80EC2A7BB62D7FB9694232A5 /* StoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreView.swift; sourceTree = "<group>"; };
+		6BCBBCA5225B04EDC26EB10E /* alarm.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = alarm.wav; sourceTree = "<group>"; };
+		7CB6B3C3E6CC95061FFF1146 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
+		893BD1C093A5B97983A666ED /* DSEG-LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "DSEG-LICENSE.txt"; sourceTree = "<group>"; };
 		AAD902450DD0B1988707F45A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B15742B3C0C429C7789236B1 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		B5F4BE25BEC3BF340C5B445A /* GameViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModelTests.swift; sourceTree = "<group>"; };
-		C1BAD1EAC0F3329E0467015C /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		CE2BE88CFB019FD62CF757F6 /* LoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderView.swift; sourceTree = "<group>"; };
 		CF56BFB4FB5049860F3DE321 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
-		EBD1959E551F1D440C7054FA /* BedsideSceneController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BedsideSceneController.swift; sourceTree = "<group>"; };
+		D69429C8611201765860A110 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
+		E93862A43BC2B5DC4AB35B9E /* DisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerView.swift; sourceTree = "<group>"; };
+		ED0423123CEF024F08DD99D0 /* snooze.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snooze.wav; sourceTree = "<group>"; };
+		F02B11F19AAAA0185B836EEF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F39CF93F95CE2FD509EE9C92 /* AlarmNotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmNotificationScheduler.swift; sourceTree = "<group>"; };
+		F48BE6ECDF7E169D3F39B92D /* MainMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuView.swift; sourceTree = "<group>"; };
 		F62E3B4A7155D24F6BF2F9DD /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		FDCE06FF18369F5088718A3C /* GameCenterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -78,16 +108,29 @@
 			isa = PBXGroup;
 			children = (
 				041A1679445689B8F8931D3E /* AlarmClockSimulator.entitlements */,
+				F02B11F19AAAA0185B836EEF /* Assets.xcassets */,
 				55F7202098D477D209DE0624 /* Info.plist */,
 				6A581A56807CD15AFA157B5D /* App */,
 				4C9D0D88B43559E6765D0C68 /* GameCenter */,
 				8DDE4ED054CD0AE71935A15B /* Notifications */,
-				9BA0B72436268EA69F36EE95 /* Scene */,
+				5BC52895F8AB17DAECAF688A /* Resources */,
 				6A626BB9DB0670747D9A7BFE /* Store */,
 				B2F786572B484CB36DCFAA05 /* ViewModels */,
 				EE8F53E6935786D22FF30BAB /* Views */,
 			);
 			path = AlarmClockSimulator;
+			sourceTree = "<group>";
+		};
+		5BC52895F8AB17DAECAF688A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6BCBBCA5225B04EDC26EB10E /* alarm.wav */,
+				893BD1C093A5B97983A666ED /* DSEG-LICENSE.txt */,
+				05BB4E91BFDC75F34A48AF04 /* DSEG7Classic-Bold.ttf */,
+				3F11593CDA34D0C56FE97AE4 /* smash.wav */,
+				ED0423123CEF024F08DD99D0 /* snooze.wav */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		6A581A56807CD15AFA157B5D /* App */ = {
@@ -133,14 +176,6 @@
 			path = Notifications;
 			sourceTree = "<group>";
 		};
-		9BA0B72436268EA69F36EE95 /* Scene */ = {
-			isa = PBXGroup;
-			children = (
-				EBD1959E551F1D440C7054FA /* BedsideSceneController.swift */,
-			);
-			path = Scene;
-			sourceTree = "<group>";
-		};
 		B2F786572B484CB36DCFAA05 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -154,10 +189,20 @@
 			isa = PBXGroup;
 			children = (
 				AAD902450DD0B1988707F45A /* ContentView.swift */,
+				D69429C8611201765860A110 /* DesignSystem.swift */,
+				E93862A43BC2B5DC4AB35B9E /* DisclaimerView.swift */,
 				66D77A59BEBFBB689F5139C4 /* GameCenterView.swift */,
-				0B617BEA299C009CACDEAD76 /* GameSceneView.swift */,
-				C1BAD1EAC0F3329E0467015C /* GameView.swift */,
-				80EC2A7BB62D7FB9694232A5 /* StoreView.swift */,
+				1AFB3EFA03EDD80A26FF1B3D /* LeaderboardView.swift */,
+				CE2BE88CFB019FD62CF757F6 /* LoaderView.swift */,
+				F48BE6ECDF7E169D3F39B92D /* MainMenuView.swift */,
+				668FB8BEE66643352D23B6AE /* ParticleEffects.swift */,
+				19B052BA5EBF2C08DF99E1D0 /* PlayView.swift */,
+				B15742B3C0C429C7789236B1 /* RootView.swift */,
+				1424F069C8F0A725B4AE0AC3 /* SettingsView.swift */,
+				6178DB096D464EFFA8F7A50B /* ShopView.swift */,
+				08640ED16F0AA84681427D7D /* SmashCinematicView.swift */,
+				7CB6B3C3E6CC95061FFF1146 /* StatsView.swift */,
+				38CB63AC2BEBFC17BEBC86E1 /* StreakEndedView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -189,6 +234,7 @@
 			buildConfigurationList = 4B45658DDEA1D6FDD9EFF673 /* Build configuration list for PBXNativeTarget "AlarmClockSimulator" */;
 			buildPhases = (
 				4780993E3A419FCFE8F24946 /* Sources */,
+				357A2CBBE3F6C529F31BBCB2 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -249,6 +295,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		357A2CBBE3F6C529F31BBCB2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03513E60848E38CDA1167E73 /* Assets.xcassets in Resources */,
+				C2B0BFF9C473CB983F402DA7 /* DSEG-LICENSE.txt in Resources */,
+				04C5EF25DF3CF34365B98E22 /* DSEG7Classic-Bold.ttf in Resources */,
+				938EDF0918FE27FAA874D58E /* alarm.wav in Resources */,
+				F0A5007776CE716EBFC02976 /* smash.wav in Resources */,
+				59E5B7FE60358638A696C177 /* snooze.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -259,15 +318,24 @@
 				16F36FC5651D078BEC37BCB4 /* AlarmClockSimulatorApp.swift in Sources */,
 				9B04007DAB790C0CA6884071 /* AlarmFeedbackPlayer.swift in Sources */,
 				8FB648385EF91FB5F57AA8AC /* AlarmNotificationScheduler.swift in Sources */,
-				D5F18F8E1F13FCD5D8EFDD11 /* BedsideSceneController.swift in Sources */,
 				B7A341E6CAE9EABF0020B089 /* ContentView.swift in Sources */,
+				539A999B4E118C1CE1683097 /* DesignSystem.swift in Sources */,
+				66EE6948BBFB10935CB5529A /* DisclaimerView.swift in Sources */,
 				41A3CAAAA3F8D7C871883BF1 /* GameCenterManager.swift in Sources */,
 				4D1A31BF25B918121C82D1D6 /* GameCenterView.swift in Sources */,
-				4BBFAF6D4A0A7BA582882E3E /* GameSceneView.swift in Sources */,
-				D7D41F59E3F815A0AF501620 /* GameView.swift in Sources */,
 				A12D7768C7A04D263EEEDD9D /* GameViewModel.swift in Sources */,
+				1AF9F63C20DA22E56635B232 /* LeaderboardView.swift in Sources */,
+				6579D1B321FBBB454DADAC42 /* LoaderView.swift in Sources */,
+				6C1C2335771F86C5CAF85DB1 /* MainMenuView.swift in Sources */,
+				F8F6DB736E9DE2F0C0CF1713 /* ParticleEffects.swift in Sources */,
+				6705D2F3B56754F557BCFD17 /* PlayView.swift in Sources */,
+				726D6C5216510630DAD85801 /* RootView.swift in Sources */,
+				D579D83A16E5D68FF8CA7E50 /* SettingsView.swift in Sources */,
+				F91376FAA4E909DA66FD369F /* ShopView.swift in Sources */,
+				8E191CF2C19E31480BF607D4 /* SmashCinematicView.swift in Sources */,
+				8EF272AA78C061A617E3B4BB /* StatsView.swift in Sources */,
 				854075B60FCE7EB9CFCA2ED3 /* StoreManager.swift in Sources */,
-				B127841E902ABB81C3CE9411 /* StoreView.swift in Sources */,
+				5FF5AA521DC528F3825869D0 /* StreakEndedView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
