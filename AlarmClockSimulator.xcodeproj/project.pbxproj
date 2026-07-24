@@ -11,6 +11,7 @@
 		04C5EF25DF3CF34365B98E22 /* DSEG7Classic-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 05BB4E91BFDC75F34A48AF04 /* DSEG7Classic-Bold.ttf */; };
 		16F36FC5651D078BEC37BCB4 /* AlarmClockSimulatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F966B352B1CD9709CB60DE /* AlarmClockSimulatorApp.swift */; };
 		1AF9F63C20DA22E56635B232 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB3EFA03EDD80A26FF1B3D /* LeaderboardView.swift */; };
+		1DAD963BECF2574B62358D50 /* smolder.wav in Resources */ = {isa = PBXBuildFile; fileRef = B60E51D733BBD757925475CD /* smolder.wav */; };
 		41A3CAAAA3F8D7C871883BF1 /* GameCenterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDCE06FF18369F5088718A3C /* GameCenterManager.swift */; };
 		4D1A31BF25B918121C82D1D6 /* GameCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D77A59BEBFBB689F5139C4 /* GameCenterView.swift */; };
 		51B1E1DF781688E65427CA18 /* GameViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F4BE25BEC3BF340C5B445A /* GameViewModelTests.swift */; };
@@ -77,6 +78,7 @@
 		B03984F1A205BD0F16F3DE48 /* menu_music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = menu_music.mp3; sourceTree = "<group>"; };
 		B15742B3C0C429C7789236B1 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		B5F4BE25BEC3BF340C5B445A /* GameViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModelTests.swift; sourceTree = "<group>"; };
+		B60E51D733BBD757925475CD /* smolder.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = smolder.wav; sourceTree = "<group>"; };
 		C835FD17788DB440C70CF039 /* MusicPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayer.swift; sourceTree = "<group>"; };
 		CE2BE88CFB019FD62CF757F6 /* LoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderView.swift; sourceTree = "<group>"; };
 		CF56BFB4FB5049860F3DE321 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				05BB4E91BFDC75F34A48AF04 /* DSEG7Classic-Bold.ttf */,
 				B03984F1A205BD0F16F3DE48 /* menu_music.mp3 */,
 				3F11593CDA34D0C56FE97AE4 /* smash.wav */,
+				B60E51D733BBD757925475CD /* smolder.wav */,
 				ED0423123CEF024F08DD99D0 /* snooze.wav */,
 			);
 			path = Resources;
@@ -311,6 +314,7 @@
 				938EDF0918FE27FAA874D58E /* alarm.wav in Resources */,
 				ABD51C894CE4B08BC0293033 /* menu_music.mp3 in Resources */,
 				F0A5007776CE716EBFC02976 /* smash.wav in Resources */,
+				1DAD963BECF2574B62358D50 /* smolder.wav in Resources */,
 				59E5B7FE60358638A696C177 /* snooze.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

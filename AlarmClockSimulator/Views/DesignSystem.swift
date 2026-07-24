@@ -126,24 +126,33 @@ extension View {
 
 /// A full-width hero band that never expands its container: the image fills
 /// via overlay so its natural width can't blow out ScrollView layouts.
+/// Pass `height: nil` for a flexible band that absorbs leftover vertical
+/// space (used by no-scroll layouts).
 struct HeroImage: View {
     let name: String
-    var height: CGFloat = 210
+    var height: CGFloat? = 210
+    var minHeight: CGFloat = 90
+    var maxHeight: CGFloat = 320
 
     var body: some View {
-        Color.clear
-            .frame(height: height)
-            .frame(maxWidth: .infinity)
-            .overlay(
-                Image(name)
-                    .resizable()
-                    .scaledToFill()
-            )
-            .clipShape(RoundedRectangle(cornerRadius: 20))
-            .overlay(
-                RoundedRectangle(cornerRadius: 20)
-                    .strokeBorder(Palette.panelBorder, lineWidth: 1)
-            )
+        Group {
+            if let height {
+                Color.clear.frame(height: height)
+            } else {
+                Color.clear.frame(minHeight: minHeight, maxHeight: maxHeight)
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .overlay(
+            Image(name)
+                .resizable()
+                .scaledToFill()
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 20))
+        .overlay(
+            RoundedRectangle(cornerRadius: 20)
+                .strokeBorder(Palette.panelBorder, lineWidth: 1)
+        )
     }
 }
 

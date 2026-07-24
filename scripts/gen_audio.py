@@ -120,6 +120,32 @@ def snooze():
     return out
 
 
+def smolder():
+    """Seamless 4s loop of smoldering wreckage: a low ember rumble with
+    random crackle ticks. No crackles near the loop point and a flat
+    envelope so it cycles without a seam."""
+    random.seed(11)
+    dur = 4.0
+    n = int(RATE * dur)
+    # ember bed: leaky-integrated noise (brown-ish), gently wobbling
+    out = []
+    level = 0.0
+    for i in range(n):
+        t = i / RATE
+        level += (random.uniform(-1, 1) - level) * 0.035
+        wobble = 0.75 + 0.25 * math.sin(2 * math.pi * t / dur * 2)
+        out.append(level * 0.5 * wobble)
+    # crackle ticks: short bright noise bursts, kept clear of the seam
+    for _ in range(26):
+        at = random.uniform(0.1, dur - 0.15)
+        tick_dur = random.uniform(0.004, 0.018)
+        vol = random.uniform(0.08, 0.3)
+        tick = noise_burst(tick_dur, tick_dur * 0.5, vol)
+        out = mix(out, tick, at)
+    return out[:n]
+
+
 write_wav("alarm.wav", alarm())
 write_wav("smash.wav", smash())
 write_wav("snooze.wav", snooze())
+write_wav("smolder.wav", smolder())
