@@ -60,6 +60,18 @@ struct SmashCinematicView: View {
                         )
                         .allowsHitTesting(false)
                     }
+
+                    // Hides the artwork's baked "TAP TO START" footer, and
+                    // matches the play screen's bottom gradient so the cut
+                    // into the cinematic stays seamless.
+                    LinearGradient(
+                        stops: [
+                            .init(color: .clear, location: 0.64),
+                            .init(color: Palette.background, location: 0.82),
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
                 }
                 .modifier(ShakeEffect(travel: 16, shakes: 8, animatableData: shakeT))
 

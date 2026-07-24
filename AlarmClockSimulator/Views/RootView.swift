@@ -165,6 +165,11 @@ struct RootView: View {
             flow = .disclaimer
         } else if args.contains("-uiMissions") {
             activeSheet = .missions
+        } else if args.contains("-uiSmash") {
+            game.startRun()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                smashCinematicActive = true
+            }
         } else if args.contains("-uiPlay") {
             game.startRun()
         } else if args.contains("-uiRinging") {
