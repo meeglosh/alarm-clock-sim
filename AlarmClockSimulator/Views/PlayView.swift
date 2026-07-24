@@ -70,7 +70,7 @@ struct PlayView: View {
             HUDCornerButtons(isExpanded: $hudExpanded)
                 .padding(.horizontal, 16)
                 .contentColumn()
-                .padding(.top, 6)
+                .padding(.top, 36)
                 .ignoresSafeArea(edges: .top)
         }
     }
