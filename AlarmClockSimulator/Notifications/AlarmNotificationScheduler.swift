@@ -103,7 +103,11 @@ final class AlarmNotificationScheduler {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
-        content.sound = .default
+        // The game's own alarm tone, so it's unmistakable among other
+        // notifications; the overslept notice keeps the system sound.
+        content.sound = isAlarm
+            ? UNNotificationSound(named: UNNotificationSoundName("alarm.wav"))
+            : .default
         content.interruptionLevel = .timeSensitive
         if isAlarm {
             content.categoryIdentifier = Self.alarmCategoryID
@@ -115,22 +119,37 @@ final class AlarmNotificationScheduler {
 
 /// Routes notification callbacks back into the game. Held strongly by the
 /// App struct because UNUserNotificationCenter's delegate reference is weak.
+///
+/// Deliberately implements the completion-handler delegate variants, NOT
+/// the async ones: the async variants resume UIKit's post-delivery
+/// bookkeeping (state restoration/snapshotting) on the Swift concurrency
+/// pool, which asserts and crashes when a locked device processes the
+/// notification. Completing explicitly on the main thread avoids that.
 final class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
     var onSnoozeAction: (@MainActor () async -> Void)?
 
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
-        willPresent notification: UNNotification
-    ) async -> UNNotificationPresentationOptions {
+        willPresent notification: UNNotification,
+        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+    ) {
         // The in-app ringing UI handles alarms while foregrounded.
-        []
+        DispatchQueue.main.async {
+            completionHandler([])
+        }
     }
 
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
-        didReceive response: UNNotificationResponse
-    ) async {
-        guard response.actionIdentifier == AlarmNotificationScheduler.snoozeActionID else { return }
-        await onSnoozeAction?()
+        didReceive response: UNNotificationResponse,
+        withCompletionHandler completionHandler: @escaping () -> Void
+    ) {
+        let isSnooze = response.actionIdentifier == AlarmNotificationScheduler.snoozeActionID
+        Task { @MainActor [weak self] in
+            if isSnooze {
+                await self?.onSnoozeAction?()
+            }
+            completionHandler()
+        }
     }
 }

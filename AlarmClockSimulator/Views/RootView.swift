@@ -57,6 +57,7 @@ struct RootView: View {
         .onAppear {
             game.reconcile()
             game.startTicking()
+            skipLoaderIfRunLive()
             #if DEBUG
             applyLaunchOverrides()
             #endif
@@ -66,6 +67,7 @@ struct RootView: View {
             if newValue == .active {
                 game.reconcile()
                 game.startTicking()
+                skipLoaderIfRunLive()
                 updateMusic()
             } else {
                 game.stopTicking()
@@ -131,6 +133,15 @@ struct RootView: View {
     private func startRun() {
         game.startRun()
         Task { await notifications.requestAuthorizationIfNeeded() }
+    }
+
+    /// Launching into a live run (most importantly: from tapping an alarm
+    /// notification) must land directly on the play screen with the snooze
+    /// button, never behind the loader tap-through.
+    private func skipLoaderIfRunLive() {
+        if flow != .main, game.phase.isRunActive {
+            flow = .main
+        }
     }
 
     /// Music plays on the loader, disclaimer, menu, and streak-ended
