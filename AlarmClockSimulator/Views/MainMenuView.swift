@@ -58,13 +58,20 @@ struct MainMenuView: View {
             ZStack {
                 Palette.background
                 // Top-anchored fill: when tall screens (iPad) crop the art,
-                // sacrifice the table edge, never the title.
+                // sacrifice the table edge, never the title. On phones the
+                // art is nudged down so the baked title clears the HUD pills;
+                // the revealed strip is dark and blends into the backdrop.
                 GeometryReader { geo in
+                    // Title top edge sits at 9.5% of the art's height; with
+                    // width-dominant fill that is 0.095 * (width / 852 * 1847).
+                    let titleTop = geo.size.width * 0.206
+                    let hudClearance: CGFloat = 155
                     Image("bgMain")
                         .resizable()
                         .scaledToFill()
                         .frame(width: geo.size.width, height: geo.size.height, alignment: .top)
                         .clipped()
+                        .offset(y: max(0, hudClearance - titleTop))
                 }
                 LinearGradient(
                     stops: [
