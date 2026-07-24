@@ -1,4 +1,5 @@
 import AVFoundation
+import CoreHaptics
 import UIKit
 
 /// Sound and haptics for the game, backed by the synthesized WAVs in
@@ -11,6 +12,7 @@ final class AlarmFeedbackPlayer: AlarmFeedback {
     private var smashPlayer: AVAudioPlayer?
     private var snoozePlayer: AVAudioPlayer?
     private var hapticTimer: Timer?
+    private var hapticEngine: CHHapticEngine?
     private let notificationGenerator = UINotificationFeedbackGenerator()
     private let impactGenerator = UIImpactFeedbackGenerator(style: .heavy)
 
@@ -49,7 +51,85 @@ final class AlarmFeedbackPlayer: AlarmFeedback {
     func smashed() {
         smashPlayer?.currentTime = 0
         smashPlayer?.play()
+        playSmashHaptics()
+    }
+
+    // MARK: - Smash haptics
+
+    /// A crash, not a tap: hard slam at impact, a rumble decaying underneath,
+    /// and scattered aftershocks matching the debris clinks in the SFX.
+    private func playSmashHaptics() {
+        guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else {
+            playFallbackRumble()
+            return
+        }
+        do {
+            if hapticEngine == nil {
+                hapticEngine = try CHHapticEngine()
+            }
+            guard let engine = hapticEngine else { return }
+            try engine.start()
+            let player = try engine.makePlayer(with: smashHapticPattern())
+            try player.start(atTime: 0)
+        } catch {
+            playFallbackRumble()
+        }
+    }
+
+    private func smashHapticPattern() throws -> CHHapticPattern {
+        var events: [CHHapticEvent] = [
+            CHHapticEvent(
+                eventType: .hapticTransient,
+                parameters: [
+                    CHHapticEventParameter(parameterID: .hapticIntensity, value: 1.0),
+                    CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.9),
+                ],
+                relativeTime: 0
+            ),
+            CHHapticEvent(
+                eventType: .hapticContinuous,
+                parameters: [
+                    CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.9),
+                    CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.35),
+                ],
+                relativeTime: 0.02,
+                duration: 0.75
+            ),
+        ]
+        let aftershocks: [(TimeInterval, Float)] = [
+            (0.16, 0.7), (0.28, 0.55), (0.42, 0.4), (0.58, 0.3), (0.72, 0.2),
+        ]
+        for (time, intensity) in aftershocks {
+            events.append(
+                CHHapticEvent(
+                    eventType: .hapticTransient,
+                    parameters: [
+                        CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity),
+                        CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.7),
+                    ],
+                    relativeTime: time
+                )
+            )
+        }
+        let decay = CHHapticParameterCurve(
+            parameterID: .hapticIntensityControl,
+            controlPoints: [
+                CHHapticParameterCurve.ControlPoint(relativeTime: 0, value: 1.0),
+                CHHapticParameterCurve.ControlPoint(relativeTime: 0.75, value: 0.0),
+            ],
+            relativeTime: 0.02
+        )
+        return try CHHapticPattern(events: events, parameterCurves: [decay])
+    }
+
+    private func playFallbackRumble() {
         impactGenerator.impactOccurred()
+        let followUps: [(TimeInterval, CGFloat)] = [(0.15, 0.8), (0.3, 0.6), (0.45, 0.4)]
+        for (delay, intensity) in followUps {
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [impactGenerator] in
+                impactGenerator.impactOccurred(intensity: intensity)
+            }
+        }
     }
 
     private func loadPlayer(_ name: String) -> AVAudioPlayer? {
