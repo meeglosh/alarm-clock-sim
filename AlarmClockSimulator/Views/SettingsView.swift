@@ -61,6 +61,19 @@ struct SettingsView: View {
         }
         .background(Palette.background)
         .preferredColorScheme(.dark)
+        .overlay(alignment: .topLeading) {
+            Button {
+                dismiss()
+            } label: {
+                Label("BACK", systemImage: "arrow.left")
+                    .font(.system(size: 13, weight: .heavy))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 8)
+                    .gamePanel(cornerRadius: 12)
+            }
+            .padding(12)
+        }
         .alert("Settings", isPresented: Binding(
             get: { message != nil },
             set: { if !$0 { message = nil } }
