@@ -365,18 +365,13 @@ struct ShakeEffect: GeometryEffect {
 
 /// Maps fractional coordinates of the 852x1847 mockup scene onto the
 /// displayed background so overlays stay glued to image features like the
-/// clock's LCD across device sizes.
+/// clock's LCD across device sizes. Top-anchored: tall screens crop the
+/// art's table edge, never the title.
 struct SceneImageLayout {
-    /// Title top and clock base as fractions of the artwork's height: the
-    /// hero band that must stay visible between the game's UI chrome.
-    static let titleTopFraction: CGFloat = 0.072
-    static let clockBottomFraction: CGFloat = 0.635
-
     private static let imageSize = CGSize(width: 852, height: 1847)
 
     let frame: CGRect
 
-    /// Full-bleed centered fill (used by the smash cinematic).
     init(container: CGSize) {
         let size = Self.imageSize
         let scale = max(container.width / size.width, container.height / size.height)
@@ -384,35 +379,9 @@ struct SceneImageLayout {
         let height = size.height * scale
         frame = CGRect(
             x: (container.width - width) / 2,
-            y: (container.height - height) / 2,
+            y: 0,
             width: width,
             height: height
-        )
-    }
-
-    /// Fits the artwork so its hero band (title through clock base) lands
-    /// between two measured screen edges: full-width fill when the band is
-    /// roomy enough, scaled-down and centered when it isn't. Falls back to
-    /// a centered fill until measurements arrive.
-    init(container: CGSize, bandTop: CGFloat, bandBottom: CGFloat) {
-        let size = Self.imageSize
-        let widthScale = max(container.width / size.width, container.height / size.height)
-        let bandHeight = bandBottom - bandTop
-        let scale: CGFloat
-        let y: CGFloat
-        if bandTop > 0, bandHeight > 100 {
-            let heroFraction = Self.clockBottomFraction - Self.titleTopFraction
-            scale = min(widthScale, bandHeight / (heroFraction * size.height))
-            y = bandTop - Self.titleTopFraction * size.height * scale
-        } else {
-            scale = widthScale
-            y = (container.height - size.height * scale) / 2
-        }
-        frame = CGRect(
-            x: (container.width - size.width * scale) / 2,
-            y: y,
-            width: size.width * scale,
-            height: size.height * scale
         )
     }
 
@@ -426,40 +395,74 @@ struct SceneImageLayout {
     }
 }
 
-/// The bedroom artwork rendered at a SceneImageLayout's frame, with soft
-/// side fades so letterboxed layouts blend into the backdrop.
-struct FittedSceneArt: View {
+/// The bedroom artwork rendered full-bleed at a SceneImageLayout's frame.
+struct SceneArt: View {
     let layout: SceneImageLayout
 
     var body: some View {
         Image("bgMain")
             .resizable()
             .frame(width: layout.frame.width, height: layout.frame.height)
-            .mask(
-                LinearGradient(
-                    stops: [
-                        .init(color: .clear, location: 0),
-                        .init(color: .black, location: 0.05),
-                        .init(color: .black, location: 0.95),
-                        .init(color: .clear, location: 1),
-                    ],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-            )
-            // Dissolve everything below the clock so the art's baked
-            // footer (e.g. "TAP TO START") never ghosts behind the UI.
-            .mask(
-                LinearGradient(
-                    stops: [
-                        .init(color: .black, location: 0),
-                        .init(color: .black, location: SceneImageLayout.clockBottomFraction + 0.02),
-                        .init(color: .clear, location: SceneImageLayout.clockBottomFraction + 0.1),
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
             .position(x: layout.frame.midX, y: layout.frame.midY)
+    }
+}
+
+// MARK: - Collapsible HUD
+
+private struct HUDCornerButton: View {
+    let emoji: String
+    var action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text(emoji)
+                .font(.system(size: 24))
+                .frame(width: 48, height: 48)
+                .background(Circle().fill(Palette.panel.opacity(0.92)))
+                .overlay(Circle().strokeBorder(Palette.panelBorder, lineWidth: 1))
+                .shadow(color: .black.opacity(0.4), radius: 4, y: 2)
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+/// The streak/rank HUD collapsed into corner icon buttons so the title art
+/// stays unobstructed; tapping either expands the full pills, with a
+/// chevron chip to tuck them away again.
+struct CollapsibleHUD: View {
+    @Binding var isExpanded: Bool
+    var onRankTap: () -> Void
+
+    var body: some View {
+        Group {
+            if isExpanded {
+                VStack(spacing: 6) {
+                    HUDBar(onRankTap: onRankTap)
+                    Button {
+                        withAnimation(.spring(duration: 0.35)) { isExpanded = false }
+                    } label: {
+                        Image(systemName: "chevron.up")
+                            .font(.system(size: 13, weight: .bold))
+                            .foregroundStyle(.white.opacity(0.7))
+                            .padding(.horizontal, 22)
+                            .padding(.vertical, 5)
+                            .gamePanel(cornerRadius: 10)
+                    }
+                    .buttonStyle(.plain)
+                }
+                .transition(.move(edge: .top).combined(with: .opacity))
+            } else {
+                HStack {
+                    HUDCornerButton(emoji: "🔥") {
+                        withAnimation(.spring(duration: 0.35)) { isExpanded = true }
+                    }
+                    Spacer()
+                    HUDCornerButton(emoji: "🏆") {
+                        withAnimation(.spring(duration: 0.35)) { isExpanded = true }
+                    }
+                }
+                .transition(.opacity)
+            }
+        }
     }
 }

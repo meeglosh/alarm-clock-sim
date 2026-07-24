@@ -1,47 +1,20 @@
 import SwiftUI
 
-private struct HUDBottomPreferenceKey: PreferenceKey {
-    static var defaultValue: CGFloat = 0
-
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = max(value, nextValue())
-    }
-}
-
-private struct PlayTopPreferenceKey: PreferenceKey {
-    static var defaultValue: CGFloat = 0
-
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = max(value, nextValue())
-    }
-}
-
-/// Idle-phase home screen over the full title artwork: HUD, PLAY,
-/// leaderboard/settings, daily challenge, tab bar.
+/// Idle-phase home screen over the full title artwork: collapsible HUD in
+/// the corners, PLAY, leaderboard/settings, daily challenge, tab bar. The
+/// art sits at its natural top-anchored position so the title, clock, and
+/// hammer all read exactly as composed.
 struct MainMenuView: View {
     @Environment(GameViewModel.self) private var game
     var onSheet: (GameSheet) -> Void
     var onPlay: () -> Void
 
-    /// Measured bottom edge of the HUD pills and top edge of the PLAY
-    /// button, in screen coordinates. The background art is scaled and
-    /// positioned so the baked title through the full clock fits between
-    /// them.
-    @State private var hudBottom: CGFloat = 0
-    @State private var playTop: CGFloat = 0
+    @State private var hudExpanded = false
 
     var body: some View {
         ZStack {
             VStack(spacing: 10) {
-                HUDBar(onRankTap: { onSheet(.leaderboard) })
-                    .background(
-                        GeometryReader { proxy in
-                            Color.clear.preference(
-                                key: HUDBottomPreferenceKey.self,
-                                value: proxy.frame(in: .global).maxY
-                            )
-                        }
-                    )
+                CollapsibleHUD(isExpanded: $hudExpanded, onRankTap: { onSheet(.leaderboard) })
                 Spacer()
                 Button {
                     onPlay()
@@ -52,14 +25,6 @@ struct MainMenuView: View {
                     }
                 }
                 .buttonStyle(ChunkyButtonStyle(style: .gold, height: 62))
-                .background(
-                    GeometryReader { proxy in
-                        Color.clear.preference(
-                            key: PlayTopPreferenceKey.self,
-                            value: proxy.frame(in: .global).minY
-                        )
-                    }
-                )
 
                 HStack(spacing: 12) {
                     Button {
@@ -93,22 +58,11 @@ struct MainMenuView: View {
             .padding(.vertical, 8)
             .contentColumn()
         }
-        .onPreferenceChange(HUDBottomPreferenceKey.self) { hudBottom = $0 }
-        .onPreferenceChange(PlayTopPreferenceKey.self) { playTop = $0 }
         .background {
             ZStack {
                 Palette.background
-                // The art's hero band (title through clock base) fits
-                // between the measured HUD bottom and PLAY top, scaling
-                // down with faded edges when the band is tight.
                 GeometryReader { geo in
-                    FittedSceneArt(
-                        layout: SceneImageLayout(
-                            container: geo.size,
-                            bandTop: hudBottom + 8,
-                            bandBottom: playTop - 8
-                        )
-                    )
+                    SceneArt(layout: SceneImageLayout(container: geo.size))
                 }
                 LinearGradient(
                     stops: [

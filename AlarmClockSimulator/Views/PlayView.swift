@@ -1,21 +1,5 @@
 import SwiftUI
 
-private struct HeaderBottomPreferenceKey: PreferenceKey {
-    static var defaultValue: CGFloat = 0
-
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = max(value, nextValue())
-    }
-}
-
-private struct ControlsTopPreferenceKey: PreferenceKey {
-    static var defaultValue: CGFloat = 0
-
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = max(value, nextValue())
-    }
-}
-
 /// The in-run screen (counting and ringing). The background artwork's baked
 /// clock digits are covered by a live LCD panel showing the real countdown;
 /// ringing adds the warning banner, lightning bolts, clock shake, and the
@@ -28,23 +12,16 @@ struct PlayView: View {
     @State private var boltFlicker = false
     @State private var snoozePulse = false
     @State private var clockShakeT: CGFloat = 0
-    /// Measured header bottom (HUD + ringing banner) and controls top; the
-    /// art fits its title-through-clock band between them, like the menu.
-    @State private var headerBottom: CGFloat = 0
-    @State private var controlsTop: CGFloat = 0
+    @State private var hudExpanded = false
 
     private var isRinging: Bool { game.phase == .ringing }
 
     var body: some View {
         ZStack {
             GeometryReader { proxy in
-                let layout = SceneImageLayout(
-                    container: proxy.size,
-                    bandTop: headerBottom + 8,
-                    bandBottom: controlsTop - 8
-                )
+                let layout = SceneImageLayout(container: proxy.size)
                 ZStack {
-                    FittedSceneArt(layout: layout)
+                    SceneArt(layout: layout)
 
                     lcdOverlay(layout)
                         .modifier(ShakeEffect(travel: 5, shakes: 9, animatableData: clockShakeT))
@@ -64,32 +41,12 @@ struct PlayView: View {
             .ignoresSafeArea()
 
             VStack(spacing: 10) {
-                VStack(spacing: 10) {
-                    HUDBar(onRankTap: { onSheet(.leaderboard) })
-                    if isRinging {
-                        ringingBanner
-                    }
+                CollapsibleHUD(isExpanded: $hudExpanded, onRankTap: { onSheet(.leaderboard) })
+                if isRinging {
+                    ringingBanner
                 }
-                .background(
-                    GeometryReader { proxy in
-                        Color.clear.preference(
-                            key: HeaderBottomPreferenceKey.self,
-                            value: proxy.frame(in: .global).maxY
-                        )
-                    }
-                )
                 Spacer()
-                VStack(spacing: 10) {
-                    controls
-                }
-                .background(
-                    GeometryReader { proxy in
-                        Color.clear.preference(
-                            key: ControlsTopPreferenceKey.self,
-                            value: proxy.frame(in: .global).minY
-                        )
-                    }
-                )
+                controls
                 GameTabBar { tab in
                     switch tab {
                     case .shop: onSheet(.shop)
@@ -103,8 +60,6 @@ struct PlayView: View {
             .padding(.vertical, 8)
             .contentColumn()
         }
-        .onPreferenceChange(HeaderBottomPreferenceKey.self) { headerBottom = $0 }
-        .onPreferenceChange(ControlsTopPreferenceKey.self) { controlsTop = $0 }
         .onChange(of: isRinging) { _, ringing in
             if ringing { startRingingEffects() }
         }

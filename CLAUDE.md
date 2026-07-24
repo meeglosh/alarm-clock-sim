@@ -28,6 +28,7 @@ Streaks post to a **global leaderboard**. Monetization via streak freezes (see I
 - The hammer is a **hold-to-smash button** (0.7s hold, red glow buildup), not a drag gesture; the mockups show a SMASH button and the hold is the accidental-smash protection.
 - Missions and Collection tabs are styled Coming Soon screens; Stats is real (lifetime counters). Leaderboard is Global/all-time only (no Friends/Weekly tabs; Weekly would need a recurring leaderboard in ASC).
 - The rank pill's "TOP x%" comes from live Game Center data and shows placeholders until authenticated.
+- The HUD is **collapsed by default** into corner icon buttons (flame top-left, trophy top-right) on the menu and play screens so the title art, clock, and hammer stay unobstructed; tapping either expands the full pills, and a chevron chip collapses them again. The art renders top-anchored at its natural full-bleed position.
 
 ## Core Gameplay Loop
 1. Timer counts down 10:00 → alarm triggers (sound + visual: clock shakes/rings)
