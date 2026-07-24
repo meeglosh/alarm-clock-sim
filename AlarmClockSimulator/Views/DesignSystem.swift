@@ -450,6 +450,15 @@ struct CollapsibleHUD: View {
                     }
                     .buttonStyle(.plain)
                 }
+                .contentShape(Rectangle())
+                .gesture(
+                    DragGesture(minimumDistance: 20)
+                        .onEnded { value in
+                            if value.translation.height < -25 {
+                                withAnimation(.spring(duration: 0.35)) { isExpanded = false }
+                            }
+                        }
+                )
                 .transition(.move(edge: .top).combined(with: .opacity))
             } else {
                 HStack {
