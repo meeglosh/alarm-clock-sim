@@ -45,6 +45,12 @@ Streaks post to a **global leaderboard**. Monetization via streak freezes (see I
 - Restore purchases must be supported (App Store requirement).
 - All purchases need server-side receipt validation eventually — for MVP, on-device `Transaction.currentEntitlements` is fine, but flag this as a pre-launch hardening item.
 
+## Notifications (built)
+- `Notifications/AlarmNotificationScheduler.swift` schedules local notifications on backgrounding so alarms reach a locked/sleeping device: the ring at the next uncovered alarm (freeze-covered alarms are skipped via `GameViewModel.firstUncoveredAlarmDate()`), a last-chance nudge mid-miss-window, and an overslept notice. All pending notifications are cancelled on foregrounding; the in-app UI takes over.
+- The ring notification carries a **Snooze action**: `NotificationDelegate` wakes the app in the background, reconciles, snoozes, and schedules the next round, so a streak can be maintained entirely from the lock screen.
+- Permission is requested on the player's first "Start Streak" tap (better acceptance than at launch), from `GameView.startRun()`.
+- Uses the `.timeSensitive` interruption level (entitlement added) to pierce standard Focus modes. **Platform limits:** notification sound is one short chime, not a sustained ring like Apple's Clock app, and silent switch/DND-total-silence wins. Critical Alerts would break through everything but require a separate approval from Apple; revisit deliberately if the chime proves too missable.
+
 ## Architecture
 - Pattern: MVVM — `@Observable` view models for game state (timer, streak, freeze status), SwiftUI views for UI, SceneKit nodes for the 3D scene
 - `GamePhase` (idle / counting / ringing / gameOver) is the single source of truth; the SwiftUI overlay and SceneKit animations both derive from it via `onChange`

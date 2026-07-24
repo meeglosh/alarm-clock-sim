@@ -161,6 +161,44 @@ final class GameViewModelTests: XCTestCase {
         XCTAssertEqual(vm.nextAlarmDate, purchaseTime.addingTimeInterval(600))
     }
 
+    // MARK: - Notification scheduling support
+
+    func testFirstUncoveredAlarmDateWithoutFreeze() {
+        let vm = makeViewModel()
+        vm.startRun(now: t0)
+
+        XCTAssertEqual(vm.firstUncoveredAlarmDate(), t0.addingTimeInterval(600))
+    }
+
+    func testFirstUncoveredAlarmDateSkipsFrozenAlarms() {
+        let vm = makeViewModel()
+        vm.startRun(now: t0)
+        vm.applyConsumableFreeze(now: t0)
+
+        // Alarms up to t0+42600 are auto-snoozed by the freeze; the first
+        // one needing attention is at the freeze expiry boundary.
+        XCTAssertEqual(vm.firstUncoveredAlarmDate(), t0.addingTimeInterval(43_200))
+    }
+
+    func testFirstUncoveredAlarmDateNilWithUnlimitedFreeze() {
+        let vm = makeViewModel(unlimited: true)
+        vm.startRun(now: t0)
+
+        XCTAssertNil(vm.firstUncoveredAlarmDate())
+    }
+
+    func testFirstUncoveredAlarmDateNilWhenNoRunActive() {
+        XCTAssertNil(makeViewModel().firstUncoveredAlarmDate())
+    }
+
+    func testFirstUncoveredAlarmDateWhileRinging() {
+        let vm = makeViewModel()
+        vm.startRun(now: t0)
+        vm.reconcile(now: t0.addingTimeInterval(600))
+
+        XCTAssertEqual(vm.firstUncoveredAlarmDate(), t0.addingTimeInterval(600))
+    }
+
     // MARK: - Run-end hook
 
     func testOnRunEndedFiresWithFinalStreakOnSmash() {

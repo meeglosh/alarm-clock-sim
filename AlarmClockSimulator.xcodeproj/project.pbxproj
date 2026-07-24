@@ -14,6 +14,7 @@
 		51B1E1DF781688E65427CA18 /* GameViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F4BE25BEC3BF340C5B445A /* GameViewModelTests.swift */; };
 		82B7567258E7197B908C13BB /* Configuration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 1ADEF8FE2F9B9A6B03AC92DA /* Configuration.storekit */; };
 		854075B60FCE7EB9CFCA2ED3 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF56BFB4FB5049860F3DE321 /* StoreManager.swift */; };
+		8FB648385EF91FB5F57AA8AC /* AlarmNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39CF93F95CE2FD509EE9C92 /* AlarmNotificationScheduler.swift */; };
 		9B04007DAB790C0CA6884071 /* AlarmFeedbackPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671126B0EF73E0FA2E9BB4B2 /* AlarmFeedbackPlayer.swift */; };
 		A12D7768C7A04D263EEEDD9D /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62E3B4A7155D24F6BF2F9DD /* GameViewModel.swift */; };
 		B127841E902ABB81C3CE9411 /* StoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EC2A7BB62D7FB9694232A5 /* StoreView.swift */; };
@@ -50,6 +51,7 @@
 		C1BAD1EAC0F3329E0467015C /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		CF56BFB4FB5049860F3DE321 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
 		EBD1959E551F1D440C7054FA /* BedsideSceneController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BedsideSceneController.swift; sourceTree = "<group>"; };
+		F39CF93F95CE2FD509EE9C92 /* AlarmNotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmNotificationScheduler.swift; sourceTree = "<group>"; };
 		F62E3B4A7155D24F6BF2F9DD /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		FDCE06FF18369F5088718A3C /* GameCenterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -79,6 +81,7 @@
 				55F7202098D477D209DE0624 /* Info.plist */,
 				6A581A56807CD15AFA157B5D /* App */,
 				4C9D0D88B43559E6765D0C68 /* GameCenter */,
+				8DDE4ED054CD0AE71935A15B /* Notifications */,
 				9BA0B72436268EA69F36EE95 /* Scene */,
 				6A626BB9DB0670747D9A7BFE /* Store */,
 				B2F786572B484CB36DCFAA05 /* ViewModels */,
@@ -120,6 +123,14 @@
 				3D06D586AB36FFDFD77C5FFD /* StoreManagerTests.swift */,
 			);
 			path = AlarmClockSimulatorTests;
+			sourceTree = "<group>";
+		};
+		8DDE4ED054CD0AE71935A15B /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				F39CF93F95CE2FD509EE9C92 /* AlarmNotificationScheduler.swift */,
+			);
+			path = Notifications;
 			sourceTree = "<group>";
 		};
 		9BA0B72436268EA69F36EE95 /* Scene */ = {
@@ -247,6 +258,7 @@
 			files = (
 				16F36FC5651D078BEC37BCB4 /* AlarmClockSimulatorApp.swift in Sources */,
 				9B04007DAB790C0CA6884071 /* AlarmFeedbackPlayer.swift in Sources */,
+				8FB648385EF91FB5F57AA8AC /* AlarmNotificationScheduler.swift in Sources */,
 				D5F18F8E1F13FCD5D8EFDD11 /* BedsideSceneController.swift in Sources */,
 				B7A341E6CAE9EABF0020B089 /* ContentView.swift in Sources */,
 				41A3CAAAA3F8D7C871883BF1 /* GameCenterManager.swift in Sources */,

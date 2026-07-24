@@ -132,6 +132,21 @@ final class GameViewModel {
         return false
     }
 
+    /// The first alarm that will actually need the player's attention:
+    /// alarms a freeze will auto-snooze are skipped. Nil when no run is
+    /// active or the unlimited freeze means no alarm ever rings. Used to
+    /// schedule background notifications.
+    func firstUncoveredAlarmDate() -> Date? {
+        guard phase.isRunActive else { return nil }
+        if isUnlimitedFreezeActive() { return nil }
+        if phase == .ringing { return ringingSince }
+        guard var candidate = nextAlarmDate else { return nil }
+        while isFreezeActive(at: candidate) {
+            candidate = candidate.addingTimeInterval(configuration.alarmInterval)
+        }
+        return candidate
+    }
+
     // MARK: - Time
 
     func reconcile(now: Date = Date()) {

@@ -4,6 +4,7 @@ struct GameView: View {
     @Environment(GameViewModel.self) private var game
     @Environment(StoreManager.self) private var store
     @Environment(GameCenterManager.self) private var gameCenter
+    @Environment(AlarmNotificationScheduler.self) private var notifications
     @Environment(\.scenePhase) private var scenePhase
     @State private var sceneController = BedsideSceneController()
     @State private var showStore = false
@@ -186,7 +187,7 @@ struct GameView: View {
                     .font(.subheadline.weight(.semibold))
             }
             Button("Start Streak") {
-                game.startRun()
+                startRun()
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
@@ -222,7 +223,7 @@ struct GameView: View {
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
             Button("Start a New Streak") {
-                game.startRun()
+                startRun()
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
@@ -255,6 +256,13 @@ struct GameView: View {
         return hours > 0 ? "\(hours)h \(minutes)m" : "\(minutes)m"
     }
 
+    /// Starting a run is the moment notification permission becomes
+    /// relevant, so it's requested here rather than at launch.
+    private func startRun() {
+        game.startRun()
+        Task { await notifications.requestAuthorizationIfNeeded() }
+    }
+
     // MARK: - Scene sync
 
     private func phaseChanged(from old: GamePhase, to new: GamePhase) {
@@ -285,4 +293,5 @@ struct GameView: View {
         .environment(GameViewModel())
         .environment(StoreManager())
         .environment(GameCenterManager())
+        .environment(AlarmNotificationScheduler())
 }
