@@ -34,22 +34,25 @@ Streaks post to a **global leaderboard**. Monetization via streak freezes (see I
 - Game state (`GameState`: idle / ringing / snoozed / gameOver) drives both the SwiftUI overlay and the SceneKit animations — single source of truth, not duplicated state
 - Persist current streak + best streak locally (UserDefaults or SwiftData is fine for this scale)
 
-## Project Setup (do this first, in Xcode — Claude Code drives from here on)
-1. Create the Xcode project: App template, iOS, SwiftUI interface, Swift language.
-2. Enable capabilities in Xcode: **Game Center** and **In-App Purchase**.
-3. Commit the initial `project.pbxproj` before starting a Claude Code session — Claude Code can edit Swift files but new files won't auto-add to the Xcode target. You'll need to drag them into the target in Xcode (or set up XcodeGen/Tuist if you want that automated too).
-4. Create the IAP products in App Store Connect (the consumable and the subscription) — this step can't be done by Claude Code, it requires the App Store Connect web UI and your Apple Developer account.
+## Project Setup
+The Xcode project is generated via **XcodeGen** from `project.yml` rather than hand-edited in Xcode. This solves the "new Swift files don't auto-add to the target" problem: any file placed under `AlarmClockSimulator/` is picked up automatically the next time the project is regenerated.
+
+1. Done: `AlarmClockSimulator.xcodeproj` generated from `project.yml` (App target, iOS 17+, SwiftUI, `AlarmClockSimulatorTests` target).
+2. Done: Game Center entitlement (`com.apple.developer.game-center`) is set in `AlarmClockSimulator/AlarmClockSimulator.entitlements` and wired via `CODE_SIGN_ENTITLEMENTS`. In-App Purchase needs no entitlement or capability toggle to function — StoreKit 2 works once the products exist in App Store Connect (see below).
+3. **Still needed, in Xcode (one-time, human):** open the project, sign in with your Apple ID, and set `DEVELOPMENT_TEAM` — either in Xcode's Signing & Capabilities tab or directly in `project.yml`. Nothing will run on-device or use Game Center until this is set.
+4. **Still needed, App Store Connect (human only):** create the IAP products — the consumable ("12 Hours of Peace", $1.99) and the auto-renewable subscription ($4.99/month). Claude Code cannot do this; it requires the App Store Connect web UI and your Apple Developer account.
+5. After adding/removing Swift files: run `xcodegen generate` to resync the project (instead of dragging files into a target in Xcode), then commit the regenerated `AlarmClockSimulator.xcodeproj`.
 
 ## Key Commands
 ```bash
 xcodebuild build \
   -scheme AlarmClockSimulator \
-  -destination 'platform=iOS Simulator,name=iPhone 16' \
+  -destination 'platform=iOS Simulator,name=iPhone 17' \
   -quiet
 
 xcodebuild test \
   -scheme AlarmClockSimulator \
-  -destination 'platform=iOS Simulator,name=iPhone 16' \
+  -destination 'platform=iOS Simulator,name=iPhone 17' \
   -quiet 2>&1 | tail -30
 
 xcrun simctl list devices available

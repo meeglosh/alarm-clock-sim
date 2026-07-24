@@ -1,0 +1,51 @@
+name: AlarmClockSimulator
+options:
+  bundleIdPrefix: com.meeglosh
+  deploymentTarget:
+    iOS: "17.0"
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    DEVELOPMENT_TEAM: "" # set your Apple Developer Team ID here, or select it in Xcode's Signing & Capabilities tab
+    CODE_SIGN_STYLE: Automatic
+
+targets:
+  AlarmClockSimulator:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: AlarmClockSimulator
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.meeglosh.AlarmClockSimulator
+        CODE_SIGN_ENTITLEMENTS: AlarmClockSimulator/AlarmClockSimulator.entitlements
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        TARGETED_DEVICE_FAMILY: "1"
+    info:
+      path: AlarmClockSimulator/Info.plist
+      properties:
+        UILaunchScreen: {}
+
+  AlarmClockSimulatorTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: AlarmClockSimulatorTests
+    dependencies:
+      - target: AlarmClockSimulator
+
+schemes:
+  AlarmClockSimulator:
+    build:
+      targets:
+        AlarmClockSimulator: all
+        AlarmClockSimulatorTests: [test]
+    test:
+      targets:
+        - AlarmClockSimulatorTests
+    run:
+      config: Debug
