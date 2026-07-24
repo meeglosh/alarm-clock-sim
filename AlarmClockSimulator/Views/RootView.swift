@@ -124,7 +124,7 @@ struct RootView: View {
         case .missions:
             MissionsView()
         case .collection:
-            ComingSoonView(emoji: "⏰", title: "COLLECTION", quip: "A museum of clocks you have silenced.")
+            CollectionView()
         case .disclaimer:
             DisclaimerView(showsBackToMenu: true) { activeSheet = nil }
         }
@@ -176,6 +176,8 @@ struct RootView: View {
             flow = .disclaimer
         } else if args.contains("-uiMissions") {
             activeSheet = .missions
+        } else if args.contains("-uiCollection") {
+            activeSheet = .collection
         } else if args.contains("-uiSmash") {
             game.startRun()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {

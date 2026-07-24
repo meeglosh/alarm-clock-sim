@@ -49,27 +49,3 @@ struct StatsView: View {
     }
 }
 
-struct ComingSoonView: View {
-    let emoji: String
-    let title: String
-    let quip: String
-
-    var body: some View {
-        VStack(spacing: 16) {
-            Text(emoji).font(.system(size: 64))
-            HeadlineGradientText(text: title, size: 36)
-            AccentPill(text: "COMING SOON")
-            Text(quip)
-                .font(.system(size: 14, weight: .medium))
-                .foregroundStyle(.white.opacity(0.7))
-                .multilineTextAlignment(.center)
-        }
-        .padding(30)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Palette.background)
-        .preferredColorScheme(.dark)
-        .overlay(alignment: .topLeading) {
-            SheetBackButton()
-        }
-    }
-}

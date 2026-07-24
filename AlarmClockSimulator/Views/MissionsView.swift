@@ -17,6 +17,7 @@ struct MissionsView: View {
                         HeadlineGradientText(text: "MISSIONS", size: 40)
                         AccentPill(text: "A NEW DARE EVERY MIDNIGHT")
                     }
+                    .padding(.top, 40)
 
                     VStack(spacing: 12) {
                         Text("TODAY'S MISSION")

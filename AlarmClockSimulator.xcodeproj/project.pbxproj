@@ -27,6 +27,7 @@
 		726D6C5216510630DAD85801 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15742B3C0C429C7789236B1 /* RootView.swift */; };
 		82B7567258E7197B908C13BB /* Configuration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 1ADEF8FE2F9B9A6B03AC92DA /* Configuration.storekit */; };
 		854075B60FCE7EB9CFCA2ED3 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF56BFB4FB5049860F3DE321 /* StoreManager.swift */; };
+		876A2FC08AE69B98E59F1A7D /* ClockCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D5E7519BBEEA22F01773C /* ClockCollection.swift */; };
 		8E191CF2C19E31480BF607D4 /* SmashCinematicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08640ED16F0AA84681427D7D /* SmashCinematicView.swift */; };
 		8EF272AA78C061A617E3B4BB /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6B3C3E6CC95061FFF1146 /* StatsView.swift */; };
 		8FB648385EF91FB5F57AA8AC /* AlarmNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39CF93F95CE2FD509EE9C92 /* AlarmNotificationScheduler.swift */; };
@@ -35,7 +36,9 @@
 		9B04007DAB790C0CA6884071 /* AlarmFeedbackPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671126B0EF73E0FA2E9BB4B2 /* AlarmFeedbackPlayer.swift */; };
 		A12D7768C7A04D263EEEDD9D /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F62E3B4A7155D24F6BF2F9DD /* GameViewModel.swift */; };
 		ABD51C894CE4B08BC0293033 /* menu_music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B03984F1A205BD0F16F3DE48 /* menu_music.mp3 */; };
+		B21D3EFE297B6ACDDD603256 /* CollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9532B671A47E43DD3F80A3A2 /* CollectionTests.swift */; };
 		B7A341E6CAE9EABF0020B089 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD902450DD0B1988707F45A /* ContentView.swift */; };
+		BA72BB6463627D5F856C7C69 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E02B65F57EE6E97B42D8F149 /* CollectionView.swift */; };
 		C2B0BFF9C473CB983F402DA7 /* DSEG-LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 893BD1C093A5B97983A666ED /* DSEG-LICENSE.txt */; };
 		CD88DA24F4E2D3A8ACA37E6D /* StoreManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D06D586AB36FFDFD77C5FFD /* StoreManagerTests.swift */; };
 		CDBDF1C8B1A74E0951F38280 /* MissionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E62B45C7FB8D08849EE7813 /* MissionsView.swift */; };
@@ -78,8 +81,10 @@
 		6BCBBCA5225B04EDC26EB10E /* alarm.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = alarm.wav; sourceTree = "<group>"; };
 		7CB6B3C3E6CC95061FFF1146 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
 		893BD1C093A5B97983A666ED /* DSEG-LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "DSEG-LICENSE.txt"; sourceTree = "<group>"; };
+		9532B671A47E43DD3F80A3A2 /* CollectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionTests.swift; sourceTree = "<group>"; };
 		A1B6F5FB74C1769B5BADC391 /* MissionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionTests.swift; sourceTree = "<group>"; };
 		AAD902450DD0B1988707F45A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		AD4D5E7519BBEEA22F01773C /* ClockCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockCollection.swift; sourceTree = "<group>"; };
 		B03984F1A205BD0F16F3DE48 /* menu_music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = menu_music.mp3; sourceTree = "<group>"; };
 		B15742B3C0C429C7789236B1 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		B5F4BE25BEC3BF340C5B445A /* GameViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModelTests.swift; sourceTree = "<group>"; };
@@ -88,6 +93,7 @@
 		CE2BE88CFB019FD62CF757F6 /* LoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderView.swift; sourceTree = "<group>"; };
 		CF56BFB4FB5049860F3DE321 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
 		D69429C8611201765860A110 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
+		E02B65F57EE6E97B42D8F149 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		E93862A43BC2B5DC4AB35B9E /* DisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerView.swift; sourceTree = "<group>"; };
 		EA05B3EB6998D034DCB2BEAD /* DailyMission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyMission.swift; sourceTree = "<group>"; };
 		ED0423123CEF024F08DD99D0 /* snooze.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snooze.wav; sourceTree = "<group>"; };
@@ -176,6 +182,7 @@
 		6E5AE2CADE7832E5C6A15021 /* AlarmClockSimulatorTests */ = {
 			isa = PBXGroup;
 			children = (
+				9532B671A47E43DD3F80A3A2 /* CollectionTests.swift */,
 				B5F4BE25BEC3BF340C5B445A /* GameViewModelTests.swift */,
 				A1B6F5FB74C1769B5BADC391 /* MissionTests.swift */,
 				3D06D586AB36FFDFD77C5FFD /* StoreManagerTests.swift */,
@@ -195,6 +202,7 @@
 			isa = PBXGroup;
 			children = (
 				671126B0EF73E0FA2E9BB4B2 /* AlarmFeedbackPlayer.swift */,
+				AD4D5E7519BBEEA22F01773C /* ClockCollection.swift */,
 				EA05B3EB6998D034DCB2BEAD /* DailyMission.swift */,
 				F62E3B4A7155D24F6BF2F9DD /* GameViewModel.swift */,
 				C835FD17788DB440C70CF039 /* MusicPlayer.swift */,
@@ -205,6 +213,7 @@
 		EE8F53E6935786D22FF30BAB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E02B65F57EE6E97B42D8F149 /* CollectionView.swift */,
 				AAD902450DD0B1988707F45A /* ContentView.swift */,
 				D69429C8611201765860A110 /* DesignSystem.swift */,
 				E93862A43BC2B5DC4AB35B9E /* DisclaimerView.swift */,
@@ -338,6 +347,8 @@
 				16F36FC5651D078BEC37BCB4 /* AlarmClockSimulatorApp.swift in Sources */,
 				9B04007DAB790C0CA6884071 /* AlarmFeedbackPlayer.swift in Sources */,
 				8FB648385EF91FB5F57AA8AC /* AlarmNotificationScheduler.swift in Sources */,
+				876A2FC08AE69B98E59F1A7D /* ClockCollection.swift in Sources */,
+				BA72BB6463627D5F856C7C69 /* CollectionView.swift in Sources */,
 				B7A341E6CAE9EABF0020B089 /* ContentView.swift in Sources */,
 				928791D4626C96DB7EAB8CD5 /* DailyMission.swift in Sources */,
 				539A999B4E118C1CE1683097 /* DesignSystem.swift in Sources */,
@@ -366,6 +377,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B21D3EFE297B6ACDDD603256 /* CollectionTests.swift in Sources */,
 				51B1E1DF781688E65427CA18 /* GameViewModelTests.swift in Sources */,
 				17B717A6BD453C9519551F0B /* MissionTests.swift in Sources */,
 				CD88DA24F4E2D3A8ACA37E6D /* StoreManagerTests.swift in Sources */,
