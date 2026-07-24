@@ -7,7 +7,7 @@ options:
 settings:
   base:
     SWIFT_VERSION: "5.9"
-    DEVELOPMENT_TEAM: "" # set your Apple Developer Team ID here, or select it in Xcode's Signing & Capabilities tab
+    DEVELOPMENT_TEAM: "7K9WY5T49S" # Kenzora Games
     CODE_SIGN_STYLE: Automatic
 
 targets:
@@ -35,8 +35,15 @@ targets:
     deploymentTarget: "17.0"
     sources:
       - path: AlarmClockSimulatorTests
+      - path: Configuration.storekit
+        buildPhase: resources
     dependencies:
       - target: AlarmClockSimulator
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/AlarmClockSimulator.app/AlarmClockSimulator"
+        BUNDLE_LOADER: "$(TEST_HOST)"
 
 schemes:
   AlarmClockSimulator:
@@ -49,3 +56,4 @@ schemes:
         - AlarmClockSimulatorTests
     run:
       config: Debug
+      storeKitConfiguration: Configuration.storekit

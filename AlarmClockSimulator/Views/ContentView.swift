@@ -2,9 +2,17 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text("Alarm Clock Simulator")
-            .font(.title)
+        NavigationStack {
+            VStack(spacing: 24) {
+                Text("Alarm Clock Simulator")
+                    .font(.title)
+
+                NavigationLink("Streak Freezes") {
+                    StoreView()
+                }
+            }
             .padding()
+        }
     }
 }
 

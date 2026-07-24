@@ -38,10 +38,17 @@ Streaks post to a **global leaderboard**. Monetization via streak freezes (see I
 The Xcode project is generated via **XcodeGen** from `project.yml` rather than hand-edited in Xcode. This solves the "new Swift files don't auto-add to the target" problem: any file placed under `AlarmClockSimulator/` is picked up automatically the next time the project is regenerated.
 
 1. Done: `AlarmClockSimulator.xcodeproj` generated from `project.yml` (App target, iOS 17+, SwiftUI, `AlarmClockSimulatorTests` target).
-2. Done: Game Center entitlement (`com.apple.developer.game-center`) is set in `AlarmClockSimulator/AlarmClockSimulator.entitlements` and wired via `CODE_SIGN_ENTITLEMENTS`. In-App Purchase needs no entitlement or capability toggle to function — StoreKit 2 works once the products exist in App Store Connect (see below).
-3. **Still needed, in Xcode (one-time, human):** open the project, sign in with your Apple ID, and set `DEVELOPMENT_TEAM` — either in Xcode's Signing & Capabilities tab or directly in `project.yml`. Nothing will run on-device or use Game Center until this is set.
-4. **Still needed, App Store Connect (human only):** create the IAP products — the consumable ("12 Hours of Peace", $1.99) and the auto-renewable subscription ($4.99/month). Claude Code cannot do this; it requires the App Store Connect web UI and your Apple Developer account.
+2. Done: Game Center entitlement (`com.apple.developer.game-center`) is set in `AlarmClockSimulator/AlarmClockSimulator.entitlements` and wired via `CODE_SIGN_ENTITLEMENTS`. In-App Purchase needs no entitlement or capability toggle to function.
+3. Done: `DEVELOPMENT_TEAM` (Kenzora Games, `7K9WY5T49S`) is set in `project.yml`. **Important:** any signing/capability change made by clicking around in Xcode's GUI (Signing & Capabilities tab, adding a capability, etc.) only lives in `project.pbxproj` and gets silently overwritten the next time `xcodegen generate` runs. If you change something in Xcode's GUI, port it into `project.yml` too or it will vanish on the next regenerate.
+4. **Still needed, App Store Connect (human only):** create the IAP products — the consumable ("12 Hours of Peace", $1.99, product ID `com.meeglosh.AlarmClockSimulator.streakFreeze12h`) and the auto-renewable subscription ($4.99/month, product ID `com.meeglosh.AlarmClockSimulator.unlimitedFreezes.monthly`, in its own subscription group). Product IDs must match `IAPProductID` in `AlarmClockSimulator/Store/StoreManager.swift` exactly. Claude Code cannot do this; it requires the App Store Connect web UI and your Apple Developer account. Also requires the Paid Apps Agreement (Agreements, Tax, and Banking) signed before purchases work in production.
 5. After adding/removing Swift files: run `xcodegen generate` to resync the project (instead of dragging files into a target in Xcode), then commit the regenerated `AlarmClockSimulator.xcodeproj`.
+
+## StoreKit Local Testing
+- `Configuration.storekit` (repo root) defines both IAP products locally, so the purchase flow can be built and tested entirely in Simulator without waiting on App Store Connect or a sandbox tester account.
+- The `AlarmClockSimulator` scheme's Run action is wired to it (`storeKitConfiguration` in `project.yml`) — running the app in Simulator via Xcode automatically uses these local products.
+- `AlarmClockSimulator/Store/StoreManager.swift` is the StoreKit 2 wrapper (`@Observable`, `@MainActor`): loads products, purchases, listens for transaction updates, tracks whether the unlimited-freeze subscription is active. Consumable transactions are returned unfinished from `purchase(_:)` — the caller must apply the purchase's effect (grant the freeze) and then call `finishTransaction(_:)`, so a crash between purchase and effect doesn't silently lose the transaction.
+- `AlarmClockSimulator/Views/StoreView.swift` is a minimal standalone screen (reachable from `ContentView` → "Streak Freezes") for exercising the flow before the real paywall UI exists.
+- When ASC product IDs are created, they must exactly match `Configuration.storekit` / `IAPProductID` for the local-vs-real code paths to stay interchangeable.
 
 ## Key Commands
 ```bash
@@ -61,8 +68,9 @@ xcrun simctl list devices available
 ## Things to Watch For
 - Game Center and real StoreKit purchases can't be fully tested in the simulator for sandbox/production flows — flag anything that needs a real device or TestFlight
 - Don't let the hammer-smash interaction be too easy to trigger by accident (this is the "lose" state) — flag UX/hit-testing decisions rather than guessing
-- New Swift files need manual Xcode target membership (see Project Setup above)
+- Manual signing/capability changes made in Xcode's GUI don't persist — see Project Setup point 3
 
 ## Testing
 - Unit tests: streak logic, timer/freeze interactions, IAP entitlement checks — pure Swift, no SceneKit/UI dependency
+- `AlarmClockSimulatorTests/StoreManagerTests.swift` uses `StoreKitTest`'s `SKTestSession` against `Configuration.storekit` to exercise product loading, purchase, and entitlement tracking without touching App Store Connect. **These must be run from Xcode's Test navigator (Cmd+U) or `xcodebuild test` launched by the Xcode GUI** — running `xcodebuild test` directly from the command line does not push the StoreKit configuration to the simulator's `storekitd`, so `SKTestSession` fails to resolve a storefront and every product lookup silently returns empty (`SKInternalErrorDomain Code=3`). `xcodebuild build` from the CLI works fine; it's specifically the StoreKit test session that needs Xcode's IDE launch path.
 - Manual testing on simulator for the 3D scene and animations; Game Center/IAP sandbox flows need a real device or TestFlight build

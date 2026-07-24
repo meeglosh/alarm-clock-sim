@@ -1,0 +1,66 @@
+{
+  "identifier" : "8A2F3C10",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "1.99",
+      "familyShareable" : false,
+      "internalID" : "5B1E4A22",
+      "localizations" : [
+        {
+          "description" : "Suspends alarm triggers for 12 hours. Your streak stays alive without snoozing during that window.",
+          "displayName" : "12 Hours of Peace",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.meeglosh.AlarmClockSimulator.streakFreeze12h",
+      "referenceName" : "12 Hours of Peace",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "9C3D5E44",
+      "localizations" : [
+
+      ],
+      "name" : "Streak Freezes",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "4.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "7D4F6A88",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Alarms never end your game, even if the hammer is used accidentally.",
+              "displayName" : "Unlimited Streak Freezes",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.meeglosh.AlarmClockSimulator.unlimitedFreezes.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Unlimited Streak Freezes Monthly",
+          "subscriptionGroupID" : "9C3D5E44",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 2,
+    "minor" : 0
+  }
+}

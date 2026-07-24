@@ -8,7 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		16F36FC5651D078BEC37BCB4 /* AlarmClockSimulatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F966B352B1CD9709CB60DE /* AlarmClockSimulatorApp.swift */; };
+		82B7567258E7197B908C13BB /* Configuration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 1ADEF8FE2F9B9A6B03AC92DA /* Configuration.storekit */; };
+		854075B60FCE7EB9CFCA2ED3 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF56BFB4FB5049860F3DE321 /* StoreManager.swift */; };
+		B127841E902ABB81C3CE9411 /* StoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EC2A7BB62D7FB9694232A5 /* StoreView.swift */; };
 		B7A341E6CAE9EABF0020B089 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD902450DD0B1988707F45A /* ContentView.swift */; };
+		CD88DA24F4E2D3A8ACA37E6D /* StoreManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D06D586AB36FFDFD77C5FFD /* StoreManagerTests.swift */; };
 		E24A2CFA2F298E3DB20C4F48 /* AlarmClockSimulatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07BEAF55C47B16F210C0421 /* AlarmClockSimulatorTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -25,11 +29,15 @@
 /* Begin PBXFileReference section */
 		041A1679445689B8F8931D3E /* AlarmClockSimulator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AlarmClockSimulator.entitlements; sourceTree = "<group>"; };
 		0A31ADC6FD6454C5A88D68CC /* AlarmClockSimulatorTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AlarmClockSimulatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1ADEF8FE2F9B9A6B03AC92DA /* Configuration.storekit */ = {isa = PBXFileReference; path = Configuration.storekit; sourceTree = "<group>"; };
 		35A638DB20E44347FAF1125A /* AlarmClockSimulator.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AlarmClockSimulator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38F966B352B1CD9709CB60DE /* AlarmClockSimulatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmClockSimulatorApp.swift; sourceTree = "<group>"; };
+		3D06D586AB36FFDFD77C5FFD /* StoreManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManagerTests.swift; sourceTree = "<group>"; };
 		55F7202098D477D209DE0624 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		80EC2A7BB62D7FB9694232A5 /* StoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreView.swift; sourceTree = "<group>"; };
 		A07BEAF55C47B16F210C0421 /* AlarmClockSimulatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmClockSimulatorTests.swift; sourceTree = "<group>"; };
 		AAD902450DD0B1988707F45A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		CF56BFB4FB5049860F3DE321 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -48,6 +56,7 @@
 				041A1679445689B8F8931D3E /* AlarmClockSimulator.entitlements */,
 				55F7202098D477D209DE0624 /* Info.plist */,
 				6A581A56807CD15AFA157B5D /* App */,
+				6A626BB9DB0670747D9A7BFE /* Store */,
 				EE8F53E6935786D22FF30BAB /* Views */,
 			);
 			path = AlarmClockSimulator;
@@ -61,9 +70,18 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		6A626BB9DB0670747D9A7BFE /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				CF56BFB4FB5049860F3DE321 /* StoreManager.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
 		6C51DBCD8E2F9710F71920B7 = {
 			isa = PBXGroup;
 			children = (
+				1ADEF8FE2F9B9A6B03AC92DA /* Configuration.storekit */,
 				4D8BA6D8D010BB2CE03F3DBD /* AlarmClockSimulator */,
 				6E5AE2CADE7832E5C6A15021 /* AlarmClockSimulatorTests */,
 				4757CEEB7FCEB81B3C19F44B /* Products */,
@@ -74,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				A07BEAF55C47B16F210C0421 /* AlarmClockSimulatorTests.swift */,
+				3D06D586AB36FFDFD77C5FFD /* StoreManagerTests.swift */,
 			);
 			path = AlarmClockSimulatorTests;
 			sourceTree = "<group>";
@@ -82,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				AAD902450DD0B1988707F45A /* ContentView.swift */,
+				80EC2A7BB62D7FB9694232A5 /* StoreView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -94,6 +114,7 @@
 			buildConfigurationList = DEA1E15D9A0403F806CD7785 /* Build configuration list for PBXNativeTarget "AlarmClockSimulatorTests" */;
 			buildPhases = (
 				B66AC740EC6B810CE369C490 /* Sources */,
+				2EFAF5703EC791AA09C95CB8 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -134,11 +155,11 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					C2A325F377802414679111AE = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = 7K9WY5T49S;
 						ProvisioningStyle = Automatic;
 					};
 					F97A22D1873E620232D1DCA7 = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = 7K9WY5T49S;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -163,6 +184,17 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		2EFAF5703EC791AA09C95CB8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				82B7567258E7197B908C13BB /* Configuration.storekit in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		4780993E3A419FCFE8F24946 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -170,6 +202,8 @@
 			files = (
 				16F36FC5651D078BEC37BCB4 /* AlarmClockSimulatorApp.swift in Sources */,
 				B7A341E6CAE9EABF0020B089 /* ContentView.swift in Sources */,
+				854075B60FCE7EB9CFCA2ED3 /* StoreManager.swift in Sources */,
+				B127841E902ABB81C3CE9411 /* StoreView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,6 +212,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E24A2CFA2F298E3DB20C4F48 /* AlarmClockSimulatorTests.swift in Sources */,
+				CD88DA24F4E2D3A8ACA37E6D /* StoreManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,7 +283,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 7K9WY5T49S;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -274,6 +309,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -291,6 +327,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -340,7 +377,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 7K9WY5T49S;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
