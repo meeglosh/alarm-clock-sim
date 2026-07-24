@@ -121,6 +121,11 @@ struct StreakEndedView: View {
             .contentColumn()
         }
         .background(Palette.background)
+        .overlay(alignment: .topLeading) {
+            MusicToggleButton()
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
+        }
     }
 
     private var heroWithSmoke: some View {

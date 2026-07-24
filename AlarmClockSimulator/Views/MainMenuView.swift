@@ -14,7 +14,11 @@ struct MainMenuView: View {
     var body: some View {
         ZStack {
             VStack(spacing: 10) {
-                CollapsibleHUD(isExpanded: $hudExpanded, onRankTap: { onSheet(.leaderboard) })
+                CollapsibleHUD(
+                    isExpanded: $hudExpanded,
+                    showsMusicToggle: true,
+                    onRankTap: { onSheet(.leaderboard) }
+                )
                 Spacer()
                 Button {
                     onPlay()

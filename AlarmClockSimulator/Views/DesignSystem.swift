@@ -434,11 +434,33 @@ private struct HUDCornerButton: View {
     }
 }
 
-/// The streak/rank HUD collapsed into corner icon buttons so the title art
-/// stays unobstructed; tapping either expands the full pills, with a
-/// chevron chip to tuck them away again.
+/// Corner mute/unmute toggle, shown only on screens that play music.
+struct MusicToggleButton: View {
+    @Environment(MusicPlayer.self) private var music
+
+    var body: some View {
+        Button {
+            music.toggleMuted()
+        } label: {
+            Image(systemName: music.isMuted ? "speaker.slash.fill" : "speaker.wave.2.fill")
+                .font(.system(size: 18, weight: .bold))
+                .foregroundStyle(.white.opacity(0.85))
+                .frame(width: 48, height: 48)
+                .background(Circle().fill(Palette.panel.opacity(0.92)))
+                .overlay(Circle().strokeBorder(Palette.panelBorder, lineWidth: 1))
+                .shadow(color: .black.opacity(0.4), radius: 4, y: 2)
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+/// The streak/rank HUD collapsed into a trophy corner button so the title
+/// art stays unobstructed; tapping it expands the full pills, with a
+/// chevron chip or an upward swipe to tuck them away again. Screens with
+/// music show the mute toggle in the opposite corner.
 struct CollapsibleHUD: View {
     @Binding var isExpanded: Bool
+    var showsMusicToggle = false
     var onRankTap: () -> Void
 
     var body: some View {
@@ -470,8 +492,8 @@ struct CollapsibleHUD: View {
                 .transition(.move(edge: .top).combined(with: .opacity))
             } else {
                 HStack {
-                    HUDCornerButton(emoji: "🔥") {
-                        withAnimation(.spring(duration: 0.35)) { isExpanded = true }
+                    if showsMusicToggle {
+                        MusicToggleButton()
                     }
                     Spacer()
                     HUDCornerButton(emoji: "🏆") {
