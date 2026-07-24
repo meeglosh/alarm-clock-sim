@@ -127,10 +127,15 @@ struct StreakEndedView: View {
         .padding(.vertical, 8)
         .contentColumn()
         .background(Palette.background.ignoresSafeArea())
-        .overlay(alignment: .topLeading) {
-            MusicToggleButton()
-                .padding(.horizontal, 16)
-                .padding(.top, 8)
+        .overlay(alignment: .top) {
+            HStack {
+                MusicToggleButton()
+                Spacer()
+            }
+            .padding(.horizontal, 16)
+            .contentColumn()
+            .padding(.top, 36)
+            .ignoresSafeArea(edges: .top)
         }
         .onAppear {
             music.setSmoldering(true)
