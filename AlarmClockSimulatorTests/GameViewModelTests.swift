@@ -199,6 +199,51 @@ final class GameViewModelTests: XCTestCase {
         XCTAssertEqual(vm.firstUncoveredAlarmDate(), t0.addingTimeInterval(600))
     }
 
+    // MARK: - Daily counters and missions
+
+    func testDailyCountersAccumulateAndRollOver() {
+        let vm = makeViewModel()
+        vm.startRun(now: t0)
+        vm.reconcile(now: t0.addingTimeInterval(600))
+        vm.snooze(now: t0.addingTimeInterval(605))
+        vm.smash(now: t0.addingTimeInterval(700))
+
+        XCTAssertEqual(vm.dailyRuns, 1)
+        XCTAssertEqual(vm.dailySnoozes, 1)
+        XCTAssertEqual(vm.dailySmashes, 1)
+
+        // Two days later everything resets on the next action.
+        let later = t0.addingTimeInterval(2 * 86_400)
+        vm.startRun(now: later)
+
+        XCTAssertEqual(vm.dailyRuns, 1)
+        XCTAssertEqual(vm.dailySnoozes, 0)
+        XCTAssertEqual(vm.dailySmashes, 0)
+        XCTAssertEqual(vm.dailyBestStreak, 0)
+    }
+
+    func testMissionProgressCapsAtTargetAndIgnoresStaleDays() {
+        let vm = makeViewModel()
+        let mission = DailyMission(
+            metric: .snoozes,
+            target: 2,
+            title: "TEST",
+            objective: "",
+            flavor: "",
+            emoji: "😴"
+        )
+        vm.startRun(now: t0)
+        vm.reconcile(now: t0.addingTimeInterval(600))
+        vm.snooze(now: t0.addingTimeInterval(605))
+        vm.reconcile(now: t0.addingTimeInterval(1205))
+        vm.snooze(now: t0.addingTimeInterval(1210))
+        vm.reconcile(now: t0.addingTimeInterval(1810))
+        vm.snooze(now: t0.addingTimeInterval(1815))
+
+        XCTAssertEqual(vm.missionProgress(for: mission, now: t0.addingTimeInterval(1820)), 2)
+        XCTAssertEqual(vm.missionProgress(for: mission, now: t0.addingTimeInterval(2 * 86_400)), 0)
+    }
+
     // MARK: - Run-end hook
 
     func testOnRunEndedFiresWithFinalStreakOnSmash() {

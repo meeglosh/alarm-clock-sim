@@ -120,7 +120,7 @@ struct RootView: View {
         case .stats:
             StatsView()
         case .missions:
-            ComingSoonView(emoji: "🎯", title: "MISSIONS", quip: "Daily dares for serial snoozers.")
+            MissionsView()
         case .collection:
             ComingSoonView(emoji: "⏰", title: "COLLECTION", quip: "A museum of clocks you have silenced.")
         case .disclaimer:
@@ -163,6 +163,8 @@ struct RootView: View {
         game.debugResetToIdle()
         if args.contains("-uiDisclaimer") {
             flow = .disclaimer
+        } else if args.contains("-uiMissions") {
+            activeSheet = .missions
         } else if args.contains("-uiPlay") {
             game.startRun()
         } else if args.contains("-uiRinging") {

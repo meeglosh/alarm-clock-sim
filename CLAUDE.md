@@ -26,7 +26,7 @@ Streaks post to a **global leaderboard**. Monetization via streak freezes (see I
 - Snooze is **+10 minutes** (game rule), not the mockup's +5.
 - No coin economy: the daily challenge shows progress and a star, no fake "250" reward.
 - The hammer is a **hold-to-smash button** (0.7s hold, red glow buildup), not a drag gesture; the mockups show a SMASH button and the hold is the accidental-smash protection.
-- Missions and Collection tabs are styled Coming Soon screens; Stats is real (lifetime counters). Leaderboard is Global/all-time only (no Friends/Weekly tabs; Weekly would need a recurring leaderboard in ASC).
+- **Missions are procedurally generated**: `ViewModels/DailyMission.swift` derives one mission per calendar day from a date-seeded splitmix64 RNG (template x target x flavor line), so the supply is effectively infinite, deterministic across launches/reinstalls, and flips at local midnight with no server. Progress comes from per-day counters in GameViewModel (dailySnoozes/dailyRuns/dailySmashes/dailyBestStreak) that roll over via the shared day stamp. Completion is cosmetic (no reward economy). Collection remains a Coming Soon screen; Stats is real (lifetime counters). Leaderboard is Global/all-time only (no Friends/Weekly tabs; Weekly would need a recurring leaderboard in ASC).
 - The rank pill's "TOP x%" comes from live Game Center data and shows placeholders until authenticated.
 - The HUD is **collapsed by default** into corner icon buttons (flame top-left, trophy top-right) on the menu and play screens so the title art, clock, and hammer stay unobstructed; tapping either expands the full pills, and a chevron chip collapses them again. The art renders top-anchored at its natural full-bleed position.
 

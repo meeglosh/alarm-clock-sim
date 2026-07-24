@@ -63,8 +63,12 @@ final class GameViewModel {
     private(set) var totalSmashes = 0
     private(set) var totalOversleeps = 0
     private(set) var freezesApplied = 0
-    /// Best streak achieved today (any run); drives the daily challenge.
+    /// Per-day counters (reset at local midnight); drive the daily
+    /// challenge bar and daily mission progress.
     private(set) var dailyBestStreak = 0
+    private(set) var dailySnoozes = 0
+    private(set) var dailyRuns = 0
+    private(set) var dailySmashes = 0
 
     let configuration: Configuration
 
@@ -92,6 +96,9 @@ final class GameViewModel {
         static let totalOversleeps = "game.totalOversleeps"
         static let freezesApplied = "game.freezesApplied"
         static let dailyBestStreak = "game.dailyBestStreak"
+        static let dailySnoozes = "game.dailySnoozes"
+        static let dailyRuns = "game.dailyRuns"
+        static let dailySmashes = "game.dailySmashes"
         static let dailyStamp = "game.dailyStamp"
     }
 
@@ -119,6 +126,8 @@ final class GameViewModel {
         nextAlarmDate = now.addingTimeInterval(configuration.alarmInterval)
         phase = .counting
         totalRuns += 1
+        rollDailyCountersIfNeeded(now: now)
+        dailyRuns += 1
         persist()
     }
 
@@ -132,6 +141,8 @@ final class GameViewModel {
     func smash(now: Date = Date()) {
         guard phase.isRunActive else { return }
         totalSmashes += 1
+        rollDailyCountersIfNeeded(now: now)
+        dailySmashes += 1
         endRun(.smashed)
         feedback?.smashed()
         syncRingingFeedback()
@@ -183,6 +194,19 @@ final class GameViewModel {
     func dailyChallengeProgress(now: Date = Date()) -> Int {
         guard isSameChallengeDay(now) else { return 0 }
         return min(dailyBestStreak, Self.dailyChallengeTarget)
+    }
+
+    /// Progress toward today's mission, capped at its target. Yesterday's
+    /// counters never leak in: a stale day stamp reads as zero.
+    func missionProgress(for mission: DailyMission, now: Date = Date()) -> Int {
+        guard isSameChallengeDay(now) else { return 0 }
+        let value = switch mission.metric {
+        case .bestStreak: dailyBestStreak
+        case .snoozes: dailySnoozes
+        case .runs: dailyRuns
+        case .smashes: dailySmashes
+        }
+        return min(value, mission.target)
     }
 
     // MARK: - Time
@@ -244,11 +268,18 @@ final class GameViewModel {
         streak += 1
         bestStreak = max(bestStreak, streak)
         totalSnoozes += 1
-        if !isSameChallengeDay(now) {
-            dailyBestStreak = 0
-            defaults.set(challengeDayStamp(now), forKey: Key.dailyStamp)
-        }
+        rollDailyCountersIfNeeded(now: now)
+        dailySnoozes += 1
         dailyBestStreak = max(dailyBestStreak, streak)
+    }
+
+    private func rollDailyCountersIfNeeded(now: Date) {
+        guard !isSameChallengeDay(now) else { return }
+        defaults.set(challengeDayStamp(now), forKey: Key.dailyStamp)
+        dailyBestStreak = 0
+        dailySnoozes = 0
+        dailyRuns = 0
+        dailySmashes = 0
     }
 
     private func endRun(_ reason: GameOverReason, overslept: Bool = false) {
@@ -303,6 +334,9 @@ final class GameViewModel {
         defaults.set(totalOversleeps, forKey: Key.totalOversleeps)
         defaults.set(freezesApplied, forKey: Key.freezesApplied)
         defaults.set(dailyBestStreak, forKey: Key.dailyBestStreak)
+        defaults.set(dailySnoozes, forKey: Key.dailySnoozes)
+        defaults.set(dailyRuns, forKey: Key.dailyRuns)
+        defaults.set(dailySmashes, forKey: Key.dailySmashes)
         setDate(nextAlarmDate, forKey: Key.nextAlarm)
         setDate(ringingSince, forKey: Key.ringingSince)
         setDate(freezeExpiry, forKey: Key.freezeExpiry)
@@ -317,6 +351,9 @@ final class GameViewModel {
         totalOversleeps = defaults.integer(forKey: Key.totalOversleeps)
         freezesApplied = defaults.integer(forKey: Key.freezesApplied)
         dailyBestStreak = defaults.integer(forKey: Key.dailyBestStreak)
+        dailySnoozes = defaults.integer(forKey: Key.dailySnoozes)
+        dailyRuns = defaults.integer(forKey: Key.dailyRuns)
+        dailySmashes = defaults.integer(forKey: Key.dailySmashes)
         guard defaults.bool(forKey: Key.runActive) else { return }
         streak = defaults.integer(forKey: Key.streak)
         nextAlarmDate = date(forKey: Key.nextAlarm)
