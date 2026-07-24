@@ -114,6 +114,14 @@ extension View {
         frame(maxWidth: maxWidth)
             .frame(maxWidth: .infinity)
     }
+
+    /// Matches the artwork's camera angle for anything drawn on the alarm
+    /// clock's glass: the face's right side recedes and tilts a hair, so
+    /// overlays read as lit segments on the clock instead of a flat layer.
+    func clockGlassPerspective() -> some View {
+        rotation3DEffect(.degrees(13), axis: (x: 0, y: 1, z: 0), perspective: 0.5)
+            .rotationEffect(.degrees(-1.6))
+    }
 }
 
 /// A full-width hero band that never expands its container: the image fills

@@ -113,8 +113,7 @@ struct MainMenuView: View {
                     .padding(.horizontal, rect.width * 0.05)
                 )
                 .frame(width: rect.width, height: rect.height)
-                .rotation3DEffect(.degrees(-9), axis: (x: 0, y: 1, z: 0), perspective: 0.4)
-                .rotationEffect(.degrees(-1.2))
+                .clockGlassPerspective()
                 .position(x: rect.midX, y: rect.midY)
         }
     }

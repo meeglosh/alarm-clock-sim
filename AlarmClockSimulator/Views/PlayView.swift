@@ -96,11 +96,7 @@ struct PlayView: View {
                 .padding(.horizontal, rect.width * 0.05)
             )
             .frame(width: rect.width, height: rect.height)
-            // Matches the artwork's camera angle: the clock's right side
-            // recedes and the face tilts a hair, so the live digits sit on
-            // the glass instead of floating flat over it.
-            .rotation3DEffect(.degrees(-9), axis: (x: 0, y: 1, z: 0), perspective: 0.4)
-            .rotationEffect(.degrees(-1.2))
+            .clockGlassPerspective()
             .position(x: rect.midX, y: rect.midY)
     }
 
