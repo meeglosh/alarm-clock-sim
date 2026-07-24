@@ -96,7 +96,7 @@ struct MainMenuView: View {
     /// artwork's baked "06:30" via the same LCD treatment (and perspective)
     /// the play screen uses for its countdown.
     private func currentTimeOverlay(_ layout: SceneImageLayout) -> some View {
-        let rect = layout.rect(x: 0.325, y: 0.495, width: 0.485, height: 0.115)
+        let rect = layout.rect(x: 0.2675, y: 0.480, width: 0.75, height: 0.135)
         return TimelineView(.everyMinute) { context in
             let (digits, meridiem) = clockText(for: context.date)
             RoundedRectangle(cornerRadius: rect.height * 0.16)

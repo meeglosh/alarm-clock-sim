@@ -116,11 +116,19 @@ extension View {
     }
 
     /// Matches the artwork's camera angle for anything drawn on the alarm
-    /// clock's glass: the face's right side recedes and tilts a hair, so
-    /// overlays read as lit segments on the clock instead of a flat layer.
+    /// clock's glass: the face's right side recedes so overlays read as lit
+    /// segments on the clock instead of a flat layer. Anchored near the
+    /// panel's left edge (not center) so that edge stays glued to the
+    /// physical bezel exactly where it already lined up, and only the
+    /// right side rotates away — a centered anchor made the top-right
+    /// corner sag below the bezel's top edge relative to the top-left.
     func clockGlassPerspective() -> some View {
-        rotation3DEffect(.degrees(13), axis: (x: 0, y: 1, z: 0), perspective: 0.5)
-            .rotationEffect(.degrees(-1.6))
+        rotation3DEffect(
+            .degrees(28),
+            axis: (x: 0, y: 1, z: 0),
+            anchor: UnitPoint(x: 0.12, y: 0.5),
+            perspective: 0.7
+        )
     }
 }
 
