@@ -443,6 +443,26 @@ private struct HUDCornerButton: View {
     }
 }
 
+/// Top-left BACK affordance shared by every action sheet.
+struct SheetBackButton: View {
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        Button {
+            dismiss()
+        } label: {
+            Label("BACK", systemImage: "arrow.left")
+                .font(.system(size: 13, weight: .heavy))
+                .foregroundStyle(.white)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 8)
+                .gamePanel(cornerRadius: 12)
+        }
+        .buttonStyle(.plain)
+        .padding(12)
+    }
+}
+
 /// Corner mute/unmute toggle, shown only on screens that play music.
 struct MusicToggleButton: View {
     @Environment(MusicPlayer.self) private var music

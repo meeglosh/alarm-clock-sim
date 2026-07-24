@@ -95,6 +95,9 @@ struct MissionsView: View {
             }
             .background(Palette.background)
             .preferredColorScheme(.dark)
+            .overlay(alignment: .topLeading) {
+                SheetBackButton()
+            }
         }
     }
 

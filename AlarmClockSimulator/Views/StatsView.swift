@@ -43,6 +43,9 @@ struct StatsView: View {
         }
         .background(Palette.background)
         .preferredColorScheme(.dark)
+        .overlay(alignment: .topLeading) {
+            SheetBackButton()
+        }
     }
 }
 
@@ -65,5 +68,8 @@ struct ComingSoonView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Palette.background)
         .preferredColorScheme(.dark)
+        .overlay(alignment: .topLeading) {
+            SheetBackButton()
+        }
     }
 }
