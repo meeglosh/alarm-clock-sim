@@ -8,6 +8,14 @@ private struct HUDBottomPreferenceKey: PreferenceKey {
     }
 }
 
+private struct PlayTopPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
+    }
+}
+
 /// Idle-phase home screen over the full title artwork: HUD, PLAY,
 /// leaderboard/settings, daily challenge, tab bar.
 struct MainMenuView: View {
@@ -15,9 +23,12 @@ struct MainMenuView: View {
     var onSheet: (GameSheet) -> Void
     var onPlay: () -> Void
 
-    /// Measured bottom edge of the HUD pills in screen coordinates; the
-    /// background art is pushed down so the baked title clears it.
+    /// Measured bottom edge of the HUD pills and top edge of the PLAY
+    /// button, in screen coordinates. The background art is scaled and
+    /// positioned so the baked title through the full clock fits between
+    /// them.
     @State private var hudBottom: CGFloat = 0
+    @State private var playTop: CGFloat = 0
 
     var body: some View {
         ZStack {
@@ -41,6 +52,14 @@ struct MainMenuView: View {
                     }
                 }
                 .buttonStyle(ChunkyButtonStyle(style: .gold, height: 62))
+                .background(
+                    GeometryReader { proxy in
+                        Color.clear.preference(
+                            key: PlayTopPreferenceKey.self,
+                            value: proxy.frame(in: .global).minY
+                        )
+                    }
+                )
 
                 HStack(spacing: 12) {
                     Button {
@@ -75,24 +94,49 @@ struct MainMenuView: View {
             .contentColumn()
         }
         .onPreferenceChange(HUDBottomPreferenceKey.self) { hudBottom = $0 }
+        .onPreferenceChange(PlayTopPreferenceKey.self) { playTop = $0 }
         .background {
             ZStack {
                 Palette.background
-                // Top-anchored fill: when tall screens (iPad) crop the art,
-                // sacrifice the table edge, never the title. The art is then
-                // pushed down until the baked title (with its lightning-bolt
-                // accents, starting at ~7.5% of the art's height) clears the
-                // measured HUD bottom; the revealed top strip is dark and
-                // blends into the backdrop.
+                // The hero band of the art (title top through the clock's
+                // base, 7.2%-63.5% of its height) must fit between the
+                // measured HUD bottom and PLAY top. When the band is too
+                // short for a full-width fill, the art scales down and
+                // letterboxes with soft-faded edges; otherwise it fills the
+                // screen width as usual.
                 GeometryReader { geo in
-                    let scale = max(geo.size.width / 852, geo.size.height / 1847)
-                    let titleTop = 0.075 * 1847 * scale
+                    let titleTopFrac: CGFloat = 0.072
+                    let clockBottomFrac: CGFloat = 0.635
+                    let widthScale = max(geo.size.width / 852, geo.size.height / 1847)
+                    let bandTop = hudBottom + 8
+                    let bandBottom = playTop - 8
+                    let bandHeight = bandBottom - bandTop
+                    let hasMeasurements = hudBottom > 0 && playTop > 0 && bandHeight > 100
+                    let fitScale = hasMeasurements
+                        ? bandHeight / ((clockBottomFrac - titleTopFrac) * 1847)
+                        : widthScale
+                    let scale = min(widthScale, fitScale)
+                    let width = 852 * scale
+                    let height = 1847 * scale
+                    let yOffset = hasMeasurements
+                        ? bandTop - titleTopFrac * height
+                        : 0
                     Image("bgMain")
                         .resizable()
-                        .scaledToFill()
-                        .frame(width: geo.size.width, height: geo.size.height, alignment: .top)
-                        .clipped()
-                        .offset(y: max(0, hudBottom + 14 - titleTop))
+                        .frame(width: width, height: height)
+                        .mask(
+                            LinearGradient(
+                                stops: [
+                                    .init(color: .clear, location: 0),
+                                    .init(color: .black, location: 0.05),
+                                    .init(color: .black, location: 0.95),
+                                    .init(color: .clear, location: 1),
+                                ],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .position(x: geo.size.width / 2, y: yOffset + height / 2)
                 }
                 LinearGradient(
                     stops: [
