@@ -78,11 +78,9 @@ struct PlayView: View {
     // MARK: - LCD
 
     private func lcdOverlay(_ layout: SceneImageLayout) -> some View {
-        // Covers the artwork's baked "06:30 AM" + bell region. Widened
-        // symmetrically (center held at ~0.5675) so the perspective tilt
-        // can't recede the panel's right edge enough to expose the baked
-        // "AM"/bell behind it; the extra coverage lands on black screen.
-        let rect = layout.rect(x: 0.2675, y: 0.480, width: 0.75, height: 0.135)
+        // Covers the artwork's baked "06:30" screen region (fractions
+        // measured against the full-bleed loader render).
+        let rect = layout.rect(x: 0.325, y: 0.495, width: 0.485, height: 0.115)
         let digitColor = isRinging ? Palette.lcdOrange : Palette.lcdRed
         return RoundedRectangle(cornerRadius: rect.height * 0.16)
             .fill(Color(red: 0.03, green: 0.015, blue: 0.015))
