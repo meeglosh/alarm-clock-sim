@@ -69,7 +69,7 @@ struct PlayView: View {
             if isRinging { startRingingEffects() }
         }
         .overlay(alignment: .top) {
-            HUDCornerButtons(isExpanded: $hudExpanded)
+            HUDCornerButtons(isExpanded: $hudExpanded, showsStreak: true)
                 .padding(.horizontal, 16)
                 .contentColumn()
                 .padding(.top, 36)

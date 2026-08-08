@@ -483,6 +483,28 @@ struct MusicToggleButton: View {
     }
 }
 
+/// Minimal always-visible streak readout for the corner, so checking the
+/// current count doesn't require expanding the full HUD.
+struct MiniStreakBadge: View {
+    @Environment(GameViewModel.self) private var game
+
+    var body: some View {
+        HStack(spacing: 6) {
+            Text("🔥").font(.system(size: 17))
+            Text("\(game.streak)")
+                .font(.system(size: 18, weight: .black, design: .rounded))
+                .foregroundStyle(.white)
+                .contentTransition(.numericText())
+        }
+        .padding(.horizontal, 14)
+        .frame(height: 48)
+        .background(Capsule().fill(Palette.panel.opacity(0.92)))
+        .overlay(Capsule().strokeBorder(Palette.panelBorder, lineWidth: 1))
+        .shadow(color: .black.opacity(0.4), radius: 4, y: 2)
+        .animation(.spring(duration: 0.3), value: game.streak)
+    }
+}
+
 /// The streak/rank HUD, expanded state only. Collapsed, this reserves the
 /// same footprint invisibly so the rest of the screen's layout doesn't
 /// shift — the visible collapsed buttons live in `HUDCornerButtons`,
@@ -535,11 +557,14 @@ struct CollapsibleHUD: View {
 struct HUDCornerButtons: View {
     @Binding var isExpanded: Bool
     var showsMusicToggle = false
+    var showsStreak = false
 
     var body: some View {
         HStack {
             if showsMusicToggle {
                 MusicToggleButton()
+            } else if showsStreak {
+                MiniStreakBadge()
             }
             Spacer()
             HUDCornerButton(emoji: "🏆") {
