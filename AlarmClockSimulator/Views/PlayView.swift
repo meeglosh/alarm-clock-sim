@@ -28,6 +28,8 @@ struct PlayView: View {
 
                     if isRinging {
                         bolts(layout)
+                    } else {
+                        nextAlarmCaption(layout)
                     }
                 }
             }
@@ -180,7 +182,7 @@ struct PlayView: View {
             .buttonStyle(ChunkyButtonStyle(style: .snooze, height: 72))
             .shadow(color: Palette.lcdOrange.opacity(snoozePulse ? 0.95 : 0.4), radius: snoozePulse ? 22 : 10)
         } else {
-            countdownCaption
+            freezeCaption
             Button {
                 onSheet(.shop)
             } label: {
@@ -192,15 +194,26 @@ struct PlayView: View {
         HoldToSmashButton(onSmash: onSmash)
     }
 
-    private var countdownCaption: some View {
-        HStack(spacing: 8) {
-            freezeStatus
-            Spacer()
-            Text("until the next alarm")
-                .font(.system(size: 12, weight: .medium))
-                .foregroundStyle(.white.opacity(0.65))
+    /// Positioned right beneath the clock face/base, on the artwork itself,
+    /// rather than down with the buttons — reads as belonging to the clock.
+    private func nextAlarmCaption(_ layout: SceneImageLayout) -> some View {
+        let rect = layout.rect(x: 0.30, y: 0.618, width: 0.55, height: 0.001)
+        return Text("until the next alarm")
+            .font(.system(size: 12, weight: .medium))
+            .foregroundStyle(.white.opacity(0.8))
+            .shadow(color: .black.opacity(0.9), radius: 3)
+            .position(x: rect.midX, y: rect.minY)
+    }
+
+    @ViewBuilder
+    private var freezeCaption: some View {
+        if game.isFreezeActive(at: game.displayNow) {
+            HStack(spacing: 8) {
+                freezeStatus
+                Spacer()
+            }
+            .padding(.horizontal, 4)
         }
-        .padding(.horizontal, 4)
     }
 
     @ViewBuilder
