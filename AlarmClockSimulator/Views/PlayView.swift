@@ -194,10 +194,11 @@ struct PlayView: View {
         HoldToSmashButton(onSmash: onSmash)
     }
 
-    /// Positioned right beneath the clock face/base, on the artwork itself,
-    /// rather than down with the buttons — reads as belonging to the clock.
+    /// Positioned in the empty table space to the clock's lower-right —
+    /// near the mug, above the hammer — rather than overlapping the clock
+    /// or living down with the buttons.
     private func nextAlarmCaption(_ layout: SceneImageLayout) -> some View {
-        let rect = layout.rect(x: 0.30, y: 0.618, width: 0.55, height: 0.001)
+        let rect = layout.rect(x: 0.55, y: 0.648, width: 0.40, height: 0.001)
         return Text("until the next alarm")
             .font(.system(size: 12, weight: .medium))
             .foregroundStyle(.white.opacity(0.8))
