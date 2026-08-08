@@ -181,6 +181,8 @@ struct RootView: View {
             activeSheet = .missions
         } else if args.contains("-uiCollection") {
             activeSheet = .collection
+        } else if args.contains("-uiShop") {
+            activeSheet = .shop
         } else if args.contains("-uiSmash") {
             game.startRun()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {

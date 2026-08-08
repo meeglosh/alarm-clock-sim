@@ -184,7 +184,9 @@ struct ShopView: View {
                 .font(.system(size: 10, weight: .medium))
                 .foregroundStyle(.white.opacity(0.8))
                 .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
         }
+        .padding(.horizontal, 6)
         .frame(maxWidth: .infinity)
     }
 
