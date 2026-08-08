@@ -103,13 +103,15 @@ struct MainMenuView: View {
                 .fill(Color(red: 0.03, green: 0.015, blue: 0.015))
                 .overlay(
                     VStack(spacing: rect.height * 0.07) {
-                        HStack(alignment: .lastTextBaseline, spacing: rect.width * 0.03) {
+                        HStack(alignment: .lastTextBaseline, spacing: meridiem.isEmpty ? 0 : rect.width * 0.03) {
                             Text(digits)
                                 .font(LCDFont.digits(rect.height * 0.52))
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.4)
-                            Text(meridiem)
-                                .font(.system(size: rect.height * 0.16, weight: .heavy, design: .monospaced))
+                            if !meridiem.isEmpty {
+                                Text(meridiem)
+                                    .font(.system(size: rect.height * 0.16, weight: .heavy, design: .monospaced))
+                            }
                         }
                         .foregroundStyle(Palette.lcdRed)
                         .shadow(color: Palette.lcdRed.opacity(0.9), radius: 8)
@@ -128,11 +130,24 @@ struct MainMenuView: View {
         }
     }
 
+    /// 12-hour with AM/PM where the device's locale/region prefers it (e.g.
+    /// the US), 24-hour everywhere else — driven by `Locale.current` rather
+    /// than a hardcoded country list, so it also respects a user's manual
+    /// "24-Hour Time" override in iOS Settings.
     private func clockText(for date: Date) -> (String, String) {
         let components = Calendar.current.dateComponents([.hour, .minute], from: date)
         let hour24 = components.hour ?? 0
+        let minute = components.minute ?? 0
+        guard usesTwelveHourClock else {
+            return (String(format: "%02d:%02d", hour24, minute), "")
+        }
         let hour12 = hour24 % 12 == 0 ? 12 : hour24 % 12
-        let digits = String(format: "%d:%02d", hour12, components.minute ?? 0)
+        let digits = String(format: "%d:%02d", hour12, minute)
         return (digits, hour24 < 12 ? "AM" : "PM")
+    }
+
+    private var usesTwelveHourClock: Bool {
+        let template = DateFormatter.dateFormat(fromTemplate: "j", options: 0, locale: .current) ?? ""
+        return template.contains("a")
     }
 }
