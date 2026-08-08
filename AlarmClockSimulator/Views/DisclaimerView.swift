@@ -35,11 +35,6 @@ struct DisclaimerView: View {
                 Button("I UNDERSTAND  ♥") { onDismiss() }
                     .buttonStyle(ChunkyButtonStyle(style: .gold))
 
-                if showsBackToMenu {
-                    Button("BACK TO MENU") { onDismiss() }
-                        .buttonStyle(ChunkyButtonStyle(style: .purple, height: 48))
-                }
-
                 Text("Play responsibly. Rest wins in real life. 🐑")
                     .font(.system(size: 12, weight: .medium))
                     .foregroundStyle(.white.opacity(0.6))
@@ -49,6 +44,25 @@ struct DisclaimerView: View {
         }
         .background(Palette.background)
         .preferredColorScheme(.dark)
+        .overlay(alignment: .topLeading) {
+            // Only when reachable from Settings — first-launch has no
+            // escape route besides I UNDERSTAND, by design.
+            if showsBackToMenu {
+                Button {
+                    onDismiss()
+                } label: {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 15, weight: .bold))
+                        .foregroundStyle(.white)
+                        .frame(width: 36, height: 36)
+                        .background(Circle().fill(Color.black.opacity(0.55)))
+                        .overlay(Circle().strokeBorder(Color.white.opacity(0.3), lineWidth: 1))
+                        .shadow(color: .black.opacity(0.5), radius: 4, y: 2)
+                }
+                .buttonStyle(.plain)
+                .padding(16)
+            }
+        }
     }
 
     private func disclaimerRow(_ emoji: String, _ text: String) -> some View {

@@ -177,6 +177,8 @@ struct RootView: View {
         game.debugResetToIdle()
         if args.contains("-uiDisclaimer") {
             flow = .disclaimer
+        } else if args.contains("-uiDisclaimerSheet") {
+            activeSheet = .disclaimer
         } else if args.contains("-uiMissions") {
             activeSheet = .missions
         } else if args.contains("-uiCollection") {
