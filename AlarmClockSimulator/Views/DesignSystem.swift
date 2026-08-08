@@ -120,7 +120,7 @@ extension View {
     /// overlays read as lit segments on the clock instead of a flat layer.
     func clockGlassPerspective() -> some View {
         rotation3DEffect(.degrees(13), axis: (x: 0, y: 1, z: 0), perspective: 0.5)
-            .rotationEffect(.degrees(-1.6))
+            .rotationEffect(.degrees(-3.6))
     }
 }
 
