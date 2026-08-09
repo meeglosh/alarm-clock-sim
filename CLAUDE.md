@@ -53,8 +53,14 @@ Streaks post to a **global leaderboard**. Monetization via streak freezes (see I
 - Submission is driven by `GameViewModel.onRunEnded` (fires once per run with the final streak, for both smash and oversleep), wired in `App/AlarmClockSimulatorApp.swift`. It is not tied to view lifecycle.
 - `Views/GameCenterView.swift` presents `GKGameCenterViewController`; the Leaderboard button appears on the idle and game-over cards only when authenticated.
 - Leaderboard ID: `com.meeglosh.AlarmClockSimulator.longestStreak` (constant in `GameCenterManager`).
-- **Still needed, App Store Connect (human only):** create a leaderboard with exactly that ID. Classic (not recurring), score format Integer, sort order High to Low, one submission-relevant localization minimum.
+- Done: leaderboard created under the GAPCO app record (Classic, Integer, High to Low, en-US localization "Longest Snooze Streak") via the App Store Connect API — see below.
 - Game Center sign-in and score submission are unreliable in the Simulator; verify on a real device or TestFlight build.
+
+### App Store Connect API access
+- A key exists for scripted App Store Connect changes: Key ID `QGMKYYB893`, Issuer ID `b24f8676-542c-4f39-93de-7f011745a5f0`, private key at `~/.appstoreconnect/private_keys/AuthKey_QGMKYYB893.p8` (note: real path has a leading dot, `~/.appstoreconnect/`, easy to typo as `~/appstoreconnect/`). App Manager scope. The `.p8` lives outside the repo; `*.p8` and `secrets/` are gitignored as a safety net regardless.
+- App Store Connect's official OpenAPI spec (full schema, useful since the web docs don't reliably return content to fetchers) downloads from `https://developer.apple.com/sample-code/app-store-connect/app-store-connect-openapi-specification.zip`.
+- Game Center Leaderboard creation: use the **v1** endpoints (`POST /v1/gameCenterLeaderboards`, `POST /v1/gameCenterLeaderboardLocalizations`) even though the OpenAPI spec marks them `deprecated: true` — they work fine and are far simpler than v2's inline-included-resource pattern (`POST /v2/gameCenterLeaderboards` requires a `versions` relationship correlated to a compound-document `included` resource, whose exact id-correlation semantics aren't clearly documented). A `gameCenterDetail` resource must exist for the app first (`POST /v1/gameCenterDetails` linked to the app if `GET /v1/apps/{id}/gameCenterDetail` returns `data: null`).
+- App Store Connect's numeric "Apple ID" for this app (App Information page) is `6799553201` — this is the app-resource ID used in API paths like `/v1/apps/{id}/...`, distinct from any login Apple ID.
 
 ## In-App Purchases (StoreKit 2)
 - **Consumable**: "12 Hours of Peace" streak freeze — $1.99. Suspends alarm triggers for 12 hours; streak stays alive without snooze taps during that window.
