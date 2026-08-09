@@ -2,3 +2,7 @@
 xcuserdata/
 *.xcuserstate
 build/
+
+# App Store Connect API credentials — never commit these
+*.p8
+secrets/
