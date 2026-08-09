@@ -9,7 +9,7 @@ import UIKit
 @Observable
 final class GameCenterManager {
     /// Must match the leaderboard ID configured in App Store Connect.
-    static let leaderboardID = "com.meeglosh.AlarmClockSimulator.longestStreak"
+    static let leaderboardID = "com.gapco.AlarmClockSimulator.longestStreak"
 
     struct LeaderboardEntry: Identifiable {
         let rank: Int

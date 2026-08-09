@@ -52,8 +52,8 @@ Streaks post to a **global leaderboard**. Monetization via streak freezes (see I
 - `GameCenter/GameCenterManager.swift`: authentication (kicked off from the App's `.task`) and score submission. Failed or unauthenticated submissions persist as a pending high score in UserDefaults and retry after the next successful auth, so game-overs are never dropped. Re-submitting an old best is safe because Game Center keeps each player's highest score.
 - Submission is driven by `GameViewModel.onRunEnded` (fires once per run with the final streak, for both smash and oversleep), wired in `App/AlarmClockSimulatorApp.swift`. It is not tied to view lifecycle.
 - `Views/GameCenterView.swift` presents `GKGameCenterViewController`; the Leaderboard button appears on the idle and game-over cards only when authenticated.
-- Leaderboard ID: `com.meeglosh.AlarmClockSimulator.longestStreak` (constant in `GameCenterManager`).
-- Done: leaderboard created under the GAPCO app record (Classic, Integer, High to Low, en-US localization "Longest Snooze Streak") via the App Store Connect API — see below.
+- Leaderboard ID: `com.gapco.AlarmClockSimulator.longestStreak` (constant in `GameCenterManager`).
+- Done: leaderboard created under the GAPCO app record (Classic, Integer, High to Low, en-US localization "Longest Snooze Streak") via the App Store Connect API — see below. Originally created as `com.meeglosh.AlarmClockSimulator.longestStreak` (matching the pre-GAPCO naming out of inertia), then deleted and recreated under the `com.gapco` prefix once we realized there was no real cost to renaming and no reason to leave a stray `meeglosh` fingerprint in a GAPCO-owned app's config. The two IAP product IDs (StoreManager.swift) are still `com.meeglosh.*` and haven't been revisited yet — worth the same treatment before they're created for real in ASC.
 - Game Center sign-in and score submission are unreliable in the Simulator; verify on a real device or TestFlight build.
 
 ### App Store Connect API access
