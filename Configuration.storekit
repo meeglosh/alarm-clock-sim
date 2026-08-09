@@ -15,7 +15,7 @@
           "locale" : "en_US"
         }
       ],
-      "productID" : "com.meeglosh.AlarmClockSimulator.streakFreeze12h",
+      "productID" : "com.gapco.AlarmClockSimulator.streakFreeze12h",
       "referenceName" : "12 Hours of Peace",
       "type" : "Consumable"
     }
@@ -50,7 +50,7 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "com.meeglosh.AlarmClockSimulator.unlimitedFreezes.monthly",
+          "productID" : "com.gapco.AlarmClockSimulator.unlimitedFreezes.monthly",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Unlimited Streak Freezes Monthly",
           "subscriptionGroupID" : "9C3D5E44",

@@ -1,8 +1,8 @@
 import StoreKit
 
 enum IAPProductID: String, CaseIterable {
-    case streakFreeze12h = "com.meeglosh.AlarmClockSimulator.streakFreeze12h"
-    case unlimitedFreezesMonthly = "com.meeglosh.AlarmClockSimulator.unlimitedFreezes.monthly"
+    case streakFreeze12h = "com.gapco.AlarmClockSimulator.streakFreeze12h"
+    case unlimitedFreezesMonthly = "com.gapco.AlarmClockSimulator.unlimitedFreezes.monthly"
 }
 
 enum StoreError: Error {
