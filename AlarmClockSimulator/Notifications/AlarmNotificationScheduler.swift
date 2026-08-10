@@ -11,6 +11,10 @@ final class AlarmNotificationScheduler {
     nonisolated static let snoozeActionID = "SNOOZE_ACTION"
 
     private(set) var isAuthorized = false
+    /// Explicit tri-state, since callers need to distinguish "never asked"
+    /// (show the priming screen) from "asked and refused" (show the
+    /// ongoing warning banner instead) — `isAuthorized` alone can't.
+    private(set) var authorizationStatus: UNAuthorizationStatus = .notDetermined
 
     @ObservationIgnored private let center = UNUserNotificationCenter.current()
 
@@ -34,6 +38,7 @@ final class AlarmNotificationScheduler {
 
     func refreshAuthorizationStatus() async {
         let settings = await center.notificationSettings()
+        authorizationStatus = settings.authorizationStatus
         switch settings.authorizationStatus {
         case .authorized, .provisional, .ephemeral:
             isAuthorized = true
@@ -42,6 +47,10 @@ final class AlarmNotificationScheduler {
         }
     }
 
+    /// The actual system prompt. Callers should show the in-app priming
+    /// screen first (see `NotificationPrimerView`) — this game is close to
+    /// unplayable with notifications off, so the bare system dialog, with
+    /// no context, is exactly what gets reflexively declined.
     func requestAuthorizationIfNeeded() async {
         let settings = await center.notificationSettings()
         guard settings.authorizationStatus == .notDetermined else {
@@ -49,6 +58,7 @@ final class AlarmNotificationScheduler {
             return
         }
         isAuthorized = (try? await center.requestAuthorization(options: [.alert, .sound])) ?? false
+        await refreshAuthorizationStatus()
     }
 
     func cancelAll() {

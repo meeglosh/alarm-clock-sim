@@ -28,6 +28,7 @@
 		82B7567258E7197B908C13BB /* Configuration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 1ADEF8FE2F9B9A6B03AC92DA /* Configuration.storekit */; };
 		854075B60FCE7EB9CFCA2ED3 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF56BFB4FB5049860F3DE321 /* StoreManager.swift */; };
 		876A2FC08AE69B98E59F1A7D /* ClockCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4D5E7519BBEEA22F01773C /* ClockCollection.swift */; };
+		87C5557822E667A65B422914 /* NotificationPrimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDB69477ADB9AFA89AF1E14 /* NotificationPrimerView.swift */; };
 		8E191CF2C19E31480BF607D4 /* SmashCinematicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08640ED16F0AA84681427D7D /* SmashCinematicView.swift */; };
 		8EF272AA78C061A617E3B4BB /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6B3C3E6CC95061FFF1146 /* StatsView.swift */; };
 		8FB648385EF91FB5F57AA8AC /* AlarmNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39CF93F95CE2FD509EE9C92 /* AlarmNotificationScheduler.swift */; };
@@ -98,6 +99,7 @@
 		E02B65F57EE6E97B42D8F149 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		E93862A43BC2B5DC4AB35B9E /* DisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerView.swift; sourceTree = "<group>"; };
 		EA05B3EB6998D034DCB2BEAD /* DailyMission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyMission.swift; sourceTree = "<group>"; };
+		ECDB69477ADB9AFA89AF1E14 /* NotificationPrimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPrimerView.swift; sourceTree = "<group>"; };
 		ED0423123CEF024F08DD99D0 /* snooze.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snooze.wav; sourceTree = "<group>"; };
 		F02B11F19AAAA0185B836EEF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F39CF93F95CE2FD509EE9C92 /* AlarmNotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmNotificationScheduler.swift; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 				CE2BE88CFB019FD62CF757F6 /* LoaderView.swift */,
 				F48BE6ECDF7E169D3F39B92D /* MainMenuView.swift */,
 				1E62B45C7FB8D08849EE7813 /* MissionsView.swift */,
+				ECDB69477ADB9AFA89AF1E14 /* NotificationPrimerView.swift */,
 				668FB8BEE66643352D23B6AE /* ParticleEffects.swift */,
 				19B052BA5EBF2C08DF99E1D0 /* PlayView.swift */,
 				B15742B3C0C429C7789236B1 /* RootView.swift */,
@@ -365,6 +368,7 @@
 				6C1C2335771F86C5CAF85DB1 /* MainMenuView.swift in Sources */,
 				CDBDF1C8B1A74E0951F38280 /* MissionsView.swift in Sources */,
 				6EA20EAFDD9EA5A9BD0B9A00 /* MusicPlayer.swift in Sources */,
+				87C5557822E667A65B422914 /* NotificationPrimerView.swift in Sources */,
 				F8F6DB736E9DE2F0C0CF1713 /* ParticleEffects.swift in Sources */,
 				6705D2F3B56754F557BCFD17 /* PlayView.swift in Sources */,
 				726D6C5216510630DAD85801 /* RootView.swift in Sources */,

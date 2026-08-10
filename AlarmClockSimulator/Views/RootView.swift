@@ -20,6 +20,7 @@ struct RootView: View {
     @State private var flow: Flow = .loader
     @State private var activeSheet: GameSheet?
     @State private var smashCinematicActive = false
+    @State private var showingNotificationPrimer = false
 
     private static let disclaimerAcceptedKey = "disclaimer.accepted"
 
@@ -52,6 +53,12 @@ struct RootView: View {
                 )
                 .transition(.opacity)
                 .zIndex(10)
+            }
+
+            if showingNotificationPrimer {
+                NotificationPrimerView(onContinue: continueFromNotificationPrimer)
+                    .transition(.opacity)
+                    .zIndex(20)
             }
         }
         .onAppear {
@@ -133,7 +140,22 @@ struct RootView: View {
         }
     }
 
+    /// The first time ever, this game is close to unplayable with
+    /// notifications off, so permission is never requested cold: the first
+    /// PLAY tap (while status is still undetermined) shows an in-app
+    /// explainer first, and only that screen's own button reaches the
+    /// system dialog. Every later PLAY tap (status already decided, either
+    /// way) skips straight to starting the run, same as before.
     private func startRun() {
+        if notifications.authorizationStatus == .notDetermined {
+            showingNotificationPrimer = true
+        } else {
+            game.startRun()
+        }
+    }
+
+    private func continueFromNotificationPrimer() {
+        showingNotificationPrimer = false
         game.startRun()
         Task { await notifications.requestAuthorizationIfNeeded() }
     }
@@ -185,6 +207,8 @@ struct RootView: View {
             activeSheet = .collection
         } else if args.contains("-uiShop") {
             activeSheet = .shop
+        } else if args.contains("-uiNotifPrimer") {
+            showingNotificationPrimer = true
         } else if args.contains("-uiSmash") {
             game.startRun()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {

@@ -6,6 +6,7 @@ import SwiftUI
 /// glowing snooze button.
 struct PlayView: View {
     @Environment(GameViewModel.self) private var game
+    @Environment(AlarmNotificationScheduler.self) private var notifications
     var onSheet: (GameSheet) -> Void
     var onSmash: () -> Void
 
@@ -46,6 +47,8 @@ struct PlayView: View {
                 CollapsibleHUD(isExpanded: $hudExpanded, onRankTap: { onSheet(.leaderboard) })
                 if isRinging {
                     ringingBanner
+                } else if !notifications.isAuthorized {
+                    notificationsOffBanner
                 }
                 Spacer()
                 controls
@@ -159,6 +162,42 @@ struct PlayView: View {
             RoundedRectangle(cornerRadius: 14)
                 .strokeBorder(Color(red: 1, green: 0.42, blue: 0.25).opacity(0.6), lineWidth: 1.5)
         )
+    }
+
+    /// Ongoing reminder while notifications are off: the one-time priming
+    /// screen only covers the moment permission was asked for, but a
+    /// player who declined (or later turned it off in Settings) needs to
+    /// keep seeing why their alarm might not reach them.
+    private var notificationsOffBanner: some View {
+        Button {
+            if let url = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(url)
+            }
+        } label: {
+            HStack(spacing: 10) {
+                Text("🔕")
+                VStack(alignment: .leading, spacing: 1) {
+                    Text("NOTIFICATIONS ARE OFF")
+                        .font(.system(size: 13, weight: .black, design: .rounded))
+                        .foregroundStyle(Palette.danger)
+                    Text("Your alarm can't reach you if you leave the app. Tap to fix.")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(.white.opacity(0.85))
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundStyle(.white.opacity(0.4))
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 9)
+            .background(Color(red: 0.2, green: 0.04, blue: 0.02).opacity(0.88), in: RoundedRectangle(cornerRadius: 14))
+            .overlay(
+                RoundedRectangle(cornerRadius: 14)
+                    .strokeBorder(Palette.danger.opacity(0.5), lineWidth: 1.5)
+            )
+        }
+        .buttonStyle(.plain)
     }
 
     // MARK: - Controls
