@@ -52,7 +52,7 @@ struct PlayView: View {
                     // the HUD row, so this needs its own push-down to clear
                     // "SIMULATOR" instead of sitting right under the HUD.
                     notificationsOffBanner
-                        .padding(.top, 300)
+                        .padding(.top, 225)
                 }
                 Spacer()
                 controls
