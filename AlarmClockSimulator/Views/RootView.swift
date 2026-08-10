@@ -197,6 +197,12 @@ struct RootView: View {
         guard args.contains(where: { $0.hasPrefix("-ui") }) else { return }
         flow = .main
         game.debugResetToIdle()
+        if !args.contains("-uiNotifPrimer") && !args.contains("-uiNotifOffBanner") {
+            notifications.debugForceAuthorized()
+        }
+        if args.contains("-uiNotifOffBanner") {
+            game.startRun()
+        }
         if args.contains("-uiDisclaimer") {
             flow = .disclaimer
         } else if args.contains("-uiDisclaimerSheet") {
@@ -205,7 +211,7 @@ struct RootView: View {
             activeSheet = .missions
         } else if args.contains("-uiCollection") {
             activeSheet = .collection
-        } else if args.contains("-uiShop") {
+        } else if args.contains("-uiShop") || args.contains("-uiUnlimited") {
             activeSheet = .shop
         } else if args.contains("-uiNotifPrimer") {
             showingNotificationPrimer = true

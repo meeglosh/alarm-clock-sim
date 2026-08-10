@@ -37,6 +37,9 @@ final class AlarmNotificationScheduler {
     }
 
     func refreshAuthorizationStatus() async {
+        #if DEBUG
+        guard !debugForcedAuthorized else { return }
+        #endif
         let settings = await center.notificationSettings()
         authorizationStatus = settings.authorizationStatus
         switch settings.authorizationStatus {
@@ -60,6 +63,22 @@ final class AlarmNotificationScheduler {
         isAuthorized = (try? await center.requestAuthorization(options: [.alert, .sound])) ?? false
         await refreshAuthorizationStatus()
     }
+
+    #if DEBUG
+    /// Screenshot harness only: real authorization can't be granted
+    /// without a UI-driven system dialog, so marketing screenshots force
+    /// the authorized state to avoid the "notifications are off" banner.
+    /// `configure()`'s own async refresh (in flight from app launch) would
+    /// otherwise race this and clobber it back to the real (unauthorized)
+    /// system state, so it's suppressed once this is set.
+    private var debugForcedAuthorized = false
+
+    func debugForceAuthorized() {
+        debugForcedAuthorized = true
+        isAuthorized = true
+        authorizationStatus = .authorized
+    }
+    #endif
 
     func cancelAll() {
         center.removeAllPendingNotificationRequests()

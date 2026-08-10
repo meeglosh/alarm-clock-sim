@@ -9,6 +9,9 @@ struct ShopView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var isPurchasing = false
     @State private var errorMessage: String?
+    #if DEBUG
+    @State private var debugPushUnlimited = false
+    #endif
 
     private var freezeProduct: Product? {
         store.products.first { $0.id == IAPProductID.streakFreeze12h.rawValue }
@@ -51,6 +54,16 @@ struct ShopView: View {
                     } else {
                         purchaseCard
                     }
+
+                    #if DEBUG
+                    // Screenshot harness only: jumps straight to the
+                    // subscription screen via `-uiUnlimited` since it's
+                    // otherwise reachable only by a real navigation push.
+                    NavigationLink(isActive: $debugPushUnlimited) {
+                        UnlimitedFreezeView()
+                    } label: { EmptyView() }
+                    .hidden()
+                    #endif
 
                     NavigationLink {
                         UnlimitedFreezeView()
@@ -119,6 +132,13 @@ struct ShopView: View {
             }
             .toolbarBackground(Palette.background, for: .navigationBar)
         }
+        #if DEBUG
+        .onAppear {
+            if ProcessInfo.processInfo.arguments.contains("-uiUnlimited") {
+                debugPushUnlimited = true
+            }
+        }
+        #endif
         .preferredColorScheme(.dark)
         .disabled(isPurchasing)
         .overlay { if isPurchasing { ProgressView().controlSize(.large) } }
