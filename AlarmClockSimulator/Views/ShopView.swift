@@ -283,6 +283,14 @@ struct UnlimitedFreezeView: View {
                 Label("Subscription renews monthly unless cancelled.", systemImage: "info.circle")
                     .font(.system(size: 12, weight: .medium))
                     .foregroundStyle(.white.opacity(0.55))
+
+                HStack(spacing: 6) {
+                    Link("Terms of Use", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
+                    Text("•").foregroundStyle(.white.opacity(0.3))
+                    Link("Privacy Policy", destination: URL(string: "https://claude.ai/code/artifact/79a97938-02d9-4d4d-8016-f8f604e96ae9")!)
+                }
+                .font(.system(size: 12, weight: .semibold))
+                .tint(Palette.cyan)
             }
             .padding(16)
             .contentColumn()
