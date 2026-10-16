@@ -7,9 +7,5 @@ build/
 *.p8
 secrets/
 
-# Local-only marketing assets and App Store preview videos (not stored in git)
+# App Store preview videos (large binaries, kept local only)
 videos/
-img/hero.png
-img/title.png
-img/icon-*.png
-img/final_smash_repaired.png
