@@ -6,7 +6,7 @@ Last updated: 2026-10-16 (evening). This file captures where the project stands 
 
 As of 2026-10-16:
 
-- **1.0.3 (build 7) is `WAITING_FOR_REVIEW`.** Review submission `05870194-3dd2-4d3f-a15b-de5c39a712ff`, appStoreVersion `e5c7a9c7-c703-49e6-a380-42032ff7a696`, build `b6e88fd8-863f-4017-a92e-7cafd285438e`. Release type `AFTER_APPROVAL`. No code changes; it only exists because name/subtitle/keywords/description/category can only change with a new version.
+- **1.0.3 (build 7) is `WAITING_FOR_REVIEW`.** Review submission `98c16612-4dfd-414e-88b3-523db3643255` (resubmitted after canceling the first one, `05870194`, to swap in captioned screenshots), appStoreVersion `e5c7a9c7-c703-49e6-a380-42032ff7a696`, build `b6e88fd8-863f-4017-a92e-7cafd285438e`. Release type `AFTER_APPROVAL`. No code changes; it only exists because name/subtitle/keywords/description/category can only change with a new version.
 - 1.0, 1.0.1, and 1.0.2 are `READY_FOR_SALE`; 1.0.2 is live until 1.0.3 is approved.
 - A stray 1.0 `appStoreVersion` row (`a3d0f80e`) still sits in `PREPARE_FOR_SUBMISSION`. It's left over from a resubmission and is harmless.
 - To re-check status: `python3 scripts/appstoreconnect/asc_api.py GET /v1/apps/6799553201/appStoreVersions` and `GET "/v1/reviewSubmissions?filter[app]=6799553201"`.
@@ -21,9 +21,10 @@ Downloads were low and the self-deprecating "AI slop" pitch wasn't landing, so t
 - **Description:** rewritten around the frustration; fake "reviews" section and all AI mentions removed; subscription terms, EULA, privacy, and "Real Life Comes First" note kept. Not search-indexed on iOS, so it affects downloads, not ranking.
 - **Promotional text:** updated on the live 1.0.2 immediately (no review needed) and inherited by 1.0.3.
 - **Secondary category:** added `Entertainment` (primary stays Games > Casual).
-- Screenshots inherited unchanged from 1.0.2 (verified by checksum, incl. the repaired smash frame). They have no AI wording. The support/marketing page also had none.
+- **Screenshots:** replaced with captioned versions: a two-line headline (white + orange highlight, Avenir Next Heavy) above the original screenshot inset in an orange frame. In order: "AN ALARM EVERY 10 MINUTES. FOREVER." / "SNOOZE IN TIME OR LOSE EVERYTHING" / "HAD ENOUGH? SMASH THE CLOCK" / "A NEW DARE EVERY SINGLE DAY" / "COLLECT THE CLOCKS YOU SILENCED". Raw sources in `img/appstore/raw/` (downloaded from the 1.0.2 listing, incl. the repaired smash frame), output in `img/appstore/captioned/`. Regenerate with `python3 scripts/caption_screenshots.py` (needs Pillow); upload with `python3 scripts/appstoreconnect/upload_screenshots.py <appScreenshotSetId> <png>...` (uploads the new ones first, then deletes the old ones and sets the order). 1.0.3's iPhone 6.9" set is `aff36da6-3efb-42c2-b9a7-1247dd629968`. The live 1.0.2 listing keeps its uncaptioned set until 1.0.3 is approved.
+- No AI wording in the screenshots or on the support/marketing page.
 
-Possible follow-ups: add caption banners to the screenshots (known to help downloads); after ~2 weeks live, compare impressions/downloads in ASC Analytics against before and swap out keywords that aren't bringing traffic.
+Follow-up: after ~2 weeks live, compare impressions/downloads in ASC Analytics against before and swap out keywords that aren't bringing traffic.
 
 ## What 1.0.2 was
 
@@ -52,3 +53,4 @@ Resolved earlier (details in `CLAUDE.md`): the Paid + Free Apps Agreements (caus
 - **2026-09-15:** Shipped 1.0.2 (build 6) to review to replace the washed-out smash screenshot. Rotated to the `Sep 2026` provisioning profile.
 - **2026-10-16:** Confirmed 1.0.2 approved and `READY_FOR_SALE`; nothing in review. Committed the outstanding 1.0.2 working-tree changes. Decided asset storage: all `img/` images are committed to git; `videos/` (preview mp4s) is gitignored and kept local only.
 - **2026-10-16 (later):** Rewrote the store listing away from the AI slop framing and optimized it for search (see top). Updated live promo text, shipped metadata-only 1.0.3 (build 7) and submitted for review. `asc_api.py` was run from a scratchpad venv with PyJWT.
+- **2026-10-16 (evening):** Added caption banners to the 5 App Store screenshots. Canceled the 1.0.3 submission (screenshots are locked while it's in review), swapped the screenshots in, and resubmitted as `98c16612`.
