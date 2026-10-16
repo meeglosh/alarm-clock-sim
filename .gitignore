@@ -6,3 +6,10 @@ build/
 # App Store Connect API credentials — never commit these
 *.p8
 secrets/
+
+# Local-only marketing assets and App Store preview videos (not stored in git)
+videos/
+img/hero.png
+img/title.png
+img/icon-*.png
+img/final_smash_repaired.png

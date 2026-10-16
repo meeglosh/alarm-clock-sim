@@ -22,7 +22,7 @@ The build upload also exposed a stale manual-signing profile. The current App St
 ## Repo state
 
 - The 1.0.2 version bump (`project.yml` / regenerated `project.pbxproj`), the new signing profile in `ExportOptions.plist`, and the `CLAUDE.md` updates were committed 2026-10-16 alongside this file.
-- Untracked and intentionally kept out of git: new `img/` marketing/source assets (`hero.png`, `title.png`, `icon-*.png`, `final_smash_repaired.png`) and `videos/` (App Store preview mp4s). Decide deliberately whether these belong in git (the mp4s are large binaries) or should stay local / move to LFS.
+- `videos/` and the local `img/` marketing assets (`hero.png`, `title.png`, `icon-*.png`, `final_smash_repaired.png`) are gitignored and stay local only. The original `img/ACS-*` source mockups remain tracked.
 
 ## Open items
 
