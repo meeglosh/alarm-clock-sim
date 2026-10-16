@@ -1,51 +1,40 @@
 # Session Handoff
 
-Last updated: 2026-08-25. This file captures where the project stands so a future session can pick up without re-deriving state. Durable project knowledge (architecture, pipelines, ASC API recipes) lives in `CLAUDE.md`; this file is only the "what's in flight right now" layer.
+Last updated: 2026-10-16. This file captures where the project stands so a future session can pick up without re-deriving state. Durable project knowledge (architecture, pipelines, ASC API recipes) lives in `CLAUDE.md`; this file is only the "what's in flight right now" layer.
 
-## Where we are: APPROVED AND LIVE 🎉
+## Where we are: 1.0.2 LIVE, nothing in review
 
-As of the 2026-08-25 ASC API check:
+As of the 2026-10-16 ASC API check:
 
-- **v1.0 and v1.0.1 are both `READY_FOR_SALE`** — the app is on the App Store.
-- The 1.0 submission from Aug 18 (`cd64224b`) completed, and a **1.0.1 was submitted 2026-08-21 (`e34358e3`) and also completed** — so an update shipped right behind the initial approval.
-- Earlier submissions (Aug 14–15) were withdrawn/superseded (`COMPLETE` with items `REMOVED`), not rejections.
-- A stray 1.0 `appStoreVersion` row still sits in `PREPARE_FOR_SUBMISSION` — resubmission artifact, harmless.
-- To re-check status any time: JWT via PyJWT against the ASC API (key `QGMKYYB893`, app ID `6799553201` — full recipe in `CLAUDE.md`), query `/v1/apps/6799553201/appStoreVersions` and `/v1/reviewSubmissions?filter[app]=6799553201`.
+- **1.0, 1.0.1, and 1.0.2 are all `READY_FOR_SALE`.** 1.0.2 (build 6) is the current live version.
+- All 6 review submissions are `COMPLETE`, including 1.0.2's (`942629c8-72b4-49fb-b890-781feea70503`, submitted 2026-09-15). Nothing is pending review.
+- A stray 1.0 `appStoreVersion` row (`a3d0f80e`) still sits in `PREPARE_FOR_SUBMISSION`. It's left over from a resubmission and is harmless.
+- To re-check status any time: `python3 scripts/appstoreconnect/asc_api.py GET /v1/apps/6799553201/appStoreVersions` and `GET "/v1/reviewSubmissions?filter[app]=6799553201"`.
 
-Likely next moves now that it's live: watch Game Center leaderboard for real scores, monitor crashes/reviews in ASC.
+Likely next moves: watch the Game Center leaderboard for real scores, monitor crashes/reviews in ASC.
+
+## What 1.0.2 was
+
+1.0.2 changed metadata only. The third App Store screenshot had been captured during `SmashCinematicView`'s full-screen white flash, leaving a ~66% white blend baked into the uploaded PNG. The clean recovered frame (`img/final_smash_repaired.png`, screenshot ID `90114316-d87f-4005-acf1-e2609b817f89`) replaced it in the third slot. `CLAUDE.md` now notes to capture after the flash.
+
+The build upload also exposed a stale manual-signing profile. The current App Store profile is `GAPCO AlarmClockSimulator App Store Sep 2026` (profile ID `U3H9G9G5RT`) for distribution certificate `WZGT4Z279S`. `ExportOptions.plist` and `CLAUDE.md` point to it.
 
 ## Repo state
 
-- 5 commits were local-only until this handoff was pushed (icon rework, Info.plist version-key fix, subscription-screen legal links, notification primer/banner work, iPhone-only + privacy manifest).
-- Untracked but intentionally kept out of the commit: new `img/` marketing/source assets (`hero.png`, `title.png`, `icon-*.png`, `ACS-appStore-icon2.jpg`) and `videos/` (App Store preview mp4s: `AlarmClockSim-coreGameplay.mp4`, `AlarmClockSim-streak.mp4`, `combined.mp4`). Decide deliberately whether these belong in git (the mp4s are large binaries) or should stay local / move to LFS.
-- Working-tree modifications to `project.pbxproj`, `project.yml`, `ExportOptions.plist` existed at session start on 2026-08-20; by 2026-08-25 the tracked files were clean apart from the untracked assets above.
+- The 1.0.2 version bump (`project.yml` / regenerated `project.pbxproj`), the new signing profile in `ExportOptions.plist`, and the `CLAUDE.md` updates were committed 2026-10-16 alongside this file.
+- Untracked and intentionally kept out of git: new `img/` marketing/source assets (`hero.png`, `title.png`, `icon-*.png`, `final_smash_repaired.png`) and `videos/` (App Store preview mp4s). Decide deliberately whether these belong in git (the mp4s are large binaries) or should stay local / move to LFS.
 
-## Open items (pre-launch checklist)
+## Open items
 
-- ~~Paid Apps Agreement~~ — resolved. This was the actual cause of a Guideline
-  2.1(b) rejection ("Unable to Complete Request" on the subscribe button
-  during review): the Paid Apps Agreement was active, but a separate **Free
-  Apps Agreement** also needed signing (this app is priced Free with IAP)
-  and hadn't been. Both are now active — `GET /v2/inAppPurchases/6799549502`
-  and `GET /v1/subscriptions/6799567335` both report `state: APPROVED`, and
-  real production purchases are confirmed working since Apple's own review
-  completed the subscribe flow successfully.
-- ~~IAP/subscription App Store review screenshot~~ — resolved, uploaded via
-  the reserve-then-PUT flow (`POST /v1/inAppPurchaseAppStoreReviewScreenshots`
-  / `POST /v1/subscriptionAppStoreReviewScreenshots`). Both products'
-  `state` is `APPROVED`, not `MISSING_METADATA` anymore.
 - Server-side receipt validation is flagged as post-MVP hardening (`Transaction.currentEntitlements` on-device for now).
 - Game Center / real StoreKit flows still only verified via TestFlight/device, not Simulator.
+- `scripts/appstoreconnect/asc_api.py` needs PyJWT + cryptography, which aren't installed for this machine's system `python3`. Either `pip3 install --user pyjwt cryptography` or use a throwaway venv (`python3 -m venv <dir> && <dir>/bin/pip install pyjwt cryptography`).
 
-## Reusable tooling
-
-The App Store Connect API client now lives in the repo at
-`scripts/appstoreconnect/asc_api.py` (JWT auth via PyJWT, same key as
-above) — no need to reconstruct it from scratch each session anymore.
-Usage: `python3 scripts/appstoreconnect/asc_api.py GET|POST|PATCH|DELETE <path> ['<json-body>']`.
+Resolved earlier (details in `CLAUDE.md`): the Paid + Free Apps Agreements (cause of the Guideline 2.1(b) subscribe-button rejection), and the IAP/subscription review screenshots (both products `APPROVED`).
 
 ## Session log
 
-- **2026-08-20:** Checked review status via ASC API — current submission (Aug 18) `WAITING_FOR_REVIEW`, prior three submissions withdrawn not rejected. Gmail integration lacked read scope, so inbox couldn't be checked for App Review mail; scan manually for `noreply@email.apple.com`.
-- **2026-08-25 (earlier):** Re-checked ASC — **1.0 approved and live; 1.0.1 (submitted Aug 21) also approved; both `READY_FOR_SALE`.** Created this handoff file; committed and pushed it along with the 5 pending commits.
-- **2026-08-25 (later):** Confirmed both IAP and subscription now show `state: APPROVED` (previously `MISSING_METADATA` per the open items above — that resolved itself once the review screenshots and Free Apps Agreement were sorted during the Aug 18 rejection cycle). Added `scripts/appstoreconnect/asc_api.py` to the repo so the API client persists across sessions instead of being reconstructed from memory each time (it had already been rebuilt twice from scratch earlier in the project due to living only in an ephemeral scratchpad). Folded the App Store Connect submission gotchas (agreements, per-territory subscription pricing, Game Center version linking, Info.plist version-key bug, single review attachment limit, etc.) into `CLAUDE.md` rather than duplicating them here.
+- **2026-08-20:** Checked review status via ASC API. The current submission (Aug 18) was `WAITING_FOR_REVIEW`, and the prior three submissions were withdrawn, not rejected. The Gmail integration lacked read scope, so the inbox couldn't be checked for App Review mail; scan manually for `noreply@email.apple.com`.
+- **2026-08-25:** 1.0 approved and live; 1.0.1 (submitted Aug 21) also approved. Created this handoff file. Confirmed both IAP and subscription `APPROVED`. Added `scripts/appstoreconnect/asc_api.py` to the repo and folded the ASC submission gotchas into `CLAUDE.md`.
+- **2026-09-15:** Shipped 1.0.2 (build 6) to review to replace the washed-out smash screenshot. Rotated to the `Sep 2026` provisioning profile.
+- **2026-10-16:** Confirmed 1.0.2 approved and `READY_FOR_SALE`; nothing in review. Committed the outstanding 1.0.2 working-tree changes.
