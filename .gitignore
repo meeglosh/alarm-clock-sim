@@ -9,3 +9,5 @@ secrets/
 
 # App Store preview videos (large binaries, kept local only)
 videos/
+
+__pycache__/
