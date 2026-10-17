@@ -1,10 +1,17 @@
 # Session Handoff
 
-Last updated: 2026-10-16 (evening). This file captures where the project stands so a future session can pick up without re-deriving state. Durable project knowledge (architecture, pipelines, ASC API recipes) lives in `CLAUDE.md`; this file is only the "what's in flight right now" layer.
+Last updated: 2026-10-17. This file captures where the project stands so a future session can pick up without re-deriving state. Durable project knowledge (architecture, pipelines, ASC API recipes) lives in `CLAUDE.md`; this file is only the "what's in flight right now" layer.
+
+## Next session: start here
+
+1. Check whether 1.0.3 was approved: `GET /v1/reviewSubmissions/98c16612-4dfd-414e-88b3-523db3643255` (state) and `GET /v1/apps/6799553201/appStoreVersions`. On approval it releases automatically (`AFTER_APPROVAL`).
+2. If it was rejected, read the reason in ASC (Resolution Center). The usual fix-and-resubmit path is in `CLAUDE.md` (cancel the submission, poll until `COMPLETE`, make the edits, create a fresh `reviewSubmission`).
+3. About 2 weeks after 1.0.3 goes live (around early November 2026), compare impressions, product page views, and downloads in ASC Analytics with the period before it. Swap out keywords that bring no search traffic.
+4. Make sure PyJWT is available before running any ASC script (see Open items).
 
 ## Where we are: 1.0.3 WAITING FOR REVIEW (ASO listing refresh)
 
-As of 2026-10-16:
+As of 2026-10-17 (re-checked; still `WAITING_FOR_REVIEW`):
 
 - **1.0.3 (build 7) is `WAITING_FOR_REVIEW`.** Review submission `98c16612-4dfd-414e-88b3-523db3643255` (resubmitted after canceling the first one, `05870194`, to swap in captioned screenshots), appStoreVersion `e5c7a9c7-c703-49e6-a380-42032ff7a696`, build `b6e88fd8-863f-4017-a92e-7cafd285438e`. Release type `AFTER_APPROVAL`. No code changes; it only exists because name/subtitle/keywords/description/category can only change with a new version.
 - 1.0, 1.0.1, and 1.0.2 are `READY_FOR_SALE`; 1.0.2 is live until 1.0.3 is approved.
@@ -24,8 +31,6 @@ Downloads were low and the self-deprecating "AI slop" pitch wasn't landing, so t
 - **Screenshots:** replaced with captioned versions: a two-line headline (white + orange highlight, Avenir Next Heavy) above the original screenshot inset in an orange frame. In order: "AN ALARM EVERY 10 MINUTES. FOREVER." / "SNOOZE IN TIME OR LOSE EVERYTHING" / "HAD ENOUGH? SMASH THE CLOCK" / "A NEW DARE EVERY SINGLE DAY" / "COLLECT THE CLOCKS YOU SILENCED". Raw sources in `img/appstore/raw/` (downloaded from the 1.0.2 listing, incl. the repaired smash frame), output in `img/appstore/captioned/`. Regenerate with `python3 scripts/caption_screenshots.py` (needs Pillow); upload with `python3 scripts/appstoreconnect/upload_screenshots.py <appScreenshotSetId> <png>...` (uploads the new ones first, then deletes the old ones and sets the order). 1.0.3's iPhone 6.9" set is `aff36da6-3efb-42c2-b9a7-1247dd629968`. The live 1.0.2 listing keeps its uncaptioned set until 1.0.3 is approved.
 - No AI wording in the screenshots or on the support/marketing page.
 
-Follow-up: after ~2 weeks live, compare impressions/downloads in ASC Analytics against before and swap out keywords that aren't bringing traffic.
-
 ## What 1.0.2 was
 
 1.0.2 changed metadata only. The third App Store screenshot had been captured during `SmashCinematicView`'s full-screen white flash, leaving a ~66% white blend baked into the uploaded PNG. The clean recovered frame (`img/final_smash_repaired.png`, screenshot ID `90114316-d87f-4005-acf1-e2609b817f89`) replaced it in the third slot. `CLAUDE.md` now notes to capture after the flash.
@@ -34,15 +39,16 @@ The build upload also exposed a stale manual-signing profile. The current App St
 
 ## Repo state
 
-- 1.0.3: `project.yml` bumped to 1.0.3 / build 7 and the project regenerated.
-- The 1.0.2 version bump (`project.yml` / regenerated `project.pbxproj`), the new signing profile in `ExportOptions.plist`, and the `CLAUDE.md` updates were committed 2026-10-16 alongside this file.
+- Everything is committed and pushed. `main` is the only branch (local and `origin`), with no stashes or extra worktrees.
+- `project.yml` is at 1.0.3 / build 7, matching the build in review. The next release needs a bump to 1.0.4 / build 8.
+- `img/appstore/` holds the App Store screenshots (raw + captioned); see the Screenshots bullet above.
 - All `img/` assets are tracked in git, including the marketing/source assets (`hero.png`, `title.png`, `icon-*.png`, `final_smash_repaired.png`). `videos/` (App Store preview mp4s) is gitignored and stays local only.
 
 ## Open items
 
 - Server-side receipt validation is flagged as post-MVP hardening (`Transaction.currentEntitlements` on-device for now).
 - Game Center / real StoreKit flows still only verified via TestFlight/device, not Simulator.
-- `scripts/appstoreconnect/asc_api.py` needs PyJWT + cryptography, which aren't installed for this machine's system `python3`. Either `pip3 install --user pyjwt cryptography` or use a throwaway venv (`python3 -m venv <dir> && <dir>/bin/pip install pyjwt cryptography`).
+- The scripts under `scripts/appstoreconnect/` need PyJWT + cryptography, which aren't installed for this machine's system `python3`. Either `pip3 install --user pyjwt cryptography` or use a throwaway venv (`python3 -m venv <dir> && <dir>/bin/pip install pyjwt cryptography pillow`; Pillow is for `scripts/caption_screenshots.py`). Run scripts with `-I` from a venv in a scratch dir, and don't keep a file named like a stdlib module (e.g. `copy.py`) next to scripts that import Pillow, since it gets shadowed.
 
 Resolved earlier (details in `CLAUDE.md`): the Paid + Free Apps Agreements (cause of the Guideline 2.1(b) subscribe-button rejection), and the IAP/subscription review screenshots (both products `APPROVED`).
 
@@ -54,3 +60,4 @@ Resolved earlier (details in `CLAUDE.md`): the Paid + Free Apps Agreements (caus
 - **2026-10-16:** Confirmed 1.0.2 approved and `READY_FOR_SALE`; nothing in review. Committed the outstanding 1.0.2 working-tree changes. Decided asset storage: all `img/` images are committed to git; `videos/` (preview mp4s) is gitignored and kept local only.
 - **2026-10-16 (later):** Rewrote the store listing away from the AI slop framing and optimized it for search (see top). Updated live promo text, shipped metadata-only 1.0.3 (build 7) and submitted for review. `asc_api.py` was run from a scratchpad venv with PyJWT.
 - **2026-10-16 (evening):** Added caption banners to the 5 App Store screenshots. Canceled the 1.0.3 submission (screenshots are locked while it's in review), swapped the screenshots in, and resubmitted as `98c16612`.
+- **2026-10-17:** Re-checked: 1.0.3 still `WAITING_FOR_REVIEW`. No outstanding branches to merge; refreshed this handoff and documented the 1.0.3 release recipe in `CLAUDE.md`.
